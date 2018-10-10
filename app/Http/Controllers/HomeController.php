@@ -30,23 +30,15 @@ class HomeController extends Controller
     {
         return view('page.dashboard');
     }
-    }
-    
-    public function postSignup(Request $req)
+
+    public function accounts()
     {
-        $this->validate($req,
-        [
-            'email'=>'required|email|unique:users,email',
-            'password'=>'required|min:6|max:20',
-            'fullname'=>'required',
-            're_password'=>'required|same:password'
-        ],
-        [
-            'email.required'=>'Vui lòng nhập email',
-            'email.email'=>'Không đúng định dạng email',
-            'email.unique'=>'Email đã có người sử dụng',
-            'password.required'=>'Vui lòng nhập password',
-            'password.min'=>'Password ít nhất phải 6 kí tự',
+        $accounts = Accounts::all();
+        return view('page.accounts', compact('accounts'));
+    }
+
+    public function addAccount(Request $request)
+    {
         $account = new Accounts;
         $account->name = $request->name;
         $account->uri = $request->url;
