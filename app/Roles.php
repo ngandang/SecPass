@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class GPGKeys extends Model
+class Roles extends Model
 {
     use Uuids;
     /**
@@ -14,9 +14,9 @@ class GPGKeys extends Model
      */
     public $incrementing = false;
     
-    protected $table = 'gpgkeys';
+    protected $table = 'roles';
     public function Users()
     {
-        return $this->belongsTo('App\Users', 'user_id','id');
+        return $this->hasMany('App\Users', 'role_id','id');
     }
 }

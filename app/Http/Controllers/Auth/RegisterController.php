@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
+use App\Users;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -28,7 +28,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/dashboard';
 
     /**
      * Create a new controller instance.
@@ -59,14 +59,34 @@ class RegisterController extends Controller
      * Create a new user instance after a valid registration.
      *
      * @param  array  $data
-     * @return \App\User
+     * @return \App\Users
      */
     protected function create(array $data)
     {
-        return User::create([
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'verification_code' => time().uniqid(true),
         ]);
+
+        //do your role stuffs here
+
+        //send verification mail to user
+        //---------------------------------------------------------
+        $data['verification_code']  = $user->verification_code;
+
+        Mail::send('emails.verify', $data, function($message) use ($data)
+        {
+            //TODO: change this for production
+            $message->from('no-reply@secpass.com', "SecPass");
+            $message->subject("Welcome to SecPass");
+            $message->to($data['email']);
+        });
+
+
+        return $user;
+
+
     }
 }

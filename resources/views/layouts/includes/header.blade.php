@@ -6,7 +6,7 @@
 				<div class="m-stack m-stack--ver m-stack--general">
 					<div class="m-stack__item m-stack__item--middle m-brand__logo">
 						<a href="#" class="m-brand__logo-wrapper">
-							<img alt="" src="{{ asset('demo/default/media/img/logo/logo_default_dark.png') }}"/>
+							<img alt="" src="{{ asset('default/media/img/logo/logo_default_dark.png') }}"/>
 						</a>
 					</div>
 					<div class="m-stack__item m-stack__item--middle m-brand__tools">
@@ -200,7 +200,6 @@
 							<!--end::Search Results -->
 						</li>
 						<!--end::Search-->
-						
 					</ul>
 				</div>
 				<!-- END: Horizontal Menu -->
@@ -208,7 +207,6 @@
 				<div id="m_header_topbar" class="m-topbar  m-stack m-stack--ver m-stack--general">
 					<div class="m-stack__item m-topbar__nav-wrapper">
 						<ul class="m-topbar__nav m-nav m-nav--inline">
-							
 							<li class="m-nav__item m-topbar__quick-actions m-topbar__quick-actions--img m-dropdown m-dropdown--large m-dropdown--header-bg-fill m-dropdown--arrow m-dropdown--align-right m-dropdown--align-push m-dropdown--mobile-full-width m-dropdown--skin-light"  data-dropdown-toggle="click">
 								<a href="#" class="m-nav__link m-dropdown__toggle">
 									<span class="m-nav__link-badge m-badge m-badge--dot m-badge--info m--hide"></span>
@@ -424,14 +422,13 @@
 									</div>
 								</div>
 							</li>
-							
 							<li class="m-nav__item m-topbar__user-profile m-topbar__user-profile--img  m-dropdown m-dropdown--medium m-dropdown--arrow m-dropdown--header-bg-fill m-dropdown--align-right m-dropdown--mobile-full-width m-dropdown--skin-light" data-dropdown-toggle="click">
 								<a href="#" class="m-nav__link m-dropdown__toggle">
 									<span class="m-topbar__userpic">
-										<img src="{{ asset('app/media/img/avt.jpg') }}" class="m--img-rounded m--marginless m--img-centered" alt=""/>
+										<img src="{{ asset('app/media/img/users/user5.jpg') }}" class="m--img-rounded m--marginless m--img-centered" alt=""/>
 									</span>
 									<span class="m-topbar__username m--hide">
-										Kame
+										{{ Auth::user()->name }}
 									</span>
 								</a>
 								<div class="m-dropdown__wrapper">
@@ -439,19 +436,17 @@
 									<div class="m-dropdown__inner">
 										<div class="m-dropdown__header m--align-center" style="background: url({{ asset('app/media/img/misc/user_profile_bg.jpg') }}); background-size: cover;">
 											<div class="m-card-user m-card-user--skin-dark">
-											@if(Auth::check())
 												<div class="m-card-user__pic">
-													<img src="{{ asset('app/media/img/avt.jpg') }}" class="m--img-rounded m--marginless" alt=""/>
+													<img src="{{ asset('app/media/img/users/user5.jpg') }}" class="m--img-rounded m--marginless" alt=""/>
 												</div>
 												<div class="m-card-user__details">
 													<span class="m-card-user__name m--font-weight-500">
-														{{Auth::user()->name}}
+														{{ Auth::user()->name }}
 													</span>
 													<a href="" class="m-card-user__email m--font-weight-300 m-link">
-														{{Auth::user()->email}}
+														{{ Auth::user()->email }}
 													</a>
 												</div>
-											@endif
 											</div>
 										</div>
 										<div class="m-dropdown__body">
@@ -468,11 +463,11 @@
 															<span class="m-nav__link-title">
 																<span class="m-nav__link-wrap">
 																	<span class="m-nav__link-text">
-																		My Profile
+																		Thông tin cá nhân
 																	</span>
 																	<span class="m-nav__link-badge">
 																		<span class="m-badge m-badge--success">
-																			2
+																			2 <!-- thiếu 2 thông tin -->
 																		</span>
 																	</span>
 																</span>
@@ -483,7 +478,7 @@
 														<a href="header/profile.html" class="m-nav__link">
 															<i class="m-nav__link-icon flaticon-share"></i>
 															<span class="m-nav__link-text">
-																Activity
+																Lịch sử hoạt động
 															</span>
 														</a>
 													</li>
@@ -491,7 +486,7 @@
 														<a href="header/profile.html" class="m-nav__link">
 															<i class="m-nav__link-icon flaticon-chat-1"></i>
 															<span class="m-nav__link-text">
-																Messages
+																Tin nhắn
 															</span>
 														</a>
 													</li>
@@ -508,15 +503,18 @@
 														<a href="header/profile.html" class="m-nav__link">
 															<i class="m-nav__link-icon flaticon-lifebuoy"></i>
 															<span class="m-nav__link-text">
-																Support
+																Hỗ trợ
 															</span>
 														</a>
 													</li>
 													<li class="m-nav__separator m-nav__separator--fit"></li>
 													<li class="m-nav__item">
-														<a href="logout" class="btn m-btn--pill    btn-secondary m-btn m-btn--custom m-btn--label-brand m-btn--bolder">
-															Logout
+														<a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="btn m-btn--pill btn-secondary m-btn m-btn--custom m-btn--label-brand m-btn--bolder">
+															Đăng xuất
 														</a>
+														<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+															@csrf
+														</form>
 													</li>
 												</ul>
 											</div>

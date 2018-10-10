@@ -14,9 +14,10 @@ class Secret extends Migration
     public function up()
     {
         Schema::create('secret', function(Blueprint $table){
-            $table->increments('id');
-            $table->char('user_id');
-            $table->char('account_id');
+            $table->uuid('id');
+            $table->primary('id');
+            $table->uuid('user_id');
+            $table->uuid('account_id');
             $table->text('data');
             $table->timestamps();
 

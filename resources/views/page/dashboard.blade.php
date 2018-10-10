@@ -1,6 +1,3 @@
-<?php $page = 'dashboard'; ?>
-
-
 @extends('layouts.master')
 @include('errors.note')
 @section('content')
@@ -12,4 +9,8 @@
 
 <!-- END: Content -->
 
+@endsection
+
+@section('pageSnippets')
+<script src="{{ asset('app/js/dashboard.js') }}" type="text/javascript"></script>
 @endsection

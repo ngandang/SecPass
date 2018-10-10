@@ -14,13 +14,14 @@ class Accounts extends Migration
     public function up()
     {
         Schema::create('accounts',function($table){
-            $table->increments('id');
+            $table->uuid('id');
+            $table->primary('id');
             $table->string('name');
             $table->string('username');
             $table->datetime('expiry_date')->nullable();
             $table->string('uri')->nullable();
             $table->text('description')->nullable();
-            $table->boolean('deleted') ->default(false);
+            $table->boolean('deleted')->default(false);
             $table->timestamps();
         });
     }

@@ -5,7 +5,6 @@
 	<!-- BEGIN: Aside Menu -->
 	<div id="m_ver_menu" class="m-aside-menu  m-aside-menu--skin-dark m-aside-menu--submenu-skin-dark " data-menu-vertical="true" data-menu-scrollable="false" data-menu-dropdown-timeout="500" >
 		<ul class="m-menu__nav  m-menu__nav--dropdown-submenu-arrow ">
-		<!-- {{Request::segment(1)}} -->
 			<li class="m-menu__item {{ (Request::segment(1) == 'dashboard') ? 'm-menu__item--active' : '' }} " aria-haspopup="true" >
 				<a  href="dashboard" class="m-menu__link ">
 					<i class="m-menu__link-icon flaticon-dashboard"></i>
@@ -29,7 +28,6 @@
 				</h4>
 				<i class="m-menu__section-icon flaticon-more-v3"></i>
 			</li>
-			
 			<li class="m-menu__item  m-menu__item--submenu {{ (Request::segment(1) == 'accounts') ? 'm-menu__item--active' : '' }}" aria-haspopup="true"  data-menu-submenu-toggle="hover">
 				<a  href="accounts" class="m-menu__link m-menu__toggle">
 					<i class="m-menu__link-icon flaticon-profile"></i>

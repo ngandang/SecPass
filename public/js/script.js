@@ -14,4 +14,3 @@ function share(id)
 {
     $('$idShare').val(id);
 }
-

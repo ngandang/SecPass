@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'failed' => 'Các thông tin đăng nhập này không khớp với hồ sơ của chúng tôi.',
-    'throttle' => 'Quá nhiều lần đăng nhập. Vui lòng thử lại sau: giây giây.',
+    'failed' => 'Thông tin đăng nhập không khớp.',
+    'throttle' => 'Quá nhiều lần đăng nhập. Vui lòng thử lại sau: <giây> giây.',
 
 ];

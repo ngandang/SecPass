@@ -14,8 +14,9 @@ class Gpgkeys extends Migration
     public function up()
     {
         Schema::create('gpgkeys', function(Blueprint $table){
-            $table->increments('id');
-            $table->string('user_id');
+            $table->uuid('id');
+            $table->primary('id');
+            $table->uuid('user_id');
             $table->string('armored_key');
             $table->integer('bits') ->default(2048);
             $table->string('uid');

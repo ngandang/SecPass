@@ -14,10 +14,15 @@ class Profiles extends Migration
     public function up()
     {
         Schema::create('profiles', function(Blueprint $table){
-            $table->increments('id');
-            $table->char('user_id');
+            $table->uuid('id');
+            $table->primary('id');
+            $table->uuid('user_id');
             $table->string('first_name');
             $table->string('last_name');
+            $table->string('gender');
+            $table->datetime('date_of_birth');
+            $table->string('timezone');
+            $table->string('locale');
             $table->timestamps();
         });
     }

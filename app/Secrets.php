@@ -4,9 +4,18 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Secret extends Model
+
+class Secrets extends Model
 {
-    protected $table = 'secret';
+    use Uuids;
+    /**
+     * Indicates if the IDs are auto-incrementing.
+     *
+     * @var bool
+     */
+    public $incrementing = false;
+
+    protected $table = 'secrets';
     public function Users()
     {
         return $this->belongsTo('App\Users', 'user_id','id');
