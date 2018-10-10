@@ -5,7 +5,7 @@
                 <thead>
                     <tr align="center">
                         <th>Tên</th>
-                        <th>Tên Đăng Nhâp</th>
+                        <th>Tên Đăng Nhập</th>
                         <th>URL</th>
                         <th>Mô tả</th>
                         <th></th>
