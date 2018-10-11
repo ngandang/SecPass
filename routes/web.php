@@ -38,12 +38,6 @@ Route::get('sharewith','HomeController@sharewith');
 Route::get('securenotes','HomeController@securenotes');
 Route::get('setting','HomeController@setting');
 
-<<<<<<< HEAD
-Route::post('accounts/add',['as'=>'add','uses'=>'HomeController@addAccount']);
-Route::post('accounts/edit',['as'=>'edit','uses'=>'HomeController@postEdit']);
-Route::get('accounts/delete',['as'=>'delete', 'uses'=>'HomeController@deleteAccount']);
-Route::get('share',['as'=>'share','uses'=>'HomeController@shareAccount']);
-=======
 Route::get('roles', function () {
     return App\Users::create(
         [
@@ -68,4 +62,3 @@ Route::get('roles', function () {
         ]
     );
 });
->>>>>>> c6175e406f6561538fed1dba6b442568938f9a28
