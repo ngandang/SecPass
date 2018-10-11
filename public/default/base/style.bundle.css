@@ -133,7 +133,7 @@ article, aside, dialog, figcaption, figure, footer, header, hgroup, main, nav, s
 
 body {
   margin: 0;
-  font-family: "Helvetica";
+  font-family: "Arial";
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
@@ -3671,7 +3671,7 @@ button.close {
   z-index: 1070;
   display: block;
   margin: 0;
-  font-family: "Helvetica";
+  font-family: "Arial";
   font-style: normal;
   font-weight: 400;
   line-height: 1.5;
@@ -3752,7 +3752,7 @@ button.close {
   z-index: 1060;
   display: block;
   max-width: 276px;
-  font-family: "Helvetica";
+  font-family: "Arial";
   font-style: normal;
   font-weight: 400;
   line-height: 1.5;
@@ -7270,7 +7270,7 @@ body {
   padding: 0px;
   font-size: 14px;
   font-weight: 300;
-  font-family: Helvetica;
+  font-family: Arial;
   -ms-text-size-adjust: 100%;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; }
@@ -11751,7 +11751,7 @@ code {
   background: #ebedf2; }
 
 .btn {
-  font-family: "Helvetica";
+  font-family: "Arial";
   -webkit-box-shadow: none !important ;
   -moz-box-shadow: none !important ;
   box-shadow: none !important ;
@@ -11789,7 +11789,7 @@ code {
     padding: 0.75rem 2rem;
     font-size: 1rem;
     font-weight: 400;
-    font-family: Helvetica; }
+    font-family: Arial; }
     .btn.m-btn--custom.btn-sm, .btn-group-sm > .btn.m-btn--custom {
       padding: 0.5rem 1rem;
       font-size: 0.9rem; }
@@ -15799,13 +15799,13 @@ code {
     .m-card-user .m-card-user__details .m-card-user__name {
       display: block;
       padding: 0 0 0 0;
-      font-size: 1.5rem;
+      font-size: 1.3rem;
       font-weight: 400;
       line-height: 1; }
     .m-card-user .m-card-user__details .m-card-user__email {
       display: inline-block;
       padding: 6px 0 0 0;
-      font-size: 1.1rem; }
+      font-size: 1rem; }
   .m-card-user.m-card-user--sm .m-card-user__pic {
     width: 40px;
     padding-right: 10px; }
@@ -15827,21 +15827,21 @@ code {
   color: #1b1c1e; }
 
 .m-card-user .m-card-user__details .m-card-user__email {
-  color: #0cf9c7; }
+  color: #7b7e8a; }
   .m-card-user .m-card-user__details .m-card-user__email:hover {
-    color: #12e02a; }
+    color: #6f727d; }
     .m-card-user .m-card-user__details .m-card-user__email:hover:after {
       border-bottom: 1px solid #6f727d;
       opacity: 0.3 ;
       filter: alpha(opacity=30) ; }
 
 .m-card-user.m-card-user--skin-dark .m-card-user__details .m-card-user__name {
-  color: #ffffff; }
+  color: #d9dae3; }
 
 .m-card-user.m-card-user--skin-dark .m-card-user__details .m-card-user__email {
-  color: #0ff6f6; }
+  color: #8284a1; }
   .m-card-user.m-card-user--skin-dark .m-card-user__details .m-card-user__email:hover {
-    color: #83d2db; }
+    color: #9093ac; }
     .m-card-user.m-card-user--skin-dark .m-card-user__details .m-card-user__email:hover:after {
       border-bottom: 1px solid #9093ac;
       opacity: 0.3 ;
@@ -16572,7 +16572,7 @@ code {
         .m-portlet.m-portlet--creative .m-portlet__head .m-portlet__head-caption .m-portlet__head-title .m-portlet__head-text {
           font-size: 1rem;
           font-weight: 400;
-          font-family: Helvetica; }
+          font-family: Arial; }
           .m-portlet.m-portlet--creative .m-portlet__head .m-portlet__head-caption .m-portlet__head-title .m-portlet__head-text .m-portlet__head-desc {
             font-size: 0.8rem;
             font-weight: 300; }
@@ -25041,7 +25041,7 @@ body.m-portlet--fullscreen {
   padding: 0;
   min-width: 125px;
   font-size: 1rem;
-  font-family: Helvetica;
+  font-family: Arial;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   -ms-border-radius: 4px;

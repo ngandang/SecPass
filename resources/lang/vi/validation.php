@@ -85,7 +85,7 @@ return [
     'min'                  => [
         'numeric' => '[vi] The :attribute must be at least :min.',
         'file'    => '[vi] The :attribute must be at least :min kilobytes.',
-        'string'  => '[vi] The :attribute must be at least :min characters.',
+        'string'  => ':attribute phải có độ dài ít nhất :min ký tự.',
         'array'   => '[vi] The :attribute must have at least :min items.',
     ],
     'not_in'               => '[vi] The selected :attribute is invalid.',
@@ -141,6 +141,8 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'password' => 'mật khẩu',
+    ],
 
 ];

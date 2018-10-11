@@ -1,0 +1,79 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+use App\Http\Requests;
+use Validator;
+use Auth;
+use Illuminate\Support\MessageBag;
+
+class LoginController extends Controller
+{
+    
+    public function getLogin() {
+    	return view('login');
+    }
+	
+	
+	public function postLogin(Request $req)
+    {
+        $this->validate($req,
+            [
+                'email'=>'required|email',
+                'password'=>'required|min:6|max:20'
+            ],
+            [
+                'email.required'=>'Vui lòng nhập email',
+                'email.email'=>'Không đúng định dạng email',
+                'password.required'=>'Vui lòng nhập password',
+                'password.min'=>'Password ít nhất phải 6 kí tự',
+                'password.max'=>'Password không quá 20 kí tự',
+            ]);
+            $credentials = array('email'=>$req->email,'password'=>$req->password);
+            if(Auth::attempt($credentials))
+            {
+                return redirect('dashboard')->with(['flag'=>'success', 'thongbao'=>'Đăng nhập thành công!!!']);
+            }
+            else
+            {
+                return redirect()->back()->with(['flag'=>'danger', 'thongbao'=>'Đăng nhập không thành công!']);
+            }
+    }
+
+    public function getSignup() {
+    	return view('signup');
+    }
+    
+    public function postSignup(Request $req)
+    {
+        $this->validate($req,
+        [
+            'email'=>'required|email|unique:users,email',
+            'password'=>'required|min:6|max:20',
+            'fullname'=>'required',
+            're_password'=>'required|same:password'
+        ],
+        [
+            'email.required'=>'Vui lòng nhập email',
+            'email.email'=>'Không đúng định dạng email',
+            'email.unique'=>'Email đã có người sử dụng',
+            'password.required'=>'Vui lòng nhập password',
+            'password.min'=>'Password ít nhất phải 6 kí tự',
+            'password.max'=>'Password không quá 20 kí tự',
+            'fullname.required'=>'Vui lòng nhập fullname',
+            're_password.same'=>'Password không giống nhau'
+        ]);
+        $user = new User();
+        $user->name = $req->fullname;
+        $user->email = $req->email;
+        $user->password = Hash::make($req->password);
+        $user->save();
+        return redirect('login');
+    }
+
+    public function forgetPassword() {
+    	return view('auth.forgetpassword');
+    }
+}

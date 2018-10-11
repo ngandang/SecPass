@@ -16,41 +16,56 @@ Route::get('/', function () {
 });
 
 
+Auth::routes();
 
-Route::group(['prefix' => 'account'], function(){
-	Route::get('add', function(){
-		echo 'Thêm account';
-	});
-	Route::get('edit', function(){
-		echo 'Sửa account';
-	});
-	Route::get('del', function(){
-		echo 'Xóa account';
-	});
-});
-
-Route::get('login','HomeController@getLogin');
-Route::post('login',['as'=>'login','uses'=>'HomeController@postLogin']);
-
-
-Route::get('signup','HomeController@getSignup');
-Route::post('signup',['as'=>'signup','uses'=>'HomeController@postSignup']);
-
-Route::get('logout', 'HomeController@getLogout');
-
-Route::get('forgetpassword','HomeController@forgetPassword');
-
-
-Route::get('dashboard','HomeController@dashboard');
 Route::get('accounts','HomeController@accounts');
-Route::get('securenotes','HomeController@securenotes');
-Route::get('sharewith','HomeController@sharewith');
+// Route::group(['prefix' => 'account'], function(){
+//     Route::post('add','HomeController@addAccount');
+//     Route::post('edit','HomeController@editAccount');
+//     Route::post('delete','HomeController@deleteAccount');
+//     Route::post('share','HomeController@shareAccount');
+// });
+Route::post('account/add',['as'=>'add','uses'=>'HomeController@addAccount']);
+Route::post('account/edit',['as'=>'edit','uses'=>'HomeController@postEdit']);
+Route::post('account/delete',['as'=>'delete', 'uses'=>'HomeController@deleteAccount']);
+Route::post('account/share',['as'=>'share','uses'=>'HomeController@shareAccount']);
+
+Route::get('credential','HomeController@credential');
+Route::get('dashboard','HomeController@dashboard');
 Route::get('drive','HomeController@drive');
 Route::get('groups','HomeController@groups');
-Route::get('credential','HomeController@credential');
+Route::get('sharewith','HomeController@sharewith');
+Route::get('securenotes','HomeController@securenotes');
 Route::get('setting','HomeController@setting');
 
+<<<<<<< HEAD
 Route::post('accounts/add',['as'=>'add','uses'=>'HomeController@addAccount']);
 Route::post('accounts/edit',['as'=>'edit','uses'=>'HomeController@postEdit']);
 Route::get('accounts/delete',['as'=>'delete', 'uses'=>'HomeController@deleteAccount']);
 Route::get('share',['as'=>'share','uses'=>'HomeController@shareAccount']);
+=======
+Route::get('roles', function () {
+    return App\Users::create(
+        [
+        // 'id' => Uuid::generate(),
+        'name' => 'root',
+        'description' => 'Super User for who the BOSS here.',
+        ],
+        [
+            // 'id' => Uuid::generate(),
+            'name' => 'admin',
+            'description' => 'Admin of ',
+        ],
+        [
+            // 'id' => Uuid::generate(),
+            'name' => 'user',
+            'description' => 'Normal user',
+        ],
+        [
+            // 'id' => Uuid::generate(),
+            'name' => 'Jane',
+            'description' => 'john@jane.com',
+        ]
+    );
+});
+>>>>>>> c6175e406f6561538fed1dba6b442568938f9a28

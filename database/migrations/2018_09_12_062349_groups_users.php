@@ -14,7 +14,8 @@ class GroupsUsers extends Migration
     public function up()
     {
         Schema::create('groups_users', function(Blueprint $table){
-            $table->increments('id');
+            $table->uuid('id');
+            $table->primary('id');
             $table->char('group_id');
             $table->char('user_id');
             $table->boolean('is_admin')->default(false);

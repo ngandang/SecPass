@@ -25,7 +25,13 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/dashboard';
+
+    protected function authenticated(\Illuminate\Http\Request $request, $user) {
+        if($request->ajax()) {
+            return response()->json([ 'intended' => $this->redirectPath() ]);
+        }
+    }
 
     /**
      * Create a new controller instance.

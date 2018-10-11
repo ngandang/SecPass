@@ -1,6 +1,3 @@
-<?php $page = 'securenotes'; ?>
-
-
 @extends('layouts.master')
 @include('errors.note')
 @section('content')
@@ -82,22 +79,23 @@
                 <thead>
                     <tr align="center">
                         <th>Tên Ghi Chú</th>
+                        <th>Cập nhật cuối</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr align="center">
+                    <tr class="odd" align="center">
                         <td>Node 1</td>
+                        <td>today</td>
                         <td>
                             <a href="#"><i class="far fa-edit"></i></a>
                             <a href="#"><i class="far fa-trash-alt"></i></a>
                             <a href="#"><i class="far fa-share-square"></i></a>
                         </td>
                     </tr>
-                </tbody>
-                <tbody>
                     <tr align="center">
                         <td>Node 2</td>
+                        <td>yesterday</td>
                         <td>
                             <a href="#"><i class="far fa-edit"></i></a>
                             <a href="#"><i class="far fa-trash-alt"></i></a>

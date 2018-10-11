@@ -1,17 +1,4 @@
 <!DOCTYPE html>
-<!-- 
-Template Name: Metronic - Responsive Admin Dashboard Template build with Twitter Bootstrap 4
-Version: 5.0.6.1
-Author: KeenThemes
-Website: http://www.keenthemes.com/
-Contact: support@keenthemes.com
-Follow: www.twitter.com/keenthemes
-Dribbble: www.dribbble.com/keenthemes
-Like: www.facebook.com/keenthemes
-Purchase: http://themeforest.net/item/metronic-responsive-admin-dashboard-template/4021469?ref=keenthemes
-Renew Support: http://themeforest.net/item/metronic-responsive-admin-dashboard-template/4021469?ref=keenthemes
-License: You must have a valid license purchased only from themeforest(the above link) in order to legally use the theme for your project.
--->
 <html lang="vi" >
 	<!-- BEGIN::Head -->
 	@include('layouts.includes.meta')
@@ -29,6 +16,7 @@ License: You must have a valid license purchased only from themeforest(the above
 				<!-- END: Left Aside -->
 				<div class="m-grid__item m-grid__item--fluid m-wrapper">
 					<!-- BEGIN: Child page -->
+					@include('layouts.includes.alert')
 					@yield('content')
 					<!-- END: Child page -->
 				</div>
@@ -54,16 +42,15 @@ License: You must have a valid license purchased only from themeforest(the above
 
 		<!--BEGIN: Base Scripts -->
 		<script src="{{ asset('vendors/base/vendors.bundle.js') }}" type="text/javascript"></script>
-		<script src="{{ asset('demo/default/base/scripts.bundle.js') }}" type="text/javascript"></script>
+		<script src="{{ asset('default/base/scripts.bundle.js') }}" type="text/javascript"></script>
 		<!--END: Base Scripts -->   
 		<!--BEGIN: Page Vendors -->
 		<script src="{{ asset('vendors/custom/fullcalendar/fullcalendar.bundle.js') }}" type="text/javascript"></script>
 		<!--END: Page Vendors -->  
 		<!--BEGIN: Page Snippets -->
 		@yield('pageSnippets')
-		<!-- <script src="{{ asset('assets/app/js/dashboard.js') }}" type="text/javascript"></script> -->
 		<!--END: Page Snippets -->
-	</body> 
+	</body>
 	<!-- END::Body -->
 
 </html>

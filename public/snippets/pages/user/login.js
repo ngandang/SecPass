@@ -3,7 +3,7 @@ var SnippetLogin = function() {
 
     var login = $('#m_login');
 
-    var showErrorMsg = function(form, type, msg) {
+    var showMsg = function(form, type, msg) {
         var alert = $('<div class="m-alert m-alert--outline alert alert-' + type + ' alert-dismissible" role="alert">\
 			<button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>\
 			<span></span>\
@@ -39,6 +39,21 @@ var SnippetLogin = function() {
 
         login.addClass('m-login--forget-password');
         login.find('.m-login__forget-password').animateClass('flipInX animated');
+    }
+   
+    var handleRememberMe = function() {
+        $('#m_login_remember_me').click(function(e) {
+            e.preventDefault();
+            var form = login.find('.m-login__signin form');
+            var alert = $('<div class="m-alert m-alert--outline alert alert-' + 'success' + ' alert-dismissible" role="alert">\
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>\
+                <span></span>\
+            </div>');
+            form.find('.alert').remove();
+            alert.prependTo(form);
+            alert.animateClass('fadeIn animated');
+            alert.find('span').html('Bạn không chỉ ngây thơ còn lười nữa. Hãy thức tỉnh đi!');
+        });
     }
 
     var handleFormSwitch = function() {
@@ -78,7 +93,17 @@ var SnippetLogin = function() {
                     password: {
                         required: true
                     }
+                },
+                messages: {
+                    email: {
+                        required: "Trường nhập bắt buộc.",
+                        email: "Vui lòng nhập với định dạng email hợp lệ."
+                    },
+                    password: {
+                        required: "Trường nhập bắt buộc."
+                    }
                 }
+
             });
 
             if (!form.valid()) {
@@ -86,15 +111,19 @@ var SnippetLogin = function() {
             }
 
             btn.addClass('m-loader m-loader--right m-loader--light').attr('disabled', true);
-
+            
             form.ajaxSubmit({
                 url: '',
+                type: 'POST',
                 success: function(response, status, xhr, $form) {
-                	// similate 2s delay
-                	setTimeout(function() {
+                    window.location = response.intended;
+                },
+                error: function(response, status, xhr, $form) {
+                    // similate 1s delay
+                    setTimeout(function() {
 	                    btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false);
-	                    showErrorMsg(form, 'danger', 'Incorrect username or password. Please try again.');
-                    }, 2000);
+                        showMsg(form, 'danger', response.responseJSON.errors.email);
+                    }, 1000);
                 }
             });
         });
@@ -109,7 +138,7 @@ var SnippetLogin = function() {
 
             form.validate({
                 rules: {
-                    fullname: {
+                    name: {
                         required: true
                     },
                     email: {
@@ -125,6 +154,24 @@ var SnippetLogin = function() {
                     agree: {
                         required: true
                     }
+                },
+                messages: {
+                    name: {
+                        required: "Trường nhập bắt buộc."
+                    },
+                    email: {
+                        required: "Trường nhập bắt buộc.",
+                        email: "Vui lòng nhập với định dạng email hợp lệ."
+                    },
+                    password: {
+                        required: "Trường nhập bắt buộc."
+                    },
+                    rpassword: {
+                        required: "Trường nhập bắt buộc."
+                    },
+                    agree: {
+                        required: "Bạn cần đọc kỹ và đồng ý Các chính sách và điều khoản để có thể sử dụng dịch vụ."
+                    }
                 }
             });
 
@@ -135,22 +182,32 @@ var SnippetLogin = function() {
             btn.addClass('m-loader m-loader--right m-loader--light').attr('disabled', true);
 
             form.ajaxSubmit({
-                url: '',
+                url: '/register',                
+                type: 'POST',
                 success: function(response, status, xhr, $form) {
-                	// similate 2s delay
+                	// similate 1s delay
                 	setTimeout(function() {
 	                    btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false);
 	                    form.clearForm();
-	                    form.validate().resetForm();
+                        form.validate().resetForm();
+                        console.log(response);
 
-	                    // display signup form
+	                    // display signin form
 	                    displaySignInForm();
 	                    var signInForm = login.find('.m-login__signin form');
 	                    signInForm.clearForm();
 	                    signInForm.validate().resetForm();
 
-	                    showErrorMsg(signInForm, 'success', 'Thank you. To complete your registration please check your email.');
-	                }, 2000);
+	                    showMsg(signInForm, 'success', 'Thank you. To complete your registration please check your email.');
+                    }, 1000);
+                },
+                error: function(response, status, xhr, $form) {
+                    // similate 1s delay
+                    setTimeout(function() {
+                        console.log(response);
+	                    btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false);
+                        showMsg(form, 'danger', response.responseJSON.errors);
+                    }, 1000);
                 }
             });
         });
@@ -168,6 +225,12 @@ var SnippetLogin = function() {
                     email: {
                         required: true,
                         email: true
+                    }
+                },
+                messages: {
+                    email: {
+                        required: "Trường nhập bắt buộc.",
+                        email: "Vui lòng nhập với định dạng email hợp lệ."
                     }
                 }
             });
@@ -187,13 +250,13 @@ var SnippetLogin = function() {
 	                    form.clearForm(); // clear form
 	                    form.validate().resetForm(); // reset validation states
 
-	                    // display signup form
+	                    // display signin form
 	                    displaySignInForm();
 	                    var signInForm = login.find('.m-login__signin form');
 	                    signInForm.clearForm();
 	                    signInForm.validate().resetForm();
 
-	                    showErrorMsg(signInForm, 'success', 'Cool! Password recovery instruction has been sent to your email.');
+	                    showMsg(signInForm, 'success', 'Email đã được gửi. Vui lòng kiểm tra hộp thư của bạn.');
                 	}, 2000);
                 }
             });
@@ -206,6 +269,7 @@ var SnippetLogin = function() {
         init: function() {
             handleFormSwitch();
             handleSignInFormSubmit();
+            handleRememberMe();
             handleSignUpFormSubmit();
             handleForgetPasswordFormSubmit();
         }
