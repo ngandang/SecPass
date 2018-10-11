@@ -1,7 +1,6 @@
 <div class ="container-fluid">
         <div class="row">
             <table class="table table-striped table-bordered table-hover" id="dataTables-example">
-                <thead>
             <thead>
                 <tr align="center">
                     <th>Tên trang</th>
