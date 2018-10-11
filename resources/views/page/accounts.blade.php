@@ -2,11 +2,6 @@
 @include('errors.note')
 
 @section('content')
-<!-- @if(Session::has('message'))
-    <div class="alert alert-success">{{Session::get('message')}}</div>
-@endif -->
-<div class="alert alert-success" style="display:none;"></div>
-
 <div class="m-subheader">
     <div class="d-flex align-items-center">
         <div class="mr-auto">
@@ -44,11 +39,11 @@
         </div>
     </div>
 </div>
-<!-- BEGIN: Main content -->
-<div class = "main-content acc">
+<!-- BEGIN: Datatable -->
+<div class = "m-content"> 
     @include('accounts.index')
 </div>
-<!-- END: Main content -->
+<!-- END: Datatable -->
 <!-- BEGIN: Add form -->
 <form id="add-form" class="form-horizontal" action="" enctype="multipart/form-data" method="post">
     {{ csrf_field() }}
@@ -62,13 +57,6 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <!-- @if(count($errors)>0)
-                        <div class="alert alert-danger">
-                            @foreach($errors->all() as $err)
-                                {{$err}}<br>
-                            @endforeach
-                        </div>
-                    @endif -->
                     <div class="alert alert-danger" style="display:none;"></div>
 
                     <div id="addform-row" class="row justify-content-center align-items-center">
@@ -121,8 +109,6 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <!-- <div class="alert alert-danger" style="display:none;"></div> -->
-
                     <div id="addform-row" class="row justify-content-center align-items-center">
                         <div id="addform-box" class="col-md-12">
                             <div class="form-group">
@@ -174,8 +160,6 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <!-- <div class="alert alert-danger" style="display:none;"></div> -->
-
                     Bạn có chắc chắn xóa tài khoản không???
                 </div>
                 <div class="modal-footer">
@@ -235,23 +219,24 @@
                 type: 'POST',
                 data: form.serialize(),
                 success: function(response, status, xhr, $form) {
-                    $('.alert-success').show();
-                    $('.alert-success').html(response.message);
+                    $('#addForm').modal('hide');
+                    $('#alert').modal();
+                    $('.alert').addClass('alert-success');
+                    $('.m-alert__text').html(response.message);
                     $('.main-content').html(response.view);
                     console.log(response);
                 },
                 error: function(response, status, xhr, $form) {
-                    $('.alert-danger').show();
-                    $('.alert-danger').html(response.serialize());
+                    $('#alert').modal();
+                    $('.alert').addClass('alert-danger');
+                    $('.m-alert__text').html(response.serialize());
                     console.log(response);
                 }
             });
 
             window.setTimeout(function() {
-            $(".alert").fadeTo(500, 0).slideUp(500, function(){
-                $(this).remove(); 
-            });
-        }, 3000);
+                $('#alert').modal('hide');
+            }, 2000);
         });
     });
 </script>
