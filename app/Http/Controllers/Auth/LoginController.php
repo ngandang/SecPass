@@ -25,7 +25,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/dashboard';
+    protected $redirectTo = 'dashboard';
 
     protected function authenticated(\Illuminate\Http\Request $request, $user) {
         if($request->ajax()) {

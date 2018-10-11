@@ -26,13 +26,13 @@
                         @endif
                         </td>
                         <td>                            
-                            <div onclick="share({{$acc->id}})" href = "#shareForm" data-toggle="modal" class="btn btn-sm">
+                            <div onclick="share('{{$acc->id}}')" href = "#shareForm" data-toggle="modal" class="btn btn-sm">
                                 <i class="far fa-share-square"></i>
                             </div>
-                            <div onclick="edit({{$acc->id}},'{{$acc->name}}','{{$acc->username}}','{{$acc->uri}}','{{$acc->password}}','{{$acc->description}}')" href="#editForm" data-toggle="modal" class="btn btn-sm">
+                            <div onclick="edit('{{$acc->id}}','{{$acc->name}}','{{$acc->username}}','{{$acc->uri}}','{{$acc->password}}','{{$acc->description}}')" href="#editForm" data-toggle="modal" class="btn btn-sm">
                                 <i class="far fa-edit"></i>
                             </div>
-                            <div onclick="share({{$acc->id}})" href = "#deleteForm" data-toggle="modal" class="btn btn-sm">
+                            <div onclick="del('{{$acc->id}}')" href = "#deleteForm" data-toggle="modal" class="btn btn-sm">
                                 <i class="far fa-trash-alt"></i>
                             </div>
                         </td>
