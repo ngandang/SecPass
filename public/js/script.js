@@ -1,10 +1,10 @@
 function edit(id, name,username,url,password, description){
-    $('#idEdit').val(id);
-    $('#nameEdit').val(name);
-    $('#usernameEdit').val(username);
-    $('#urlEdit').val(url);
-    $('#passwordEdit').val(password);
-    $('#descriptionEdit').val(description);
+    $('#id').val(id);
+    $('#name').val(name);
+    $('#url').val(username);
+    $('#username').val(url);
+    $('#password').val(password);
+    $('#description').val(description);
     $('#editForm').show();
 }
 function del(id){
@@ -12,5 +12,5 @@ function del(id){
 }
 function share(id)
 {
-    $('$idShare').val(id);
+    $('#idShare').val(id);
 }

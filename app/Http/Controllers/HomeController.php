@@ -62,21 +62,34 @@ class HomeController extends Controller
     }
 
     public function editAccount(Request $request){
-        $idEdit = $request->idEdit;
+        $idEdit = $request->id;
         $acc = Accounts::find($idEdit);
-        $acc->name = $request->nameEdit;
-        $acc->username = $request->usernameEdit;
-        $acc->uri = $request->urlEdit;
-        $acc->description = $request->descriptionEdit;
+        $acc->name = $request->name;
+        $acc->username = $request->username;
+        $acc->uri = $request->url;
+        $acc->description = $request->description;
         $acc->save();
-        return redirect()->back();
+        
+        $accounts = Accounts::all();
+        return response()->json([
+            'success' => true,
+            // TODO: lang this message
+            'message' => 'Chỉnh sửa tài khoản thành công.',
+            'view' => view('accounts.index', compact('accounts'))->render()
+        ]);
     }
 
     public function deleteAccount(Request $request){
         $idDelete = $request->idDelete;
         $acc = Accounts::find($idDelete);
         $acc->delete();
-        return redirect()->back();
+        $accounts = Accounts::all();
+        return response()->json([
+            'success' => true,
+            // TODO: lang this message
+            'message' => 'Xóa tài khoản thành công.',
+            'view' => view('accounts.index', compact('accounts'))->render()
+        ]);
     }
     
     public function shareAccount(Request $request){

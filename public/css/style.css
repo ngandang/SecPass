@@ -21,22 +21,22 @@ td{
     color: #05697d ;
     padding: 15px !important;
 }
-.odd{
+/* .odd{
     background-color: #e7eaeb !important;
 }
 .even{
     background-color: #9fb6b6 !important;
-}
+} */
 
 tbody{
     margin: 5px;
 }
-.main-content{
+.m-content{
     margin-left: 5%;
     margin-right:5%;
     margin-top:5%;
 }
-.main-content .far{
+.m-content .far{
     margin-right: 5px;
 }
 .note th{

@@ -26,7 +26,7 @@
 		<!--END::Base Styles -->
         <!--BEGIN::Page Vendors -->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-		<!-- <script src="{{asset('js/script.js')}}"></script> -->
+		<script src="{{asset('js/script.js')}}"></script>
 		<!--END::Page Vendors -->
 		
 		

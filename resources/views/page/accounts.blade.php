@@ -63,25 +63,25 @@
                         <div id="addform-box" class="col-md-12">
                             <div class="form-group">
                                 <label for="name" class="text-info">Tên trang</label>
-                                <input type="text" name="name" id="name" class="form-control" required>
+                                <input type="text" name="name" class="form-control" required>
                             </div>
                             <div class="form-group">
                                 <label for="url" class="text-info">URL</label>
-                                <input type="text" name="url" id="url" class="form-control" required>
+                                <input type="text" name="url" class="form-control" required>
                             </div>
                             <div class="form-group row">
                                 <div class="col-md-6">
                                     <label for="username" class="text-info">Tên đăng nhập</label>
-                                    <input type="text" name="username" id="username" class="form-control" required>
+                                    <input type="text" name="username" class="form-control" required>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="password" class="text-info">Mật khẩu</label>
-                                    <input type="password" name="password" id="password" class="form-control" required>
+                                    <input type="password" name="password" class="form-control" required>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="description" class="text-info">Mô tả</label>
-                                <textarea type="text" name="description" id="description" class="form-control"></textarea>
+                                <textarea type="text" name="description" class="form-control"></textarea>
                             </div>
                         </div>  
                     </div>
@@ -97,7 +97,7 @@
 <!-- END: Add form -->
 
 <!-- BEGIN: Edit form -->
-<form id="edit-form" class="form-horizontal" action="../account/edit" enctype="multipart/form-data" method="post">
+<form id="edit-form" class="form-horizontal" action="" enctype="multipart/form-data" method="post">
     {{ csrf_field() }}
     <div class="modal fade" id="editForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -114,6 +114,7 @@
                             <div class="form-group">
                                 <label for="name" class="text-info">Tên trang</label>
                                 <input type="text" name="name" id="name" class="form-control">
+                                <input type="hidden" name="id" id="id" >
                             </div>
                             <div class="form-group">
                                 <label for="url" class="text-info">URL</label>
@@ -138,7 +139,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary pull-left" data-dismiss="modal">Huỷ</button>
-                    <button type="submit" class="btn btn-primary pull-right" >Lưu</button>
+                    <button type="submit" id="editSubmit" class="btn btn-primary pull-right" >Lưu</button>
                 </div>
             </div>
         </div>
@@ -147,7 +148,7 @@
 <!-- END: Edit form -->
 
 <!--BEGIN: Delete form -->
-<form id="delete-form" class="form-horizontal" action="../account/delete" enctype="multipart/form-data" method="get">
+<form id="delete-form" class="form-horizontal" action="" enctype="multipart/form-data" method="POST">
     {{ csrf_field() }}
     <div class="modal fade" id="deleteForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -164,7 +165,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary pull-left" data-dismiss="modal">Huỷ</button>
-                    <button type="submit" class="btn btn-primary" >Xóa</button>
+                    <button type="submit" id="delSubmit" class="btn btn-primary" >Xóa</button>
                 </div>
             </div>
         </div>
@@ -223,8 +224,10 @@
                     $('#alert').modal();
                     $('.alert').addClass('alert-success');
                     $('.m-alert__text').html(response.message);
-                    $('.main-content').html(response.view);
+                    $('.m-content').html(response.view);
                     console.log(response);
+                    form.clearForm();
+	                form.validate().resetForm();
                 },
                 error: function(response, status, xhr, $form) {
                     $('#alert').modal();
@@ -233,11 +236,78 @@
                     console.log(response);
                 }
             });
+            
 
             window.setTimeout(function() {
                 $('#alert').modal('hide');
             }, 2000);
         });
+        $('#editSubmit').click(function(e){
+            e.preventDefault();
+            var btn = $(this);
+            var form = $(this).closest('form');
+            
+            form.ajaxSubmit({
+                url: 'account/add',
+                type: 'POST',
+                data: form.serialize(),
+                success: function(response, status, xhr, $form) {
+                    $('#editForm').modal('hide');
+                    $('#alert').modal();
+                    $('.alert').addClass('alert-success');
+                    $('.m-alert__text').html(response.message);
+                    $('.m-content').html(response.view);
+                    console.log(response);
+                    form.clearForm();
+	                form.validate().resetForm();
+                },
+                error: function(response, status, xhr, $form) {
+                    $('#alert').modal();
+                    $('.alert').addClass('alert-danger');
+                    $('.m-alert__text').html(response.serialize());
+                    console.log(response);
+                }
+            });
+            
+
+            window.setTimeout(function() {
+                $('#alert').modal('hide');
+            }, 2000);
+        });
+        $('#delSubmit').click(function(e){
+            e.preventDefault();
+            var btn = $(this);
+            var form = $(this).closest('form');
+            
+            form.ajaxSubmit({
+                url: 'account/delete',
+                type: 'POST',
+                data: form.serialize(),
+                success: function(response, status, xhr, $form) {
+                    $('#deleteForm').modal('hide');
+                    $('#alert').modal();
+                    $('.alert').addClass('alert-success');
+                    $('.m-alert__text').html(response.message);
+                    $('.m-content').html(response.view);
+                    console.log(response);
+                    form.clearForm();
+	                form.validate().resetForm();
+                },
+                error: function(response, status, xhr, $form) {
+                    $('#alert').modal();
+                    $('.alert').addClass('alert-danger');
+                    // $('.m-alert__text').html(response.serialize());
+                    console.log(response);
+                }
+                
+            });
+            
+
+            window.setTimeout(function() {
+                $('#alert').modal('hide');
+            }, 2000);
+        });
+
     });
 </script>
 
