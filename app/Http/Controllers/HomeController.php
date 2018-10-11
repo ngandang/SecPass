@@ -161,7 +161,10 @@ class HomeController extends Controller
         $acc->uri = $request->urlEdit;
         $acc->description = $request->descriptionEdit;
         $acc->save();
-        return redirect()->back()->with('thongbao','Chỉnh sửa tài khoản thành công');
+        $accounts = Accounts::all();
+        return response()->json(['success'=>'Got Simple Ajax Request.',
+            'view'=> view('layouts.includes.content', compact('accounts'))->render()
+            ]);
     }
     public function deleteAccount(Request $request){
         // $id = $request->get('id');
@@ -169,11 +172,14 @@ class HomeController extends Controller
         // $name = Accounts::find($idDelete)->name;
         $acc = Accounts::find($idDelete);
         $acc->delete();
-        return redirect()->back()->with('thongbao','Xóa tài khoản thành công');
+        return response()->json([
+            'view'=> view('layouts.includes.content', compact('accounts'))->render()
+            ]);
     }
     public function shareAccount(Request $request){
         $idShare = $request->idShare;
         $acc = Account::find($idShare);
+
         
     }
 }

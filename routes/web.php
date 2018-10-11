@@ -51,6 +51,6 @@ Route::get('credential','HomeController@credential');
 Route::get('setting','HomeController@setting');
 
 Route::post('accounts/add',['as'=>'add','uses'=>'HomeController@addAccount']);
-Route::post('edit',['as'=>'edit','uses'=>'HomeController@postEdit']);
-Route::get('delete',['as'=>'delete', 'uses'=>'HomeController@deleteAccount']);
+Route::post('accounts/edit',['as'=>'edit','uses'=>'HomeController@postEdit']);
+Route::get('accounts/delete',['as'=>'delete', 'uses'=>'HomeController@deleteAccount']);
 Route::get('share',['as'=>'share','uses'=>'HomeController@shareAccount']);
