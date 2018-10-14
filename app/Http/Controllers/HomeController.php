@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Accounts;
 use App\User;
+use App\Notes;
 use Hash;
 
 
@@ -57,7 +58,7 @@ class HomeController extends Controller
             'success' => true,
             // TODO: lang this message
             'message' => 'Thêm tài khoản thành công.',
-            'view' => view('accounts.index', compact('accounts'))->render()
+            'view' => view('content.content-account', compact('accounts'))->render()
         ]);
     }
 
@@ -75,7 +76,7 @@ class HomeController extends Controller
             'success' => true,
             // TODO: lang this message
             'message' => 'Chỉnh sửa tài khoản thành công.',
-            'view' => view('accounts.index', compact('accounts'))->render()
+            'view' => view('content.content-account', compact('accounts'))->render()
         ]);
     }
 
@@ -88,7 +89,7 @@ class HomeController extends Controller
             'success' => true,
             // TODO: lang this message
             'message' => 'Xóa tài khoản thành công.',
-            'view' => view('accounts.index', compact('accounts'))->render()
+            'view' => view('content.content-account', compact('accounts'))->render()
         ]);
     }
     
@@ -97,6 +98,60 @@ class HomeController extends Controller
         $acc = Account::find($idShare);
         
     }
+   
+    public function securenotes()
+    {
+        $notes = Notes::all();
+        return view('page.securenotes',compact('notes'));
+    }
+    public function addNote( Request $req)
+    {
+        $note = new Notes();
+        $note->name = $req->name;
+        $note->content = $req->note;
+        $note->save();
+
+        $notes = Notes::all();
+        return response()->json([
+            'success' => true,
+            // TODO: lang this message
+            'message' => 'Thêm tài khoản thành công.',
+            'view' => view('content.content-note', compact('notes'))->render()
+        ]);
+    }
+
+    public function editNote( Request $req)
+    {
+        $idEdit = $req->id;
+        $note = Notes::find($idEdit);
+        $note->name = $req->name;
+        $note->content = $req->note;
+        $note->save();
+
+        $notes = Notes::all();
+        return response()->json([
+            'success' => true,
+            // TODO: lang this message
+            'message' => 'Chỉnh sửa tài khoản thành công.',
+            'view' => view('content.content-note', compact('notes'))->render()
+        ]);
+    }
+    public function delNote(Request $req){
+        $idDel = $req->idDelete;
+        $note = Notes::find($idDel);
+        $note->delete();
+
+        $notes = Notes::all();
+        return response()->json([
+            'success' => true,
+            // TODO: lang this message
+            'message' => 'Xóa tài khoản thành công.',
+            'view' => view('content.content-note', compact('notes'))->render()
+        ]);
+    }
+
+
+
 
     // Ngân: Login tự viết
     // public function getLogin() {
@@ -181,10 +236,7 @@ class HomeController extends Controller
     {
         return view('page.credential');
     }
-    public function securenotes()
-    {
-        return view('page.securenotes');
-    }
+    
     public function settings()
     {
         return view('page.settings');

@@ -14,3 +14,10 @@ function share(id)
 {
     $('#idShare').val(id);
 }
+
+function editNote(id, name, note){
+    $('#editNote #id').val(id);
+    $('#editNote #name').val(name);
+    $('#editNote #note').val(note);
+    $('#editNote').show();
+}
