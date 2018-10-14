@@ -20,8 +20,12 @@ class Secrets extends Model
     {
         return $this->belongsTo('App\Users', 'user_id','id');
     }
-    public function Resouces()
+    public function Accounts()
     {
         return $this->belongsTo('App\Accounts', 'account_id','id');
+    }
+    public function Notes()
+    {
+        return $this->belongsTo('App\Notes', 'note_id','id');
     }
 }

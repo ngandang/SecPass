@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class Secret extends Migration
+class Note extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,13 @@ class Secret extends Migration
      */
     public function up()
     {
-        Schema::create('secret', function(Blueprint $table){
+        Schema::create('notes',function($table){
             $table->uuid('id');
             $table->primary('id');
-            $table->uuid('user_id');
-            $table->uuid('account_id');
-            $table->uuid('note_id'); 
-            $table->text('data');
+            $table->string('name');
+            $table->longtext('content');
+            $table->boolean('deleted')->default(false);
             $table->timestamps();
-
         });
     }
 
@@ -32,6 +30,6 @@ class Secret extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('secret');
+        Schema::dropIfExists('notes');
     }
 }
