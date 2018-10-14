@@ -41,7 +41,9 @@
     </div>
 </div>
 <!-- BEGIN: Content -->
-
+<div class="m-content">
+    Lưu trữ các files user upload lên dùng các thư mục
+</div>
 <!-- END: Content -->
 
 @endsection

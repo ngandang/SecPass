@@ -56,6 +56,27 @@ var SnippetLogin = function() {
         });
     }
 
+    var handleTerms = function() {
+        $('#modalTerms').focus(function(e) {
+            e.preventDefault();
+            var form = login.find('.m-login__signup form');
+            form.ajaxSubmit({
+                url: 'legal/terms',
+                type: 'POST',
+                success: function(response, status, xhr, $form) {
+                     $('#terms').html(response.message);
+                },
+                error: function(response, status, xhr, $form) {
+                    // similate 1s delay
+                    setTimeout(function() {
+                        $('#terms').modal('hide');
+                        showMsg(form, 'danger', response.responseJSON.errors.email);
+                    }, 1000);
+                }
+            });
+        });
+    }
+
     var handleFormSwitch = function() {
         $('#m_login_forget_password').click(function(e) {
             e.preventDefault();

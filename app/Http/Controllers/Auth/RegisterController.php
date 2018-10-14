@@ -74,15 +74,15 @@ class RegisterController extends Controller
 
         //send verification mail to user
         //---------------------------------------------------------
-        $data['verification_code']  = $user->verification_code;
+        // $data['verification_code']  = $user->verification_code;
 
-        Mail::send('emails.verify', $data, function($message) use ($data)
-        {
-            //TODO: change this for production
-            $message->from('no-reply@secpass.com', "SecPass");
-            $message->subject("Welcome to SecPass");
-            $message->to($data['email']);
-        });
+        // Mail::send('emails.verify', $data, function($message) use ($data)
+        // {
+        //     //TODO: change this for production
+        //     $message->from('no-reply@secpass.com', "SecPass");
+        //     $message->subject("Welcome to SecPass");
+        //     $message->to($data['email']);
+        // });
 
 
         return $user;

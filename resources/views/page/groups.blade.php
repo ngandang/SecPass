@@ -30,7 +30,9 @@
     </div>
 </div>
 <!-- BEGIN: Content -->
-
+<div class="m-content">
+    Danh sách các nhóm user tham gia và các obj chia sẻ trong nhóm
+</div>
 <!-- END:  -->
 
 @endsection

@@ -6,7 +6,9 @@
         @include('layouts.includes.subheader')
 </div>
 <!-- BEGIN: Content -->
-
+<div class="m-content">
+        Hiện các password yếu, quá hạn, lịch sử hoạt động
+</div>
 <!-- END: Content -->
 
 @endsection
