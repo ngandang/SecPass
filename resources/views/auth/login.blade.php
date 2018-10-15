@@ -102,7 +102,7 @@
 										<label class="m-checkbox m-checkbox--light">
 										<!-- TODO: Chỉ tới trang Các thoả thuận và điều khoản -->
 											<input type="checkbox" name="agree">
-											Tôi đồng ý với <a href="#modalTerms" class="m-link m-link--focus">các thoả thuận và điều khoản</a>.
+											Tôi đồng ý với <a id="getTerms" href="#" class="m-link m-link--focus">các thoả thuận và điều khoản</a>.
 											<span></span>
 										</label>
 										<span class="m-form__help"></span>
@@ -157,7 +157,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="modal fade" id="modalTerms" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+		<div class="modal fade" id="modalTerms" aria-hidden="true">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -166,7 +166,9 @@
 						<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
-					<div id="terms" class="modal-body"></div>
+					<div class="modal-body">
+						<div id="terms" class="m-scrollable" data-scrollbar-shown="true" data-scrollable="true" data-max-height="350">
+						</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary pull-left" data-dismiss="modal">Đóng</button>
 					</div>

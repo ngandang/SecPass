@@ -106,4 +106,5 @@ class RegisterController extends Controller
             'message', $notification_status
         );
     }
+
 }

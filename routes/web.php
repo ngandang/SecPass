@@ -18,7 +18,9 @@ Route::get('/', function () {
 
 Auth::routes();
 Route::get('register/verify/{code}', 'Auth\RegisterController@verify');
-Route::post('legal/terms',"LoginController@terms");
+Route::post('legal/terms',function () {
+    return view('page.terms');
+});
 
 Route::get('accounts','HomeController@accounts');
 // Route::group(['prefix' => 'account'], function(){

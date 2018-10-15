@@ -9,7 +9,6 @@ var SnippetLogin = function() {
 			<span></span>\
 		</div>');
 
-        form.find('.alert').remove();
         alert.prependTo(form);
         alert.animateClass('fadeIn animated');
         alert.find('span').html(msg);
@@ -17,7 +16,7 @@ var SnippetLogin = function() {
             form.find('.alert').fadeOut('1000').then(function (){
                 form.find('.alert').remove();
             });
-         }, 2000);
+         }, 5000);
     }
 
     //== Private Functions
@@ -62,20 +61,26 @@ var SnippetLogin = function() {
     }
 
     var handleTerms = function() {
-        $('#modalTerms').focus(function(e) {
+        $('#getTerms').click(function(e) {
             e.preventDefault();
             var form = login.find('.m-login__signup form');
             form.ajaxSubmit({
                 url: 'legal/terms',
                 type: 'POST',
                 success: function(response, status, xhr, $form) {
-                     $('#terms').html(response.message);
+                    console.log(response);
+                    $('#terms').html(response);
+                    $('#modalTerms').modal();
                 },
                 error: function(response, status, xhr, $form) {
                     // similate 1s delay
                     setTimeout(function() {
-                        $('#terms').modal('hide');
-                        showMsg(form, 'danger', response.responseJSON.errors.email);
+                        $('#modalTerms').modal('hide');
+                        $.each(response.responseJSON.errors, function(any, errors){
+                            $.each(errors, function(idx) {
+                                showMsg(form, 'danger', errors[idx]);
+                            });
+                        });
                     }, 1000);
                 }
             });
@@ -148,7 +153,11 @@ var SnippetLogin = function() {
                     // similate 1s delay
                     setTimeout(function() {
 	                    btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false);
-                        showMsg(form, 'danger', response.responseJSON.errors.email);
+                        $.each(response.responseJSON.errors, function(any, errors){
+                            $.each(errors, function(idx) {
+                                showMsg(form, 'danger', errors[idx]);
+                            });
+                        });
                     }, 1000);
                 }
             });
@@ -216,8 +225,7 @@ var SnippetLogin = function() {
 	                    btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false);
 	                    form.clearForm();
                         form.validate().resetForm();
-                        console.log(response);
-
+                        
 	                    // display signin form
 	                    displaySignInForm();
 	                    var signInForm = login.find('.m-login__signin form');
@@ -232,7 +240,11 @@ var SnippetLogin = function() {
                     setTimeout(function() {
                         console.log(response);
 	                    btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false);
-                        showMsg(form, 'danger', response.responseJSON.errors);
+                        $.each(response.responseJSON.errors, function(any, errors){
+                            $.each(errors, function(idx) {
+                                showMsg(form, 'danger', errors[idx]);
+                            });
+                        });
                     }, 1000);
                 }
             });
@@ -283,7 +295,14 @@ var SnippetLogin = function() {
 	                    signInForm.validate().resetForm();
 
 	                    showMsg(signInForm, 'success', 'Email đã được gửi. Vui lòng kiểm tra hộp thư của bạn.');
-                	}, 2000);
+                    }, 2000);
+                },
+                error: function(response, status, xhr, $form) {
+                        $.each(response.responseJSON.errors, function(any, errors){
+                            $.each(errors, function(idx) {
+                                showMsg(form, 'danger', errors[idx]);
+                            });
+                        });
                 }
             });
         });
@@ -296,6 +315,7 @@ var SnippetLogin = function() {
             handleFormSwitch();
             handleSignInFormSubmit();
             handleRememberMe();
+            handleTerms();
             handleSignUpFormSubmit();
             handleForgetPasswordFormSubmit();
         }
