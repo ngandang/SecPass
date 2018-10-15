@@ -7,7 +7,9 @@ var SnippetLogin = function() {
         var alert = $('<div class="m-alert m-alert--outline alert alert-' + type + ' alert-dismissible" role="alert">\
 			<button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>\
 			<span></span>\
-		</div>');
+        </div>');
+        // Upper first letter.
+        msg = msg.replace(/^\w/, c => c.toUpperCase());
 
         alert.prependTo(form);
         alert.animateClass('fadeIn animated');
@@ -16,7 +18,7 @@ var SnippetLogin = function() {
             form.find('.alert').fadeOut('1000').then(function (){
                 form.find('.alert').remove();
             });
-         }, 5000);
+        }, 3000);
     }
 
     //== Private Functions
@@ -225,14 +227,14 @@ var SnippetLogin = function() {
 	                    btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false);
 	                    form.clearForm();
                         form.validate().resetForm();
-                        
+
 	                    // display signin form
 	                    displaySignInForm();
 	                    var signInForm = login.find('.m-login__signin form');
 	                    signInForm.clearForm();
 	                    signInForm.validate().resetForm();
 
-	                    showMsg(signInForm, 'success', 'Thank you. To complete your registration please check your email.');
+	                    showMsg(signInForm, 'success', response.message);
                     }, 1000);
                 },
                 error: function(response, status, xhr, $form) {
@@ -294,7 +296,7 @@ var SnippetLogin = function() {
 	                    signInForm.clearForm();
 	                    signInForm.validate().resetForm();
 
-	                    showMsg(signInForm, 'success', 'Email đã được gửi. Vui lòng kiểm tra hộp thư của bạn.');
+	                    showMsg(signInForm, 'success', response.message);
                     }, 2000);
                 },
                 error: function(response, status, xhr, $form) {

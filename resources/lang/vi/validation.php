@@ -109,7 +109,7 @@ return [
     ],
     'string'               => '[vi] The :attribute must be a string.',
     'timezone'             => '[vi] The :attribute must be a valid zone.',
-    'unique'               => '[vi] The :attribute has already been taken.',
+    'unique'               => ':attribute đã được đăng ký, vui lòng nhập :attribute khác.',
     'uploaded'             => '[vi] The :attribute failed to upload.',
     'url'                  => '[vi] The :attribute format is invalid.',
 

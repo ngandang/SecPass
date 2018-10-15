@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
 
 class RegisterController extends Controller
 {
@@ -88,6 +89,27 @@ class RegisterController extends Controller
         return $user;
     }
 
+    /**
+     * Handle a registration request for the application.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function register(Request $request)
+    {
+        $validator = $this->validator($request->all());
+        if ($validator->fails())
+        {
+           $this->throwValidationException(
+               $request, $validator
+           );
+        }
+
+        $this->create($request->all());
+
+        return response()->json(['success' => true, 'message' => 'Đăng ký thành công. Vui lòng kiểm tra hộp thư của bạn.']);
+    }
+
     public function verify($code)
     {
         $user = Users::where('verification_code', $code);
@@ -102,9 +124,7 @@ class RegisterController extends Controller
             $notification_status ='Mã xác nhận không chính xác hoặc đã quá hạn.';
         }
 
-        return redirect(route('login'))->with('status', 'success')->with(
-            'message', $notification_status
-        );
+        return response()->json(['success' => true, 'message' => $notification_status]);
     }
 
 }
