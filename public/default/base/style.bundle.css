@@ -15836,12 +15836,12 @@ code {
       filter: alpha(opacity=30) ; }
 
 .m-card-user.m-card-user--skin-dark .m-card-user__details .m-card-user__name {
-  color: #d9dae3; }
+  color: #ffffff; }
 
 .m-card-user.m-card-user--skin-dark .m-card-user__details .m-card-user__email {
-  color: #8284a1; }
+  color: #00e5ff; }
   .m-card-user.m-card-user--skin-dark .m-card-user__details .m-card-user__email:hover {
-    color: #9093ac; }
+    color: #0ec3ef; }
     .m-card-user.m-card-user--skin-dark .m-card-user__details .m-card-user__email:hover:after {
       border-bottom: 1px solid #9093ac;
       opacity: 0.3 ;

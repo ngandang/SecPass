@@ -1,5 +1,4 @@
 @extends('layouts.master')
-@include('errors.note')
 
 @section('content')
 
@@ -30,7 +29,9 @@
     </div>
 </div>
 <!-- BEGIN: Content -->
-
+<div class="m-content">
+    Danh sách các nhóm user tham gia và các obj chia sẻ trong nhóm
+</div>
 <!-- END:  -->
 
 @endsection

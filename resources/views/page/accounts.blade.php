@@ -1,5 +1,4 @@
 @extends('layouts.master')
-@include('errors.note')
 
 @section('content')
 <div class="m-subheader">
@@ -41,7 +40,7 @@
 </div>
 <!-- BEGIN: Datatable -->
 <div class = "m-content"> 
-    @include('accounts.index')
+    @include('content.content-account')
 </div>
 <!-- END: Datatable -->
 
@@ -171,7 +170,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary pull-left" data-dismiss="modal">Huỷ</button>
                     <button type="submit" id="delSubmit" class="btn btn-primary" >Xóa</button>
-                </div>
+                </div> 
             </div>
         </div>
     </div>
