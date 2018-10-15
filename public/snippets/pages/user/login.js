@@ -170,7 +170,7 @@ var SnippetLogin = function() {
                         required: "Trường nhập bắt buộc."
                     },
                     agree: {
-                        required: "Bạn cần đọc kỹ và đồng ý Các chính sách và điều khoản để có thể sử dụng dịch vụ."
+                        required: "Bạn cần đọc kỹ và chọn đồng ý Các thoả thuận và điều khoản để có thể sử dụng dịch vụ."
                     }
                 }
             });

@@ -17,6 +17,7 @@ Route::get('/', function () {
 
 
 Auth::routes();
+Route::get('register/verify/{code}', 'Auth\RegisterController@verify');
 
 Route::get('accounts','HomeController@accounts');
 // Route::group(['prefix' => 'account'], function(){

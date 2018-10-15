@@ -63,7 +63,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $user = User::create([
+        $user = Users::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
@@ -86,7 +86,24 @@ class RegisterController extends Controller
 
 
         return $user;
+    }
 
+    public function verify($code)
+    {
+        $user = Users::where('verification_code', $code);
 
+        if ($user->count() > 0) {
+            $user->update([
+                'active' => true,
+                'verification_code' => null
+            ]);
+            $notification_status = 'Xác nhận tài khoản thành công.';
+        } else {
+            $notification_status ='Mã xác nhận không chính xác hoặc đã quá hạn.';
+        }
+
+        return redirect(route('login'))->with('status', 'success')->with(
+            'message', $notification_status
+        );
     }
 }

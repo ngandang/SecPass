@@ -44,6 +44,11 @@
     @include('accounts.index')
 </div>
 <!-- END: Datatable -->
+
+@endsection
+
+@section('pageSnippets')
+<!-- BEGIN: Page Scripts -->
 <!-- BEGIN: Add form -->
 <form id="add-form" class="form-horizontal" action="" enctype="multipart/form-data" method="post">
     {{ csrf_field() }}
@@ -202,14 +207,8 @@
 </form>
 <!-- END: Share form -->
 
-@endsection
-
-@section('pageSnippets')
-<!-- BEGIN: Page Scripts -->
-
 <script> 
     $(document).ready(function(){
-
         $('#addSubmit').click(function(e){
             e.preventDefault();
             var btn = $(this);
@@ -220,27 +219,21 @@
                 type: 'POST',
                 data: form.serialize(),
                 success: function(response, status, xhr, $form) {
-                    $('#addForm').modal('hide');
-                    $('#alert').modal();
-                    $('.alert').addClass('alert-success');
-                    $('.m-alert__text').html(response.message);
+                    swal({
+                        position: 'center',
+                        type: 'success',
+                        title: response.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(function(result){$('#addForm').modal('hide');});
                     $('.m-content').html(response.view);
-                    console.log(response);
                     form.clearForm();
 	                form.validate().resetForm();
                 },
                 error: function(response, status, xhr, $form) {
-                    $('#alert').modal();
-                    $('.alert').addClass('alert-danger');
-                    $('.m-alert__text').html(response.serialize());
-                    console.log(response);
+                    swal("", response.serialize(), "error");
                 }
             });
-            
-
-            window.setTimeout(function() {
-                $('#alert').modal('hide');
-            }, 2000);
         });
         $('#editSubmit').click(function(e){
             e.preventDefault();
@@ -248,31 +241,20 @@
             var form = $(this).closest('form');
             
             form.ajaxSubmit({
-                url: 'account/add',
+                url: 'account/edit',
                 type: 'POST',
                 data: form.serialize(),
                 success: function(response, status, xhr, $form) {
+                    swal("", response.message, "success");
                     $('#editForm').modal('hide');
-                    $('#alert').modal();
-                    $('.alert').addClass('alert-success');
-                    $('.m-alert__text').html(response.message);
                     $('.m-content').html(response.view);
-                    console.log(response);
                     form.clearForm();
 	                form.validate().resetForm();
                 },
                 error: function(response, status, xhr, $form) {
-                    $('#alert').modal();
-                    $('.alert').addClass('alert-danger');
-                    $('.m-alert__text').html(response.serialize());
-                    console.log(response);
+                    swal("", response.serialize(), "error");
                 }
             });
-            
-
-            window.setTimeout(function() {
-                $('#alert').modal('hide');
-            }, 2000);
         });
         $('#delSubmit').click(function(e){
             e.preventDefault();
@@ -284,30 +266,18 @@
                 type: 'POST',
                 data: form.serialize(),
                 success: function(response, status, xhr, $form) {
+                    swal("", response.message, "success");
                     $('#deleteForm').modal('hide');
-                    $('#alert').modal();
-                    $('.alert').addClass('alert-success');
-                    $('.m-alert__text').html(response.message);
                     $('.m-content').html(response.view);
-                    console.log(response);
                     form.clearForm();
 	                form.validate().resetForm();
                 },
                 error: function(response, status, xhr, $form) {
-                    $('#alert').modal();
-                    $('.alert').addClass('alert-danger');
-                    // $('.m-alert__text').html(response.serialize());
-                    console.log(response);
+                    swal("", response.serialize(), "error");
                 }
                 
             });
-            
-
-            window.setTimeout(function() {
-                $('#alert').modal('hide');
-            }, 2000);
         });
-
     });
 </script>
 

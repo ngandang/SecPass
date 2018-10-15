@@ -164,6 +164,11 @@
 		<!--end::Base Scripts -->   
         <!--begin::Page Snippets -->
 		<script src="{{ asset('snippets/pages/user/login.js') }}" type="text/javascript"></script>
+		
+		@if(!empty($message))
+		<script> ShowMsg($('#m_login'),'{{ $status }}','{{ $message }}'); </script>
+		@endif
+
 		<!--end::Page Snippets -->
 	</body>
 	<!-- end::Body -->
