@@ -17,12 +17,8 @@ Route::get('/', function () {
 
 
 Auth::routes();
-<<<<<<< HEAD
 Route::get('register/verify/{code}', 'Auth\RegisterController@verify');
-=======
-Route::get('register/verify/{code}','LoginController@verify');
 Route::post('legal/terms',"LoginController@terms");
->>>>>>> f6192ca196ff0b84b491fc416f678fb7808488fd
 
 Route::get('accounts','HomeController@accounts');
 // Route::group(['prefix' => 'account'], function(){

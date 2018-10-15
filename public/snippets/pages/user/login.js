@@ -13,6 +13,11 @@ var SnippetLogin = function() {
         alert.prependTo(form);
         alert.animateClass('fadeIn animated');
         alert.find('span').html(msg);
+        setTimeout(function () { 
+            form.find('.alert').fadeOut('1000').then(function (){
+                form.find('.alert').remove();
+            });
+         }, 2000);
     }
 
     //== Private Functions
