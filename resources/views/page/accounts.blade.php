@@ -1,5 +1,4 @@
 @extends('layouts.master')
-@include('errors.note')
 
 @section('content')
 <div class="m-subheader">
