@@ -16,7 +16,7 @@ class Notes extends Migration
         Schema::create('notes',function($table){
             $table->uuid('id');
             $table->primary('id');
-            $table->string('name');
+            $table->string('title');
             $table->longtext('content');
             $table->boolean('deleted')->default(false);
             $table->timestamps();

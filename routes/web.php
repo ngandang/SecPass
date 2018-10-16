@@ -23,52 +23,42 @@ Route::post('legal/terms',function () {
 });
 
 Route::get('accounts','HomeController@accounts');
-// Route::group(['prefix' => 'account'], function(){
-//     Route::post('add','HomeController@addAccount');
-//     Route::post('edit','HomeController@editAccount');
-//     Route::post('delete','HomeController@deleteAccount');
-//     Route::post('share','HomeController@shareAccount');
-// });
-Route::post('account/add',['as'=>'add','uses'=>'HomeController@addAccount']);
-Route::post('account/edit',['as'=>'edit','uses'=>'HomeController@postEdit']);
-Route::post('account/delete',['as'=>'delete', 'uses'=>'HomeController@deleteAccount']);
-Route::post('account/share',['as'=>'share','uses'=>'HomeController@shareAccount']);
+Route::group(['prefix' => 'account', 'as' => 'account'], function(){
+    Route::post('add','HomeController@addAccount');
+    Route::post('edit','HomeController@editAccount');
+    Route::post('delete','HomeController@deleteAccount');
+    Route::post('share','HomeController@shareAccount');
+});
 
-Route::group(['prefix'=>'securenotes','as'=>'securenotes'], function(){
+Route::get('securenotes','HomeController@notes');
+Route::group(['prefix'=>'securenote','as'=>'securenote'], function(){
     Route::post('add','HomeController@addNote');
     Route::post('edit','HomeController@editNote');
     Route::post('delete','HomeController@delNote');
 });
-// Route::post('securenotes/add',['as'=>'add','uses'=>'HomeController@addNote']);
-// Route::post('securenotes/add',['as'=>'add','uses'=>'HomeController@addNote']);
 
 Route::get('credential','HomeController@credential');
 Route::get('dashboard','HomeController@dashboard');
 Route::get('drive','HomeController@drive');
 Route::get('groups','HomeController@groups');
 Route::get('sharewith','HomeController@sharewith');
-Route::get('securenotes','HomeController@securenotes');
 Route::get('setting','HomeController@setting');
 
-Route::get('roles', function () {
+Route::get('init_roles', function () {
     return App\Users::create(
         [
-        // 'id' => Uuid::generate(),
         'name' => 'root',
         'description' => 'Super User for who the BOSS here.',
         ],
         [
-            // 'id' => Uuid::generate(),
             'name' => 'admin',
             'description' => 'Admin of ',
         ],
         [
-            // 'id' => Uuid::generate(),
             'name' => 'user',
             'description' => 'Normal user',
         ],
         [
-            // 'id' => Uuid::generate(),
             'name' => 'Jane',
             'description' => 'john@jane.com',
         ]

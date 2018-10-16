@@ -53,12 +53,13 @@ class HomeController extends Controller
         // $secret->user_id()->save($user);
         // $secret->account_id()->save($account);
         // $secret->data = bcrypt($request->password);
+        
         $accounts = Accounts::all();
         return response()->json([
             'success' => true,
             // TODO: lang this message
             'message' => 'Thêm tài khoản thành công.',
-            'view' => view('content.content-account', compact('accounts'))->render()
+            'view' => view('content.content-accounts', compact('accounts'))->render()
         ]);
     }
 
@@ -68,6 +69,7 @@ class HomeController extends Controller
         $acc->name = $request->name;
         $acc->username = $request->username;
         $acc->uri = $request->url;
+        $acc->password = $request->password;
         $acc->description = $request->description;
         $acc->save();
         
@@ -76,7 +78,7 @@ class HomeController extends Controller
             'success' => true,
             // TODO: lang this message
             'message' => 'Chỉnh sửa tài khoản thành công.',
-            'view' => view('content.content-account', compact('accounts'))->render()
+            'view' => view('content.content-accounts', compact('accounts'))->render()
         ]);
     }
 
@@ -84,30 +86,32 @@ class HomeController extends Controller
         $idDelete = $request->idDelete;
         $acc = Accounts::find($idDelete);
         $acc->delete();
+
         $accounts = Accounts::all();
         return response()->json([
             'success' => true,
             // TODO: lang this message
             'message' => 'Xóa tài khoản thành công.',
-            'view' => view('content.content-account', compact('accounts'))->render()
+            'view' => view('content.content-accounts', compact('accounts'))->render()
         ]);
     }
     
     public function shareAccount(Request $request){
         $idShare = $request->idShare;
         $acc = Account::find($idShare);
-        
+        //TODO: share account
     }
    
-    public function securenotes()
+    public function notes()
     {
         $notes = Notes::all();
-        return view('page.securenotes',compact('notes'));
+        return view('page.notes',compact('notes'));
     }
+
     public function addNote( Request $req)
     {
         $note = new Notes();
-        $note->name = $req->name;
+        $note->title = $req->title;
         $note->content = $req->note;
         $note->save();
 
@@ -115,8 +119,8 @@ class HomeController extends Controller
         return response()->json([
             'success' => true,
             // TODO: lang this message
-            'message' => 'Thêm tài khoản thành công.',
-            'view' => view('content.content-note', compact('notes'))->render()
+            'message' => 'Thêm ghi chú bảo mật thành công.',
+            'view' => view('content.content-notes', compact('notes'))->render()
         ]);
     }
 
@@ -124,7 +128,7 @@ class HomeController extends Controller
     {
         $idEdit = $req->id;
         $note = Notes::find($idEdit);
-        $note->name = $req->name;
+        $note->title = $req->title;
         $note->content = $req->note;
         $note->save();
 
@@ -132,12 +136,12 @@ class HomeController extends Controller
         return response()->json([
             'success' => true,
             // TODO: lang this message
-            'message' => 'Chỉnh sửa tài khoản thành công.',
-            'view' => view('content.content-note', compact('notes'))->render()
+            'message' => 'Chỉnh sửa ghi chú bảo mật thành công.',
+            'view' => view('content.content-notes', compact('notes'))->render()
         ]);
     }
     public function delNote(Request $req){
-        $idDel = $req->idDelete;
+        $idDel = $req->id;
         $note = Notes::find($idDel);
         $note->delete();
 
@@ -145,12 +149,16 @@ class HomeController extends Controller
         return response()->json([
             'success' => true,
             // TODO: lang this message
-            'message' => 'Xóa tài khoản thành công.',
-            'view' => view('content.content-note', compact('notes'))->render()
+            'message' => 'Xóa ghi chú bảo mật thành công.',
+            'view' => view('content.content-notes', compact('notes'))->render()
         ]);
     }
 
-
+    public function shareNote(Request $request){
+        $idShare = $request->idShare;
+        $acc = Account::find($idShare);
+        //TODO: share note
+    }
 
 
     // Ngân: Login tự viết

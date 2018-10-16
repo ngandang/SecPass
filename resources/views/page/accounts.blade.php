@@ -39,8 +39,8 @@
     </div>
 </div>
 <!-- BEGIN: Datatable -->
-<div class = "m-content"> 
-    @include('content.content-account')
+<div class = "m-content">
+    @include('content.content-accounts')
 </div>
 <!-- END: Datatable -->
 
@@ -57,12 +57,10 @@
                 <div class="modal-header">
                     <h5 class="text-center modal-title" id="addFormTitle">Thêm tài khoản</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                        <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="alert alert-danger" style="display:none;"></div>
-
                     <div id="addform-row" class="row justify-content-center align-items-center">
                         <div id="addform-box" class="col-md-12">
                             <div class="form-group">
@@ -107,36 +105,36 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="text-center modal-title" id="addFormTitle">Chỉnh sửa tài khoản</h5>
+                    <h5 class="text-center modal-title" id="editFormTitle">Chỉnh sửa tài khoản</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                        <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div id="addform-row" class="row justify-content-center align-items-center">
-                        <div id="addform-box" class="col-md-12">
+                    <div id="editform-row" class="row justify-content-center align-items-center">
+                        <div id="editform-box" class="col-md-12">
+                            <input type="hidden" name="id">
                             <div class="form-group">
                                 <label for="name" class="text-info">Tên trang</label>
-                                <input type="text" name="name" id="name" class="form-control">
-                                <input type="hidden" name="id" id="id" >
+                                <input type="text" name="name" class="form-control">
                             </div>
                             <div class="form-group">
                                 <label for="url" class="text-info">URL</label>
-                                <input type="text" name="url" id="url" class="form-control">
+                                <input type="text" name="url" class="form-control">
                             </div>
                             <div class="form-group row">
                                 <div class="col-md-6">
                                     <label for="username" class="text-info">Tên đăng nhập</label>
-                                    <input type="text" name="username" id="username" class="form-control">
+                                    <input type="text" name="username" class="form-control">
                                 </div>
                                 <div class="col-md-6">
                                     <label for="password" class="text-info">Mật khẩu</label>
-                                    <input type="password" name="password" id="password" value="nothinghere" class="form-control">
+                                    <input type="password" name="password" value="nothinghere" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="description" class="text-info">Mô tả</label>
-                                <textarea type="text" name="description" id="description" class="form-control"></textarea>
+                                <textarea type="text" name="description" class="form-control"></textarea>
                             </div>
                         </div>  
                     </div>
@@ -161,7 +159,7 @@
                 <div class="modal-header">
                     <h5 class="text-center modal-title" id="addFormTitle">Xóa tài khoản</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                        <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
@@ -187,18 +185,18 @@
                 <div class="modal-header">
                     <h5 class="text-center modal-title" id="addFormTitle">Chia sẻ tài khoản</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                        <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="user" class="text-info">Chia sẻ với người dùng hoặc nhóm</label><br>
-                        <input type="text" name="email" id="email" placeholder="Nhập tên hoặc email" class="form-control">
+                        <input type="text" name="email" placeholder="Nhập tên hoặc email" class="form-control">
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary pull-left" data-dismiss="modal">Huỷ</button>
-                    <button type="submit" class="btn btn-primary" >Chia sẻ</button>
+                    <button type="submit" id="shareSubmit" class="btn btn-primary" >Chia sẻ</button>
                 </div>
             </div>
         </div>
@@ -207,7 +205,27 @@
 <!-- END: Share form -->
 
 <script> 
+
+    function edit(id, name, username, url, description){
+        $('#editForm input[name=id]').val(id);
+        $('#editForm input[name=name]').val(name);
+        $('#editForm input[name=username]').val(username);
+        $('#editForm input[name=url]').val(url);
+        // $('#editForm input[name=password]').val(password);
+        $('#editForm input[name=description]').val(description);
+    }
+    
+    function del(id){
+        $('#deleteForm input[name=id]').val(id);
+    }
+    
+    function share(id)
+    {
+        $('#shareForm input[name=id]').val(id);
+    }
+
     $(document).ready(function(){
+
         $('#addSubmit').click(function(e){
             e.preventDefault();
             var btn = $(this);
@@ -216,7 +234,6 @@
             form.ajaxSubmit({
                 url: 'account/add',
                 type: 'POST',
-                data: form.serialize(),
                 success: function(response, status, xhr, $form) {
                     swal({
                         position: 'center',
@@ -225,6 +242,7 @@
                         showConfirmButton: false,
                         timer: 1500
                     }).then(function(result){$('#addForm').modal('hide');});
+
                     $('.m-content').html(response.view);
                     form.clearForm();
 	                form.validate().resetForm();
@@ -234,6 +252,7 @@
                 }
             });
         });
+
         $('#editSubmit').click(function(e){
             e.preventDefault();
             var btn = $(this);
@@ -242,10 +261,15 @@
             form.ajaxSubmit({
                 url: 'account/edit',
                 type: 'POST',
-                data: form.serialize(),
                 success: function(response, status, xhr, $form) {
-                    swal("", response.message, "success");
-                    $('#editForm').modal('hide');
+                    swal({
+                        position: 'center',
+                        type: 'success',
+                        title: response.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(function(result){$('#editForm').modal('hide');});
+
                     $('.m-content').html(response.view);
                     form.clearForm();
 	                form.validate().resetForm();
@@ -255,6 +279,7 @@
                 }
             });
         });
+
         $('#delSubmit').click(function(e){
             e.preventDefault();
             var btn = $(this);
@@ -263,10 +288,15 @@
             form.ajaxSubmit({
                 url: 'account/delete',
                 type: 'POST',
-                data: form.serialize(),
                 success: function(response, status, xhr, $form) {
-                    swal("", response.message, "success");
-                    $('#deleteForm').modal('hide');
+                    swal({
+                        position: 'center',
+                        type: 'success',
+                        title: response.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(function(result){$('#deleteForm').modal('hide');});
+
                     $('.m-content').html(response.view);
                     form.clearForm();
 	                form.validate().resetForm();
@@ -274,7 +304,6 @@
                 error: function(response, status, xhr, $form) {
                     swal("", response.serialize(), "error");
                 }
-                
             });
         });
     });

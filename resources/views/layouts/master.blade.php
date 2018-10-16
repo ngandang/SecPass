@@ -16,7 +16,6 @@
 				<!-- END: Left Aside -->
 				<div class="m-grid__item m-grid__item--fluid m-wrapper">
 					<!-- BEGIN: Child page -->
-					@include('layouts.includes.alert')
 					@yield('content')
 					<!-- END: Child page -->
 				</div>

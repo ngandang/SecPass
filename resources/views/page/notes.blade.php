@@ -26,8 +26,8 @@
                 </li>
             </ul>
         </div>
-        <div class="btn-add-account">
-            <a class="btn btn-accent m-btn m-btn--custom m-btn--icon m-btn--pill m-btn--air" href="#addNote" data-toggle="modal">
+        <div class="btn-add-note">
+            <a class="btn btn-accent m-btn m-btn--custom m-btn--icon m-btn--pill m-btn--air" href="#addForm" data-toggle="modal">
                 <span>
                     <i class="la la-plus"></i>
                     <span>
@@ -36,70 +36,73 @@
                 </span>
             </a>
         </div>
-        <form id="add-form" class="form-horizontal" action="" enctype="multipart/form-data" method="post">
-            <div class="modal fade" id="addNote" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-                {{ csrf_field() }}
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="text-center modal-title" id="addFormTitle">Ghi chú bảo mật mới</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div id="addform-row" class="row justify-content-center align-items-center">
-                                <div id="addform-box" class="col-md-12">
-                                    <form id="add-form" class="form" action="" method="post">                                        
-                                        <div class="form-group">
-                                            <label for="username" class="text-info">Tên ghi chú:</label><br>
-                                            <input type="text" name="name" class="form-control">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="note" class="text-info">Nội dung:</label><br>
-                                            <input type="text" name="note" id="note" class="form-control">
-                                        </div>
-                                    </form>
-                                </div>  
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary pull-left" data-dismiss="modal">Huỷ</button>
-                            <button type="submit" id="addSubmit" class="btn btn-primary pull-right">Lưu</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </form>
     </div>
 </div>
  
 <!-- BEGIN: Content -->
-<div class="m-content note">
-    @include('content.content-note')
+<div class="m-content">
+    @include('content.content-notes')
 </div>
 <!-- END: Content -->
 
-<!--BEGIN: Edit Form -->
+<!-- BEGIN: Add Form -->
+<form id="add-form" class="form-horizontal" action="" enctype="multipart/form-data" method="post">
+    <div class="modal fade" id="addForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        {{ csrf_field() }}
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="text-center modal-title" id="addFormTitle">Ghi chú bảo mật mới</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="addform-row" class="row justify-content-center align-items-center">
+                        <div id="addform-box" class="col-md-12">
+                            <form id="add-form" class="form" action="" method="post">                                        
+                                <div class="form-group">
+                                    <label for="tilte" class="text-info">Tiêu đề:</label><br>
+                                    <input type="text" name="title" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="note" class="text-info">Nội dung:</label><br>
+                                    <textarea type="text" name="note" class="form-control"></textarea>
+                                </div>
+                            </form>
+                        </div>  
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary pull-left" data-dismiss="modal">Huỷ</button>
+                    <button type="submit" id="addSubmit" class="btn btn-primary pull-right">Lưu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<!-- END: Add Form -->
+
+<!-- BEGIN: Edit Form -->
         <form id="edit-form" class="form-horizontal" action="" enctype="multipart/form-data" method="post">
-            <div class="modal fade" id="editNote" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+            <div class="modal fade" id="editForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
                 {{ csrf_field() }}
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="text-center modal-title" id="addFormTitle">Ghi chú bảo mật mới</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
+                                <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body">
                             <div id="addform-row" class="row justify-content-center align-items-center">
                                 <div id="addform-box" class="col-md-12">
-                                    <form id="add-form" class="form" action="" method="post">                                        
+                                    <form id="add-form" class="form" action="" method="post">
+                                        <input type="hidden" name="id" id="idEdit">                                     
                                         <div class="form-group">
-                                            <label for="username" class="text-info">Tên ghi chú:</label><br>
-                                            <input type="text" name="name" id="name" class="form-control">
-                                            <input type="hidden" name="id" id="id">
+                                            <label for="title" class="text-info">Tiêu đề:</label><br>
+                                            <input type="text" name="title" class="form-control">
                                         </div>
                                         <div class="form-group">
                                             <label for="note" class="text-info">Nội dung:</label><br>
@@ -117,19 +120,19 @@
                 </div>
             </div>
         </form>
-<!--END: Eidt Form -->
+<!-- END: Edit Form -->
 
-<!--BEGIN: Delete Form -->
+<!-- BEGIN: Delete Form -->
 <form id="delete-form" class="form-horizontal" action="" enctype="multipart/form-data" method="POST">
     {{ csrf_field() }}
-    <div class="modal fade" id="deleteNote" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal fade" id="deleteForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <input type="hidden" name="idDelete" id="idDelete">
+                <input type="hidden" name="id" id="idDelete">
                 <div class="modal-header">
                     <h5 class="text-center modal-title" id="addFormTitle">Xóa tài khoản</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                        <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
@@ -143,13 +146,30 @@
         </div>
     </div>
 </form>
-<!--END: Delete Form -->
+<!-- END: Delete Form -->
 @endsection
 
 @section('pageSnippets')
 <!-- BEGIN: Page Scripts -->
 
-<script> 
+<script>
+
+
+    function edit(id, title, note){
+        $('#editForm input[name=id]').val(id);
+        $('#editForm input[name=title]').val(title);
+        $('#editForm input[name=note]').val(note);
+    }
+    
+    function del(id){
+        $('#deleteForm input[name=id]').val(id);
+    }
+    
+    function share(id)
+    {
+        $('#shareForm input[name=id]').val(id);
+    }
+
     $(document).ready(function(){
 
         $('#addSubmit').click(function(e){
@@ -158,31 +178,25 @@
             var form = $(this).closest('form');
             
             form.ajaxSubmit({
-                url: 'securenotes/add',
+                url: 'securenote/add',
                 type: 'POST',
-                data: form.serialize(),
                 success: function(response, status, xhr, $form) {
-                    $('#addNote').modal('hide');
-                    $('#alert').modal();
-                    $('.alert').addClass('alert-success');
-                    $('.m-alert__text').html(response.message);
+                    swal({
+                        position: 'center',
+                        type: 'success',
+                        title: response.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(function(result){$('#addForm').modal('hide');});
+
                     $('.m-content').html(response.view);
-                    console.log(response);
                     form.clearForm();
 	                form.validate().resetForm();
                 },
                 error: function(response, status, xhr, $form) {
-                    $('#alert').modal();
-                    $('.alert').addClass('alert-danger');
-                    // $('.m-alert__text').html(response.serialize());
-                    console.log(response);
+                    swal("", response.serialize(), "error");
                 }
             });
-            
-
-            window.setTimeout(function() {
-                $('#alert').modal('hide');
-            }, 2000);
         });
 
         $('#editSubmit').click(function(e){
@@ -191,66 +205,53 @@
             var form = $(this).closest('form');
             
             form.ajaxSubmit({
-                url: 'securenotes/edit',
+                url: 'securenote/edit',
                 type: 'POST',
-                data: form.serialize(),
                 success: function(response, status, xhr, $form) {
-                    $('#editNote').modal('hide');
-                    $('#alert').modal();
-                    $('.alert').addClass('alert-success');
-                    $('.m-alert__text').html(response.message);
+                    swal({
+                        position: 'center',
+                        type: 'success',
+                        title: response.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(function(result){$('#editForm').modal('hide');});
+
                     $('.m-content').html(response.view);
-                    console.log(response);
                     form.clearForm();
 	                form.validate().resetForm();
                 },
                 error: function(response, status, xhr, $form) {
-                    $('#alert').modal();
-                    $('.alert').addClass('alert-danger');
-                    $('.m-alert__text').html(response.serialize());
-                    console.log(response);
+                    swal("", response.serialize(), "error");
                 }
             });
-            
-
-            window.setTimeout(function() {
-                $('#alert').modal('hide');
-            }, 2000);
         });
+
         $('#delSubmit').click(function(e){
             e.preventDefault();
             var btn = $(this);
             var form = $(this).closest('form');
             
             form.ajaxSubmit({
-                url: 'securenotes/delete',
+                url: 'securenote/delete',
                 type: 'POST',
-                data: form.serialize(),
                 success: function(response, status, xhr, $form) {
-                    $('#deleteNote').modal('hide');
-                    $('#alert').modal();
-                    $('.alert').addClass('alert-success');
-                    $('.m-alert__text').html(response.message);
+                    swal({
+                        position: 'center',
+                        type: 'success',
+                        title: response.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(function(result){$('#deleteForm').modal('hide');});
+
                     $('.m-content').html(response.view);
-                    console.log(response);
                     form.clearForm();
 	                form.validate().resetForm();
                 },
                 error: function(response, status, xhr, $form) {
-                    $('#alert').modal();
-                    $('.alert').addClass('alert-danger');
-                    // $('.m-alert__text').html(response.serialize());
-                    console.log(response);
+                    swal("", response.serialize(), "error");
                 }
-                
             });
-            
-
-            window.setTimeout(function() {
-                $('#alert').modal('hide');
-            }, 2000);
         });
-
     });
 </script>
 
