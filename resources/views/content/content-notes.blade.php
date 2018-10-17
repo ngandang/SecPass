@@ -7,12 +7,12 @@
                     <th>Tiêu đề</th>
                     <th>Nội dung</th>
                     <th>Cập nhật cuối</th>
-                    <th style="width:100px;"></th>
+                    <th style="width:180px;"></th>
                 </tr>
             </thead>
             <tbody>
             @foreach($notes->sortByDesc('updated_at') as $note)
-                <tr class="odd">
+                <tr class="odd" align="center">
                     <td>{{$note->title}}</td>
                     <td style="word-wrap: break-word;">{{$note->content}}</td>
                     <td align="center">

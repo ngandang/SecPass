@@ -5,20 +5,20 @@
         <table class="table table-striped table-bordered table-hover" id="dataTables-example">
             <thead>
                 <tr align="center">
-                    <th>Tên trang</th>
-                    <th>Username</th>
                     <th>URL</th>
+                    <th>Username</th>
+                    <th>Password</th>
                     <th>Mô tả</th>
                     <th>Cập nhật cuối</th>
-                    <th></th>
+                    <th style="width:180px;"></th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($accounts->sortByDesc('updated_at') as $acc)
                 <tr class="{{($loop->iteration % 2 != 0) ? 'odd' : 'even'}} gradeX" align="center">
-                    <td>{{$acc->name}}</td>
-                    <td>{{$acc->username}}</td>
                     <td>{{$acc->uri}}</td>
+                    <td>{{$acc->username}}</td>
+                    <td><a href="">Copy</a></td>
                     <td>{{$acc->description}}</td>
                     <td>
                     @if ($acc->updated_at)
