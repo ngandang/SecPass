@@ -41,7 +41,7 @@
 </div>
 <!-- BEGIN: Content -->
 <div class="m-content">
-    Lưu trữ các files user upload lên dùng các thư mục
+    @include('content.content-drive')
 </div>
 <!-- END: Content -->
 <!-- BEGIN: Add Form -->
@@ -61,8 +61,8 @@
                         <div id="addform-box" class="col-md-12">
                             <form id="add-form" class="form" action="" method="post">                                        
                                 <div class="form-group">
-                                    <label for="tilte" class="text-info">Tiêu đề:</label><br>
-                                    <input type="text" name="title" class="form-control">
+                                    <!-- <label for="tilte" class="text-info">Tên:</label><br> -->
+                                    <input type="hidden" name="name" class="form-control" >
                                 </div>
                                 <div class="form-group">
                                     <label for="tilte" class="text-info">Tập Tin: 
@@ -81,5 +81,36 @@
     </div>
 </form>
 <!-- END: Add Form -->
+<script>
+    $(document).ready(function(){
+
+        $('#addSubmit').click(function(e){
+            e.preventDefault();
+            var btn = $(this);
+            var form = $(this).closest('form');
+            
+            form.ajaxSubmit({
+                url: 'drive/add',
+                type: 'POST',
+                success: function(response, status, xhr, $form) {
+                    swal({
+                        position: 'center',
+                        type: 'success',
+                        title: response.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(function(result){$('#addForm').modal('hide');});
+
+                    $('.m-content').html(response.view);
+                    form.clearForm();
+                    form.validate().resetForm();
+                },
+                error: function(response, status, xhr, $form) {
+                    swal("", response.serialize(), "error");
+                }
+            });
+        });
+    });
+</script>
 
 @endsection

@@ -49,3 +49,6 @@ tbody{
     /* font-size: 18px; */
     margin-right: 30px !important;
 }
+table i{
+    font-size: 16px !important;
+}
