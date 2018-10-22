@@ -25,13 +25,13 @@
                     <td>
                         <!-- <div style="width=500px;"> -->
                             <span onclick="share('{{$note->id}}')" href="#shareForm" data-toggle="modal" class="btn btn-sm">
-                                <i class="flaticon-share"></i>
+                                <i class="far fa-share-square"></i>
                             </span>
                             <span onclick="edit('{{$note->id}}','{{$note->title}}','{{$note->content}}')" href="#editForm" data-toggle="modal" class="btn btn-sm">
-                                <i class="flaticon-edit"></i>
+                                <i class="far fa-edit"></i>
                             </span>
                             <span onclick="del('{{$note->id}}')" href="#deleteForm" data-toggle="modal" class="btn btn-sm">
-                                <i class="flaticon-cancel"></i>
+                                <i class="far fa-trash-alt"></i>
                             </span>
                         <!-- </div> -->
                     </td>

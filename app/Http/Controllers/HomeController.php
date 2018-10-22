@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Accounts;
@@ -106,7 +105,7 @@ class HomeController extends Controller
    
     public function notes()
     {
-        $notes = Notes::all();//where('user_id','=',Auth::user()->id);
+        $notes = Notes::all();
         return view('page.notes',compact('notes'));
     }
 
@@ -162,54 +161,6 @@ class HomeController extends Controller
         //TODO: share note
     }
 
-    public function drive()
-    {
-        $allFiles = Storage::disk('userstorage')->allFiles(Auth::user()->id);
-
-        $files = array();
-
-        foreach ($allFiles as $file) {
-
-            $files[] = $this->fileInfo(pathinfo(storage_path('app/store/').$file));
-        }
-       
-        return view('page.drive', compact('files'));
-        
-    }
-    public function fileInfo($filePath)
-    {
-        $file = array();
-        $file['name'] = $filePath['filename'];
-        $file['extension'] = $filePath['extension'];
-        $file['size'] = filesize($filePath['dirname'] . '/' . $filePath['basename']);
-        $file['lastModified'] = date("d/m/Y", filemtime($filePath['dirname'] . '/' . $filePath['basename']));
-        return $file;
-    }
-    
-    public function addFile(Request $request)
-    {
-        $path = $request->file('fileToUpload')->storeAs(
-            'store/'.Auth::user()->id, $request->file('fileToUpload')->getClientOriginalName()
-        );
-
-        $allFiles = Storage::disk('userstorage')->allFiles(Auth::user()->id);
-
-        $files = array();
-
-        foreach ($allFiles as $file) {
-
-            $files[] = $this->fileInfo(pathinfo(storage_path('app/store/').$file));
-        }
-       
-        return response()->json([
-            'success' => true,
-            // TODO: lang this message
-            'message' => 'Thêm ghi chú bảo mật thành công.',
-            'view' => view('content.content-drive', compact('files'))->render()
-        ]);
-        // $path=$request->)->store('store');
-        // echo $path;
-    }
 
     // Ngân: Login tự viết
     // public function getLogin() {
@@ -286,7 +237,10 @@ class HomeController extends Controller
     // {
     //     return view('page.accounts'); 
     // }
-   
+    public function drive()
+    {
+        return view('page.drive');
+    }
     public function credential()
     {
         return view('page.credential');
