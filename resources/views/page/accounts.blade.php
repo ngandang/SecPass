@@ -214,7 +214,7 @@
         $('#editForm input[name=username]').val(username);
         $('#editForm input[name=url]').val(url);
         // $('#editForm input[name=password]').val(password);
-        $('#editForm input[name=description]').val(description);
+        $('#editForm textarea[name=description]').val(description);
     }
     
     function del(id){

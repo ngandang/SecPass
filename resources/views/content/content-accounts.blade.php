@@ -29,13 +29,13 @@
                     </td>
                     <td>                            
                         <div onclick="share('{{$acc->id}}')" href = "#shareForm" data-toggle="modal" class="btn btn-sm">
-                            <i class="far fa-share-square"></i>
+                            <i class="flaticon-share"></i>
                         </div>
                         <div onclick="edit('{{$acc->id}}','{{$acc->name}}','{{$acc->username}}','{{$acc->uri}}','{{$acc->description}}')" href="#editForm" data-toggle="modal" class="btn btn-sm">
-                            <i class="far fa-edit"></i>
+                            <i class="flaticon-edit"></i>
                         </div>
                         <div onclick="del('{{$acc->id}}')" href = "#deleteForm" data-toggle="modal" class="btn btn-sm">
-                            <i class="far fa-trash-alt"></i>
+                            <i class="flaticon-cancel"></i>
                         </div>
                     </td>
                 @endforeach
