@@ -116,20 +116,20 @@
                             <input type="hidden" name="id">
                             <div class="form-group">
                                 <label for="name" class="text-info">Tên trang</label>
-                                <input type="text" name="name" class="form-control">
+                                <input type="text" name="name" class="form-control" required>
                             </div>
                             <div class="form-group">
                                 <label for="url" class="text-info">URL</label>
-                                <input type="text" name="url" class="form-control">
+                                <input type="text" name="url" class="form-control" required>
                             </div>
                             <div class="form-group row">
                                 <div class="col-md-6">
                                     <label for="username" class="text-info">Tên đăng nhập</label>
-                                    <input type="text" name="username" class="form-control">
+                                    <input type="text" name="username" class="form-control" required>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="password" class="text-info">Mật khẩu</label>
-                                    <input type="password" name="password" value="nothinghere" class="form-control">
+                                    <input type="password" name="password" placeholder="Đã được bảo mật" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -155,7 +155,7 @@
     <div class="modal fade" id="deleteForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <input type="hidden" name="idDelete" id="idDelete">
+                <input type="hidden" name="id" id="idDelete">
                 <div class="modal-header">
                     <h5 class="text-center modal-title" id="addFormTitle">Xóa tài khoản</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -163,7 +163,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    Bạn có chắc chắn xóa tài khoản không???
+                    Bạn có chắc chắn xóa tài khoản này không???
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary pull-left" data-dismiss="modal">Huỷ</button>
@@ -204,6 +204,8 @@
 </form>
 <!-- END: Share form -->
 
+<script src="{{ asset('js/validation_vi.js') }}" type="text/javascript"></script>
+
 <script> 
 
     function edit(id, name, username, url, description){
@@ -212,7 +214,7 @@
         $('#editForm input[name=username]').val(username);
         $('#editForm input[name=url]').val(url);
         // $('#editForm input[name=password]').val(password);
-        $('#editForm input[name=description]').val(description);
+        $('#editForm textarea[name=description]').val(description);
     }
     
     function del(id){
@@ -228,8 +230,20 @@
 
         $('#addSubmit').click(function(e){
             e.preventDefault();
-            var btn = $(this);
+            // var btn = $(this);
             var form = $(this).closest('form');
+
+            form.validate({
+                rules: {
+                    url: {
+                        url: true
+                    }
+                }
+            });
+
+            if (!form.valid()) {
+                return;
+            }
             
             form.ajaxSubmit({
                 url: 'account/add',
@@ -243,19 +257,20 @@
                         timer: 1500
                     }).then(function(result){$('#addForm').modal('hide');});
 
-                    $('.m-content').html(response.view);
+                    $('.m-content').html(response.view);                        
                     form.clearForm();
-	                form.validate().resetForm();
+                    form.validate().resetForm();
                 },
                 error: function(response, status, xhr, $form) {
-                    swal("", response.serialize(), "error");
+                    console.log(response);
+                    swal("", response.message.serialize(), "error");
                 }
             });
         });
 
         $('#editSubmit').click(function(e){
             e.preventDefault();
-            var btn = $(this);
+            // var btn = $(this);
             var form = $(this).closest('form');
             
             form.ajaxSubmit({
@@ -275,14 +290,15 @@
 	                form.validate().resetForm();
                 },
                 error: function(response, status, xhr, $form) {
-                    swal("", response.serialize(), "error");
+                    swal("Có lỗi xảy ra", "error");
+                    console.log(response.responseJSON.message);
                 }
             });
         });
 
         $('#delSubmit').click(function(e){
             e.preventDefault();
-            var btn = $(this);
+            // var btn = $(this);
             var form = $(this).closest('form');
             
             form.ajaxSubmit({
@@ -302,7 +318,8 @@
 	                form.validate().resetForm();
                 },
                 error: function(response, status, xhr, $form) {
-                    swal("", response.serialize(), "error");
+                    swal("Lỗi xảy ra", "", status);
+                    console.log(response);
                 }
             });
         });

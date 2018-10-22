@@ -129,11 +129,11 @@ var SnippetLogin = function() {
                 },
                 messages: {
                     email: {
-                        required: "Trường nhập bắt buộc.",
+                        required: "Đây là trường bắt buộc nhập.",
                         email: "Vui lòng nhập với định dạng email hợp lệ."
                     },
                     password: {
-                        required: "Trường nhập bắt buộc."
+                        required: "Đây là trường bắt buộc nhập."
                     }
                 }
 

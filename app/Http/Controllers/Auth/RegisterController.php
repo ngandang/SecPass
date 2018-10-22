@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
 
+use App\Mail\VerifyUser;
+
 class RegisterController extends Controller
 {
     /*
@@ -71,21 +73,6 @@ class RegisterController extends Controller
             'verification_code' => time().uniqid(true),
         ]);
 
-        //do your role stuffs here
-
-        //send verification mail to user
-        //---------------------------------------------------------
-        // $data['verification_code']  = $user->verification_code;
-
-        // Mail::send('emails.verify', $data, function($message) use ($data)
-        // {
-        //     //TODO: change this for production
-        //     $message->from('no-reply@secpass.com', "SecPass");
-        //     $message->subject("Welcome to SecPass");
-        //     $message->to($data['email']);
-        // });
-
-
         return $user;
     }
 
@@ -105,7 +92,21 @@ class RegisterController extends Controller
            );
         }
 
-        $this->create($request->all());
+        $user = $this->create($request->all());
+        
+        //do your role stuffs here
+
+        //send verification mail to user
+        //---------------------------------------------------------
+        // Mail::send('emails.verify', $data, function($message) use ($data)
+        // {
+        //     //TODO: change this for production
+        //     $message->from('no-reply@secpass.com', "SecPass");
+        //     $message->subject("Welcome to SecPass");
+        //     $message->to($data['email']);
+        // });
+        Mail::to($user)->send(new VerifyUser);
+
 
         return response()->json(['success' => true, 'message' => 'Đăng ký thành công. Vui lòng kiểm tra hộp thư của bạn.']);
     }

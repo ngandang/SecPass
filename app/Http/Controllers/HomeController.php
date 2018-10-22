@@ -69,7 +69,8 @@ class HomeController extends Controller
         $acc->name = $request->name;
         $acc->username = $request->username;
         $acc->uri = $request->url;
-        $acc->password = $request->password;
+        if ($request->password)
+            $acc->password = $request->password;
         $acc->description = $request->description;
         $acc->save();
         

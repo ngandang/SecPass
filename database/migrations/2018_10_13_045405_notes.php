@@ -17,7 +17,7 @@ class Notes extends Migration
             $table->uuid('id');
             $table->primary('id');
             $table->string('title');
-            $table->longtext('content');
+            $table->longtext('content')->nullable();// Chuyển qua secrets
             $table->boolean('deleted')->default(false);
             $table->timestamps();
         });

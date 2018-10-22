@@ -41,9 +41,9 @@
 						</div>
 						<div class="m-login__signin">
 							<div class="m-login__head">
-								<h3 class="m-login__title">
+								<!-- <h3 class="m-login__title">
 									Bớt ngây thơ đi bạn
-								</h3>
+								</h3> -->
 							</div>
 							<form class="m-login__form m-form" action="" >
 								@csrf
@@ -100,7 +100,6 @@
 								<div class="row form-group m-form__group m-login__form-sub">
 									<div class="col m--align-left">
 										<label class="m-checkbox m-checkbox--light">
-										<!-- TODO: Chỉ tới trang Các thoả thuận và điều khoản -->
 											<input type="checkbox" name="agree">
 											Tôi đồng ý với <a id="getTerms" href="#" class="m-link m-link--focus">các thoả thuận và điều khoản</a>.
 											<span></span>

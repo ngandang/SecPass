@@ -13,13 +13,13 @@ class Secret extends Migration
      */
     public function up()
     {
-        Schema::create('secret', function(Blueprint $table){
+        Schema::create('secrets', function(Blueprint $table){
             $table->uuid('id');
             $table->primary('id');
             $table->uuid('user_id');
-            $table->uuid('account_id');
-            $table->uuid('note_id'); 
-            $table->text('data');
+            $table->uuid('account_id')->nullable();
+            $table->uuid('note_id')->nullalble(); 
+            $table->longtext('data');
             $table->timestamps();
 
         });
