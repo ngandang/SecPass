@@ -1,4 +1,4 @@
-@if(true)
+@if(count($files))
 <div class ="container-fluid">
     <div class="row">
         <table class="table table-striped table-bordered table-hover" id="dataTables-example">
@@ -18,7 +18,12 @@
                     <td>{{$file['extension']}}</td>
                     <td>{{$file['size']}}</td>
                     <td>{{$file['lastModified']}} </td>  
-                    <td></td>
+                    <td>
+                        
+                        <span onclick="del('{{$file['name']}}')" href="#deleteForm" data-toggle="modal" class="btn btn-sm">
+                                <i class="flaticon-cancel"></i>
+                            </span>
+                    </td>
                 </tr>
                 @endforeach
             </tbody>
@@ -26,5 +31,5 @@
     </div>
 </div>
 @else
-    <!-- <p align="center">Background báo empty state màu xám.</p> -->
+    <p align="center">Background báo empty state màu xám.</p>
 @endif

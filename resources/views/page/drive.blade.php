@@ -81,9 +81,67 @@
     </div>
 </form>
 <!-- END: Add Form -->
+
+<!--BEGIN: Delete form -->
+<form id="delete-form" class="form-horizontal" action="" enctype="multipart/form-data" method="POST">
+    {{ csrf_field() }}
+    <div class="modal fade" id="deleteForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="text-center modal-title" id="addFormTitle">Xóa tài liệu</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Bạn có chắc chắn xóa tài liệu không???
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary pull-left" data-dismiss="modal">Huỷ</button>
+                    <button type="submit" id="delSubmit" class="btn btn-primary" >Xóa</button>
+                </div> 
+            </div>
+        </div>
+    </div>
+</form>
+<!-- END: Delete form -->
+
+<!--BEGIN: Share form -->
+<form id="share-form" class="form-horizontal" action="" enctype="multipart/form-data" method="get">
+    {{ csrf_field() }}
+    <div class="modal fade" id="shareForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <input type="hidden" name="idShare" id="idShare">
+                <div class="modal-header">
+                    <h5 class="text-center modal-title" id="addFormTitle">Chia sẻ tài liệu</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="user" class="text-info">Chia sẻ với người dùng hoặc nhóm</label><br>
+                        <input type="text" name="email" placeholder="Nhập tên hoặc email" class="form-control">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary pull-left" data-dismiss="modal">Huỷ</button>
+                    <button type="submit" id="shareSubmit" class="btn btn-primary" >Chia sẻ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<!-- END: Share form -->
 <script>
     $(document).ready(function(){
 
+        function delFile(name){
+            $(#deleteForm .)
+        }
+        
         $('#addSubmit').click(function(e){
             e.preventDefault();
             var btn = $(this);
@@ -104,6 +162,33 @@
                     $('.m-content').html(response.view);
                     form.clearForm();
                     form.validate().resetForm();
+                },
+                error: function(response, status, xhr, $form) {
+                    swal("", response.serialize(), "error");
+                }
+            });
+        });
+
+        $('#delSubmit').click(function(e){
+            e.preventDefault();
+            var btn = $(this);
+            var form = $(this).closest('form');
+            
+            form.ajaxSubmit({
+                url: 'drive/delete',
+                type: 'POST',
+                success: function(response, status, xhr, $form) {
+                    swal({
+                        position: 'center',
+                        type: 'success',
+                        title: response.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(function(result){$('#deleteForm').modal('hide');});
+
+                    $('.m-content').html(response.view);
+                    form.clearForm();
+	                form.validate().resetForm();
                 },
                 error: function(response, status, xhr, $form) {
                     swal("", response.serialize(), "error");

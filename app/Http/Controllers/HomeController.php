@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SendMailable;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -209,7 +211,35 @@ class HomeController extends Controller
         // $path=$request->)->store('store');
         // echo $path;
     }
+    public function delFile(Request $request)
+    {
+        Storage::delete($file);
 
+        $allFiles = Storage::disk('userstorage')->allFiles(Auth::user()->id);
+
+        $files = array();
+
+        foreach ($allFiles as $file) {
+
+            $files[] = $this->fileInfo(pathinfo(storage_path('app/store/').$file));
+        }
+       
+        return response()->json([
+            'success' => true,
+            // TODO: lang this message
+            'message' => 'Xóa tài liệu thành công.',
+            'view' => view('content.content-drive', compact('files'))->render()
+        ]);
+    }
+
+
+    public function mail()
+    {
+        $name = 'ngan';
+        Mail::to('dangthingan1996@gmail.com')->send(new SendMailable($name));
+        
+        return 'Email was sent';
+    }
     // Ngân: Login tự viết
     // public function getLogin() {
     // 	return view('login');
