@@ -1,4 +1,4 @@
-@if(true)
+@if(count($files))
 <div class ="container-fluid">
     <div class="row">
         <table class="table table-striped table-bordered table-hover" id="dataTables-example">

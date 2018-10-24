@@ -41,8 +41,11 @@ Route::get('drive','HomeController@drive');
 Route::group(['prefix'=>'drive','as'=>'drive'], function(){
     Route::post('add','HomeController@addFile');
     // Route::post('edit','HomeController@editNote');
-    // Route::post('delete','HomeController@delNote');
+    Route::post('delete','HomeController@delFile');
 });
+
+Route::get('send/email', 'HomeController@mail');
+
 
 Route::get('credential','HomeController@credential');
 Route::get('dashboard','HomeController@dashboard');
