@@ -61,7 +61,7 @@
                         <div id="addform-box" class="col-md-12">
                             <form id="add-form" class="form" action="" method="post">                                        
                                 <div class="form-group">
-                                    <!-- <label for="tilte" class="text-info">Tên:</label><br> -->
+                                    <!-- <label for="name" class="text-info">Tên:</label><br> -->
                                     <input type="hidden" name="name" class="form-control" >
                                 </div>
                                 <div class="form-group">
@@ -144,7 +144,6 @@
         
         $('#addSubmit').click(function(e){
             e.preventDefault();
-            var btn = $(this);
             var form = $(this).closest('form');
             
             form.ajaxSubmit({

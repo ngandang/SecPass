@@ -17,7 +17,7 @@ class Roles extends Migration
             $table->uuid('id');
             $table->primary('id');
             $table->string('name');
-            $table->string('description');
+            $table->longtext('description');
             $table->timestamps();
         });
     }

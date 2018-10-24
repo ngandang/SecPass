@@ -14,7 +14,7 @@ var SessionTimeout = function () {
             redirUrl: '/',
             logoutUrl: 'logout', //placeholder thôi
             warnAfter: 300000, //cảnh báo sau 2 phút inactive
-            redirAfter: 15000, //redirect sau 15 giây
+            redirAfter: 315000, //redirect sau 15 giây
             countdownMessage: 'Chuyển hướng sau {timer} giây.',
             countdownBar: true
         });
@@ -29,6 +29,16 @@ var SessionTimeout = function () {
 
 }();
 
+// Reset lại form với data-dismiss="modal"
+var DataDismiss = function () {
+    $('[data-dismiss=modal]').on('click', function () {
+        var form = $(this).closest('form');
+        form.clearForm();
+        form.validate().resetForm();
+    });
+};
+
 jQuery(document).ready(function() {    
     SessionTimeout.init();
+    DataDismiss();
 });

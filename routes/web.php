@@ -48,7 +48,6 @@ Route::get('send/email', 'HomeController@mail');
 
 Route::get('credential','HomeController@credential');
 Route::get('dashboard','HomeController@dashboard');
-
 Route::get('groups','HomeController@groups');
 Route::get('sharewith','HomeController@sharewith');
 Route::get('setting','HomeController@setting');
@@ -73,4 +72,3 @@ Route::get('init_roles', function () {
         ]
     );
 });
-
