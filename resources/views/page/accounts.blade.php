@@ -227,7 +227,16 @@
     }
 
     $(document).ready(function(){
-
+        $('.copyusername').click(function(e){
+            var copyText = $(this).text();
+            var $temp = $("<input>");
+            $("body").append($temp);
+            $temp.val(copyText);
+            $temp.select();
+            document.execCommand("copy");
+            alert("Copied");
+            $temp.remove();
+        })
         $('#addSubmit').click(function(e){
             e.preventDefault();
             // var btn = $(this);
