@@ -27,6 +27,7 @@ var SnippetLogin = function() {
         login.removeClass('m-login--forget-password');
         login.removeClass('m-login--signin');
 
+        document.title = 'SecPass | Đăng ký';
         login.addClass('m-login--signup');
         login.find('.m-login__signup').animateClass('flipInX animated');
     }
@@ -35,6 +36,7 @@ var SnippetLogin = function() {
         login.removeClass('m-login--forget-password');
         login.removeClass('m-login--signup');
 
+        document.title = 'SecPass | Đăng nhập';
         login.addClass('m-login--signin');
         login.find('.m-login__signin').animateClass('flipInX animated');
     }
@@ -43,6 +45,7 @@ var SnippetLogin = function() {
         login.removeClass('m-login--signin');
         login.removeClass('m-login--signup');
 
+        document.title = 'SecPass | Quên mật khẩu';
         login.addClass('m-login--forget-password');
         login.find('.m-login__forget-password').animateClass('flipInX animated');
     }
@@ -126,17 +129,7 @@ var SnippetLogin = function() {
                     password: {
                         required: true
                     }
-                },
-                messages: {
-                    email: {
-                        required: "Đây là trường bắt buộc nhập.",
-                        email: "Vui lòng nhập với định dạng email hợp lệ."
-                    },
-                    password: {
-                        required: "Đây là trường bắt buộc nhập."
-                    }
                 }
-
             });
 
             if (!form.valid()) {
@@ -149,7 +142,15 @@ var SnippetLogin = function() {
                 url: '',
                 type: 'POST',
                 success: function(response, status, xhr, $form) {
-                    window.location = response.intended;
+                    if(response.message) {
+                        setTimeout(function() {
+                            btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false);
+                            showMsg(form, 'danger', response.message);
+                        }, 1000);
+                    }
+                    else {
+                        window.location = response.intended;
+                    }
                 },
                 error: function(response, status, xhr, $form) {
                     // similate 1s delay
@@ -193,19 +194,6 @@ var SnippetLogin = function() {
                     }
                 },
                 messages: {
-                    name: {
-                        required: "Trường nhập bắt buộc."
-                    },
-                    email: {
-                        required: "Trường nhập bắt buộc.",
-                        email: "Vui lòng nhập với định dạng email hợp lệ."
-                    },
-                    password: {
-                        required: "Trường nhập bắt buộc."
-                    },
-                    rpassword: {
-                        required: "Trường nhập bắt buộc."
-                    },
                     agree: {
                         required: "Bạn cần đọc kỹ và chọn đồng ý Các thoả thuận và điều khoản để có thể sử dụng dịch vụ."
                     }
@@ -265,12 +253,6 @@ var SnippetLogin = function() {
                     email: {
                         required: true,
                         email: true
-                    }
-                },
-                messages: {
-                    email: {
-                        required: "Trường nhập bắt buộc.",
-                        email: "Vui lòng nhập với định dạng email hợp lệ."
                     }
                 }
             });

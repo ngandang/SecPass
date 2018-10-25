@@ -18,6 +18,13 @@ Route::get('/', function () {
 
 Auth::routes();
 Route::get('register/verify/{code}', 'Auth\RegisterController@verify');
+Route::get('register/verify',function () {
+    $status=false;
+
+    return view('auth.verify', compact('status'));
+});
+Route::post('register/verify','Auth\RegisterController@sendmail');
+
 Route::post('legal/terms',function () {
     return view('page.terms');
 });
@@ -44,8 +51,6 @@ Route::group(['prefix'=>'drive','as'=>'drive'], function(){
     Route::post('delete','HomeController@delFile');
 });
 
-Route::get('send/email', 'HomeController@mail');
-
 
 Route::get('credential','HomeController@credential');
 Route::get('dashboard','HomeController@dashboard');
@@ -54,22 +59,23 @@ Route::get('sharewith','HomeController@sharewith');
 Route::get('setting','HomeController@setting');
 
 Route::get('init_roles', function () {
-    return App\Users::create(
+    App\Roles::create(
         [
-        'name' => 'root',
-        'description' => 'Super User for who the BOSS here.',
-        ],
+            'id' => '5bdf5220-d75c-11e8-843b-a7f6cbee423d',
+            'name' => 'root',
+            'description' => 'Super User for who the BOSS here.',
+        ]);
+    App\Roles::create(
         [
+            'id' => '5bed2760-d75c-11e8-8098-a930bf45516a',
             'name' => 'admin',
-            'description' => 'Admin of ',
-        ],
+            'description' => 'Admin who under root',
+        ]);
+    App\Roles::create(
         [
+            'id' => '5bf9dea0-d75c-11e8-965c-95bc72799a6b',
             'name' => 'user',
             'description' => 'Normal user',
-        ],
-        [
-            'name' => 'Jane',
-            'description' => 'john@jane.com',
-        ]
-    );
+        ]);
+    return 'Roles created. Good to go !!';
 });

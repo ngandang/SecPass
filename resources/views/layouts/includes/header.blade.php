@@ -426,6 +426,7 @@
 								<a href="#" class="m-nav__link m-dropdown__toggle">
 									<span class="m-topbar__userpic">
 										<img src="{{ asset('app/media/img/users/' . Auth::user()->id . '.jpg') }}" class="m--img-rounded m--marginless m--img-centered" alt=""/>
+										logo
 									</span>
 									<span class="m-topbar__username m--hide">
 										{{ Auth::user()->name }}

@@ -16,14 +16,17 @@ class Secrets extends Model
     public $incrementing = false;
 
     protected $table = 'secrets';
+    
     public function Users()
     {
         return $this->belongsTo('App\Users', 'user_id','id');
     }
+
     public function Accounts()
     {
         return $this->belongsTo('App\Accounts', 'account_id','id');
     }
+
     public function Notes()
     {
         return $this->belongsTo('App\Notes', 'note_id','id');

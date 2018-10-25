@@ -23,9 +23,10 @@ class Users extends Authenticatable
      *
      * @var array
      */
-    protected $fillable = [
-        'name', 'email', 'password',
-    ];
+    // protected $fillable = [
+    //     'name', 'email', 'password', 'verification_code',
+    // ];
+    protected $guarded = [];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -44,24 +45,23 @@ class Users extends Authenticatable
         return $this->hasMany('App\GroupsUsers', 'user_id', 'id');
     }
 
-    public function Profile()
+    public function Profiles()
     {
         return $this->hasOne('App\Profile', 'user_id','id');
     }
-    public function Role()
+
+    public function Roles()
     { 
            return $this->belongsTo('App\Role','role_id','id');
     }
-    public function Secret()
+
+    public function Secrets()
     { 
            return $this->hasOne('App\Secret','user_id','id');
     }
+    
     public function GPGKeys()
     { 
            return $this->hasOne('App\GPGKeys','user_id','id');
-    }
-    public function Authentication()
-    { 
-           return $this->hasOne('App\Authentication','user_id','id');
     }
 }

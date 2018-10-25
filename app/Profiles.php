@@ -16,7 +16,7 @@ class Profiles extends Model
 
     protected $table = 'profiles';
 
-    public function users()
+    public function Users()
     {
         return $this->hasOne('App\Profiles','user_id','id');
     }

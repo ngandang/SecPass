@@ -30,6 +30,16 @@ class LoginController extends Controller
 
     protected function authenticated(Request $request, $user) {
         if($request->ajax()) {
+            if(!$user->active) {
+                auth()->logout();
+             
+                if($user->created_by) {
+                    return response()->json([ 'message' => 'Tài khoản của bạn hiện đang bị vô hiệu hoá. Vui lòng liên hệ quản trị viên.']);
+                }
+                
+                return response()->json([ 'intended' => '/register/verify' ]);
+            }
+            
             return response()->json([ 'intended' => $this->redirectPath() ]);
         }
     }

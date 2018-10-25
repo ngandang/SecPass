@@ -15,6 +15,16 @@ class Roles extends Model
     public $incrementing = false;
     
     protected $table = 'roles';
+    
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'name', 'description',
+    ];
+
     public function Users()
     {
         return $this->hasMany('App\Users', 'role_id','id');

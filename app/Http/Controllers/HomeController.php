@@ -234,13 +234,6 @@ class HomeController extends Controller
     }
 
 
-    public function mail()
-    {
-        $name = 'ngan';
-        Mail::to('dangthingan1996@gmail.com')->send(new SendMailable($name));
-        
-        return 'Email was sent';
-    }
     // Ngân: Login tự viết
     // public function getLogin() {
     // 	return view('login');

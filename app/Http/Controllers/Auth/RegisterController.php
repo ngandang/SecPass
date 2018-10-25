@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Users;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
@@ -70,6 +71,7 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'role_id' => '5bf9dea0-d75c-11e8-965c-95bc72799a6b',
             'verification_code' => time().uniqid(true),
         ]);
 
@@ -84,31 +86,31 @@ class RegisterController extends Controller
      */
     public function register(Request $request)
     {
-        $validator = $this->validator($request->all());
-        if ($validator->fails())
-        {
-           $this->throwValidationException(
-               $request, $validator
-           );
-        }
+
+        $this->validator($request->all())->validate();
 
         $user = $this->create($request->all());
+
         
-        //do your role stuffs here
 
-        //send verification mail to user
-        //---------------------------------------------------------
-        // Mail::send('emails.verify', $data, function($message) use ($data)
-        // {
-        //     //TODO: change this for production
-        //     $message->from('no-reply@secpass.com', "SecPass");
-        //     $message->subject("Welcome to SecPass");
-        //     $message->to($data['email']);
-        // });
-        Mail::to($user)->send(new VerifyUser);
-
+        Mail::to($user)->send(new VerifyUser($user));
 
         return response()->json(['success' => true, 'message' => 'Đăng ký thành công. Vui lòng kiểm tra hộp thư của bạn.']);
+    }
+
+    public function sendmail(Request $request)
+    {
+        $user = Users::where('email', $request->email)->first();
+        if ($user->count() > 0) {
+            $user->update([
+                'verification_code' => time().uniqid(true)
+            ]);
+            Mail::to($user)->send(new VerifyUser($user));
+
+            return response()->json(['status' => 'success', 'message' => 'Gửi mã xác nhận thành công. Vui lòng kiểm tra hộp thư email của bạn.']);
+        }
+
+        return response()->json(['status' => 'danger', 'message' => 'Email được nhập không tồn tại. Vui lòng kiểm tra lại.']);
     }
 
     public function verify($code)
@@ -120,12 +122,11 @@ class RegisterController extends Controller
                 'active' => true,
                 'verification_code' => null
             ]);
-            $notification_status = 'Xác nhận tài khoản thành công.';
-        } else {
-            $notification_status ='Mã xác nhận không chính xác hoặc đã quá hạn.';
-        }
 
-        return response()->json(['success' => true, 'message' => $notification_status]);
+            return view('auth.verify')->with(['status' => true]);
+        }
+        
+        return view('auth.verify')->with(['status' => false]);
     }
 
 }

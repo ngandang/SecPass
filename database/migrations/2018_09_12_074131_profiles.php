@@ -17,12 +17,12 @@ class Profiles extends Migration
             $table->uuid('id');
             $table->primary('id');
             $table->uuid('user_id');
-            $table->string('first_name');
-            $table->string('last_name');
-            $table->string('gender');
-            $table->datetime('date_of_birth');
-            $table->string('timezone');
-            $table->string('locale');
+            $table->string('first_name')->nullable();
+            $table->string('last_name')->nullable();
+            $table->string('gender')->nullable();
+            $table->datetime('date_of_birth')->nullable();
+            $table->string('timezone')->default('UTC');
+            $table->string('language')->default('vi');
             $table->timestamps();
         });
     }

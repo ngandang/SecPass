@@ -4,7 +4,7 @@
 	<head>
 		<meta charset="utf-8" />
 		<title>
-			SecPass | Trang đăng nhập
+			SecPass | Đăng nhập
 		</title>
 		<meta name="description" content="Latest updates and statistic charts">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -180,12 +180,8 @@
 		<script src="{{ asset('default/base/scripts.bundle.js') }}" type="text/javascript"></script>
 		<!--end::Base Scripts -->   
         <!--begin::Page Snippets -->
+		<script src="{{ asset('js/validation_vi.js') }}" type="text/javascript"></script>
 		<script src="{{ asset('snippets/pages/user/login.js') }}" type="text/javascript"></script>
-		
-		@if(!empty($message))
-		<!-- <script> ShowMsg($('#m_login'),'{{ $status }}','{{ $message }}'); </script> -->
-		@endif
-
 		<!--end::Page Snippets -->
 	</body>
 	<!-- end::Body -->
