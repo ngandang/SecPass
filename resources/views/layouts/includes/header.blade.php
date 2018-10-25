@@ -425,7 +425,8 @@
 							<li class="m-nav__item m-topbar__user-profile m-topbar__user-profile--img  m-dropdown m-dropdown--medium m-dropdown--arrow m-dropdown--header-bg-fill m-dropdown--align-right m-dropdown--mobile-full-width m-dropdown--skin-light" data-dropdown-toggle="click">
 								<a href="#" class="m-nav__link m-dropdown__toggle">
 									<span class="m-topbar__userpic">
-										<img src="{{ asset('app/media/img/users/' . Auth::user()->id . '.jpg') }}" class="m--img-rounded m--marginless m--img-centered" alt=""/>
+										<img src="{{ asset('app/media/img/users/avt.jpg') }}" class="m--img-rounded m--marginless m--img-centered" alt=""/>
+										<!-- <img src="{{ asset('app/media/img/users/' . Auth::user()->id . '.jpg') }}" class="m--img-rounded m--marginless m--img-centered" alt=""/> -->
 									</span>
 									<span class="m-topbar__username m--hide">
 										{{ Auth::user()->name }}
@@ -458,7 +459,7 @@
 														</span>
 													</li>
 													<li class="m-nav__item">
-														<a href="header/profile.html" class="m-nav__link">
+														<a href="profile" class="m-nav__link">
 															<i class="m-nav__link-icon flaticon-profile-1"></i>
 															<span class="m-nav__link-title">
 																<span class="m-nav__link-wrap">
