@@ -44,6 +44,9 @@
     @include('content.content-drive')
 </div>
 <!-- END: Content -->
+@endsection
+
+@section('pageSnippets')
 <!-- BEGIN: Add Form -->
 <form id="add-form" class="form-horizontal" action="" enctype="multipart/form-data" method="post">
     <div class="modal fade" id="addForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
@@ -89,6 +92,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
+                    <input type="hidden" name="filename">
                     <h5 class="text-center modal-title" id="addFormTitle">Xóa tài liệu</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -135,13 +139,25 @@
     </div>
 </form>
 <!-- END: Share form -->
-<script>
-    $(document).ready(function(){
 
-        function delFile(name){
-            $(#deleteForm .)
-        }
-        
+<!-- BEGIN: Download form -->
+    <form method="POST" action="drive/download" id="downloadForm">
+        {{ csrf_field() }}
+        <input type="hidden" name="filename">
+    </form>
+<!-- END: Download form -->
+<script>
+
+    function del(filename){
+        $('#deleteForm input[name=filename]').val(filename);
+    }
+    function download(filename)
+    {
+        $('#downloadForm input[name=filename]').val(filename);
+        $('#downloadForm').submit();
+    }
+
+    $(document).ready(function(){
         $('#addSubmit').click(function(e){
             e.preventDefault();
             var form = $(this).closest('form');
@@ -170,10 +186,10 @@
 
         $('#delSubmit').click(function(e){
             e.preventDefault();
-            var btn = $(this);
+            var btn = $(this);            
             var form = $(this).closest('form');
             
-            form.ajaxSubmit({
+            form.ajaxSubmit({ 
                 url: 'drive/delete',
                 type: 'POST',
                 success: function(response, status, xhr, $form) {

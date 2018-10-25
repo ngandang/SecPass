@@ -5,7 +5,7 @@
             <thead>
                 <tr align="center">
                     <th>Tên</th>
-                    <th>Loại</th>
+                    <th>Định Dạng</th>
                     <th>Kích Thước</th>
                     <th>Cập nhật cuối</th>
                     <th style="width:180px;"></th>
@@ -19,13 +19,14 @@
                     <td>{{$file['size']}}Byte</td>
                     <td>{{$file['lastModified']}} </td>
                     <td>                            
-                        <div onclick="share('{{ $file['name'] }}')" href = "#shareForm" data-toggle="modal" class="btn btn-sm">
+                        <div onclick="share('{{ $file['name'].'.'.$file['extension'] }}')" href = "#shareForm" data-toggle="modal" class="btn btn-sm">
                             <i class="flaticon-share"></i>
                         </div>
-                        <div onclick="download('{{ $file['name'] }}')" href="#downloadForm" data-toggle="modal" class="btn btn-sm">
+                        <div onclick="download('{{ $file['name'].'.'.$file['extension'] }}')" href="#downloadForm" class="btn btn-download">
                             <i class="flaticon-download"></i>
                         </div>
-                        <div onclick="del('{{ $file['name'] }}')" href = "#deleteForm" data-toggle="modal" class="btn btn-sm">
+                        
+                        <div onclick="del('{{ $file['name'].'.'.$file['extension'] }}')" href = "#deleteForm" data-toggle="modal" class="btn btn-sm">
                             <i class="flaticon-cancel"></i>
                         </div>
                     </td>

@@ -57,7 +57,7 @@ class HomeController extends Controller
         // $secret->account_id()->save($account);
         // $secret->data = bcrypt($request->password);
         
-        $accounts = Accounts::all();
+        $accounts = Accounts::all() ;
         return response()->json([
             'success' => true,
             // TODO: lang this message
@@ -214,7 +214,8 @@ class HomeController extends Controller
     }
     public function delFile(Request $request)
     {
-        Storage::delete($file);
+        $filename  = $request->filename;
+        Storage::disk('userstorage')->delete(Auth::user()->id.'/'.$filename);
 
         $allFiles = Storage::disk('userstorage')->allFiles(Auth::user()->id);
 
@@ -231,6 +232,12 @@ class HomeController extends Controller
             'message' => 'Xóa tài liệu thành công.',
             'view' => view('content.content-drive', compact('files'))->render()
         ]);
+    }
+
+    public function downFile(Request $request)
+    {
+        $filename  = $request->filename;
+        return Storage::disk('userstorage')->download(Auth::user()->id.'/'.$filename);
     }
 
 
@@ -326,6 +333,10 @@ class HomeController extends Controller
     public function groups()
     {
         return view('page.groups');
+    }
+    public function profile()
+    {
+        return view('page.profile');
     }
 
 }

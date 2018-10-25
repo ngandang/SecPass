@@ -47,8 +47,8 @@ Route::group(['prefix'=>'securenote','as'=>'securenote'], function(){
 Route::get('drive','HomeController@drive');
 Route::group(['prefix'=>'drive','as'=>'drive'], function(){
     Route::post('add','HomeController@addFile');
-    // Route::post('edit','HomeController@editNote');
     Route::post('delete','HomeController@delFile');
+    Route::post('download','HomeController@downFile');
 });
 
 
@@ -57,6 +57,7 @@ Route::get('dashboard','HomeController@dashboard');
 Route::get('groups','HomeController@groups');
 Route::get('sharewith','HomeController@sharewith');
 Route::get('setting','HomeController@setting');
+Route::get('profile','HomeController@profile');
 
 Route::get('init_roles', function () {
     App\Roles::create(
