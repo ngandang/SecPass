@@ -459,7 +459,7 @@
 														</span>
 													</li>
 													<li class="m-nav__item">
-														<a href="header/profile.html" class="m-nav__link">
+														<a href="profile" class="m-nav__link">
 															<i class="m-nav__link-icon flaticon-profile-1"></i>
 															<span class="m-nav__link-title">
 																<span class="m-nav__link-wrap">
@@ -476,7 +476,7 @@
 														</a>
 													</li>
 													<li class="m-nav__item">
-														<a href="header/profile.html" class="m-nav__link">
+														<a href="#" class="m-nav__link">
 															<i class="m-nav__link-icon flaticon-share"></i>
 															<span class="m-nav__link-text">
 																Lịch sử hoạt động
