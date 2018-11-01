@@ -53,3 +53,17 @@ tbody{
 table i{
     font-size: 16px !important;
 }
+.copyusername:hover{
+    cursor: pointer;
+}
+.field-icon {
+    float: right;
+    margin-right: 7px;
+    margin-top: -25px;
+    position: relative;
+    z-index: 2;
+  }
+
+#generate-password{
+    margin-top:27px;
+}

@@ -72,13 +72,19 @@
                                 <input type="text" name="url" class="form-control" required>
                             </div>
                             <div class="form-group row">
-                                <div class="col-md-6">
+                                <div class="col-md-5">
                                     <label for="username" class="text-info">Tên đăng nhập</label>
                                     <input type="text" name="username" class="form-control" required>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-5">
                                     <label for="password" class="text-info">Mật khẩu</label>
-                                    <input type="password" name="password" class="form-control" required>
+                                    <input id="password-field" type="password" name="password" class="form-control" required>
+                                    <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                                </div>
+                                <div class="col-md-2">
+                                    <button onclick="generate();" type="button" id="generate-password" class="btn btn-metal">
+                                        <i class="fa fa-magic fa-fw fa-lg"></i>
+                                    </button>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -123,13 +129,19 @@
                                 <input type="text" name="url" class="form-control" required>
                             </div>
                             <div class="form-group row">
-                                <div class="col-md-6">
+                                <div class="col-md-5">
                                     <label for="username" class="text-info">Tên đăng nhập</label>
                                     <input type="text" name="username" class="form-control" required>
                                 </div>
-                                <div class="col-md-6">
-                                    <label for="password" class="text-info">Mật khẩu</label>
-                                    <input type="password" name="password" placeholder="Đã được bảo mật" class="form-control">
+                                <div class="col-md-5">
+                                <label for="password" class="text-info">Mật khẩu</label>
+                                    <input id="password-edit" type="password" name="password" placeholder="Đã được bảo mật" class="form-control" required>
+                                    <span toggle="#password-edit" class="fa fa-fw fa-eye field-icon toggle-edit"></span>
+                                </div>
+                                <div class="col-md-2">
+                                    <button onclick="generateEdit();" type="button" id="generate-password" class="btn btn-metal">
+                                        <i class="fa fa-magic fa-fw fa-lg"></i>
+                                    </button>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -226,7 +238,44 @@
         $('#shareForm input[name=id]').val(id);
     }
 
+    function randomPassword() {
+        var length = 12;
+        var chars = "abcdefghijklmnopqrstuvwxyz!@#$%^&*()-+<>ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        var pass = "";
+        for (var x = 0; x < length; x++) {
+            var i = Math.floor(Math.random() * chars.length);
+            pass += chars.charAt(i);
+        }
+        return pass;
+        
+    }
+    function generate() {
+        $('#addForm input[name=password]').val(randomPassword());
+    }
+    function generateEdit(){
+        $('#editForm input[name=password]').val(randomPassword());
+    }
     $(document).ready(function(){
+
+        $('.toggle-password').click(function() {
+            $(this).toggleClass("fa-eye fa-eye-slash");
+            var input = $($(this).attr("toggle"));
+            if (input.attr("type") == "password") {
+                input.attr("type", "text");
+            } else {
+                input.attr("type", "password");
+            }
+        });
+        $('.toggle-edit').click(function() {
+            $(this).toggleClass("fa-eye fa-eye-slash");
+            var input = $($(this).attr("toggle"));
+            if (input.attr("type") == "password") {
+                input.attr("type", "text");
+            } else {
+                input.attr("type", "password");
+            }
+        });
+
         $('.copyusername').click(function(e){
             var copyText = $(this).text();
             var $temp = $("<input>");
@@ -332,6 +381,8 @@
                 }
             });
         });
+
+        
     });
 </script>
 

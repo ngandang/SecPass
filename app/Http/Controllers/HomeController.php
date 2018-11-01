@@ -240,6 +240,15 @@ class HomeController extends Controller
         return Storage::disk('userstorage')->download(Auth::user()->id.'/'.$filename);
     }
 
+    // public function generate($pass){
+    //     return Keygen::numeric(16)->generate();
+    // }
+    // public function generatePassword(Request $request){
+        
+    // }
+    // public function generatePassword(){
+    //     addForm.password.value = generatePassword(addForm.pass.value);
+    // }
 
     // Ngân: Login tự viết
     // public function getLogin() {

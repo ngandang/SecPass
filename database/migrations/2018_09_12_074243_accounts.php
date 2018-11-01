@@ -18,6 +18,7 @@ class Accounts extends Migration
             $table->primary('id');
             $table->string('name');
             $table->string('username');
+            $table->string('password');
             $table->datetime('expiry_date')->nullable();
             $table->string('uri')->nullable();
             $table->longtext('description')->nullable();
