@@ -208,7 +208,7 @@ var SnippetLogin = function() {
             showMsg(form, '', 'Vui lòng chờ trong giây lát.');
             
             form.ajaxSubmit({
-                url: '/register',                
+                url: 'register',                
                 type: 'POST',
                 success: function(response, status, xhr, $form) {
                 	// similate 1s delay

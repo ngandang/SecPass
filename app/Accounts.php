@@ -17,7 +17,7 @@ class Accounts extends Model
     protected $table = 'accounts';
     public function Secrets()
     {
-        return $this->hasMany('App\Secrets', 'account_id','id');
+        return $this->hasOne('App\Secrets', 'account_id','id');
     }
 
 }

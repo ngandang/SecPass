@@ -57,11 +57,12 @@ class Users extends Authenticatable
 
     public function Secrets()
     { 
-           return $this->hasOne('App\Secrets','user_id','id');
+           return $this->hasMany('App\Secrets','user_id','id');
     }
     
     public function GPGKeys()
     { 
            return $this->hasOne('App\GPGKeys','user_id','id');
     }
+
 }

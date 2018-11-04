@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 use App\Accounts;
 use App\Users;
 use App\Notes;
@@ -36,10 +37,31 @@ class HomeController extends Controller
     {
         return view('page.dashboard');
     }
+    public function getUserAccounts()
+    {
 
+        $accounts = DB::table('accounts')
+            ->join('secrets', 'accounts.id', '=', 'secrets.account_id')
+            ->where('secrets.user_id', '=', Auth::user()->id)
+            ->select('accounts.*')
+            ->get();
+        
+        return $accounts;
+    }
+    public function getUserNotes()
+    {
+        $notes = DB::table('notes')
+            ->join('secrets', 'notes.id', '=', 'secrets.note_id')
+            ->where('secrets.user_id', '=', Auth::user()->id)
+            ->select('notes.*')
+            ->get();
+        
+        return $notes;
+    }
     public function accounts()
     {
-        $accounts = Accounts::all();
+        $accounts = $this->getUserAccounts();
+            
         return view('page.accounts', compact('accounts'));
     }
 
@@ -61,7 +83,7 @@ class HomeController extends Controller
         $secret->data = $request->password;
         $secret->save();
         
-        $accounts = Accounts::all() ;
+        $accounts = $this->getUserAccounts();
         return response()->json([
             'success' => true,
             // TODO: lang this message
@@ -81,7 +103,7 @@ class HomeController extends Controller
         $acc->description = $request->description;
         $acc->save();
         
-        $accounts = Accounts::all();
+        $accounts = $this->getUserAccounts();
         return response()->json([
             'success' => true,
             // TODO: lang this message
@@ -95,7 +117,7 @@ class HomeController extends Controller
         $acc = Accounts::find($idDelete);
         $acc->delete();
 
-        $accounts = Accounts::all();
+        $accounts = $this->getUserAccounts();
         return response()->json([
             'success' => true,
             // TODO: lang this message
@@ -112,7 +134,8 @@ class HomeController extends Controller
    
     public function notes()
     {
-        $notes = Notes::all();//where('user_id','=',Auth::user()->id);
+        $notes = $this->getUserNotes();
+
         return view('page.notes',compact('notes'));
     }
 
@@ -131,7 +154,7 @@ class HomeController extends Controller
         $secret->data = bcrypt($req->note);
         $secret->save();
 
-        $notes = Notes::all();
+        $notes = $this->getUserNotes();
         return response()->json([
             'success' => true,
             // TODO: lang this message
@@ -148,7 +171,7 @@ class HomeController extends Controller
         $note->content = $req->note;
         $note->save();
 
-        $notes = Notes::all();
+        $notes = $this->getUserNotes();
         return response()->json([
             'success' => true,
             // TODO: lang this message
@@ -161,7 +184,7 @@ class HomeController extends Controller
         $note = Notes::find($idDel);
         $note->delete();
 
-        $notes = Notes::all();
+        $notes = $this->getUserNotes();
         return response()->json([
             'success' => true,
             // TODO: lang this message
