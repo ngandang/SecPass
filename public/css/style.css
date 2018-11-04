@@ -1,4 +1,6 @@
-
+html {
+    overflow-y: scroll;
+}
 #addFormTitle{
     color: #072ed5 !important;
     font-weight: 500;

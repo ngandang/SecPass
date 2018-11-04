@@ -68,7 +68,7 @@
                                 <div class="form-group m-form__group">
                                     <div class="alert">
                                         Lỗi xảy ra! <br>
-                                        Xác thực tài khoản không thành công. Vui lòng nhập lại email để nhận mã xác thực mới.
+                                        Xác thực tài khoản không thành công. Vui lòng kiểm tra hoặc nhập lại email để nhận mã xác thực mới.
                                     </div>
 								</div>
 								<div class="form-group m-form__group">

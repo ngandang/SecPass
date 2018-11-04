@@ -205,7 +205,8 @@ var SnippetLogin = function() {
             }
 
             btn.addClass('m-loader m-loader--right m-loader--light').attr('disabled', true);
-
+            showMsg(form, '', 'Vui lòng chờ trong giây lát.');
+            
             form.ajaxSubmit({
                 url: '/register',                
                 type: 'POST',

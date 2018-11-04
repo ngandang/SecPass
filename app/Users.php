@@ -47,17 +47,17 @@ class Users extends Authenticatable
 
     public function Profiles()
     {
-        return $this->hasOne('App\Profile', 'user_id','id');
+        return $this->hasOne('App\Profiles', 'user_id','id');
     }
 
     public function Roles()
     { 
-           return $this->belongsTo('App\Role','role_id','id');
+           return $this->belongsTo('App\Roles','role_id','id');
     }
 
     public function Secrets()
     { 
-           return $this->hasOne('App\Secret','user_id','id');
+           return $this->hasOne('App\Secrets','user_id','id');
     }
     
     public function GPGKeys()

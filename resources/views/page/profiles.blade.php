@@ -19,22 +19,66 @@
                 <li class="m-nav__item">
                     <a href="" class="m-nav__link">
                         <span class="m-nav__link-text">
-                            Ghi chú bảo mật
+                            Thông tin cá nhân
                         </span>
                     </a>
                 </li>
             </ul>
         </div>
-        <div class="btn-add-note">
-            <a class="btn btn-accent m-btn m-btn--custom m-btn--icon m-btn--pill m-btn--air" href="#addForm" data-toggle="modal">
-                <span>
-                    <i class="la la-plus"></i>
-                    <span>
-                        Thêm ghi chú
-                    </span>
-                </span>
-            </a>
-        </div>
+        <div class="icon">
+			<div class="m-dropdown m-dropdown--inline m-dropdown--arrow m-dropdown--align-right m-dropdown--align-push" data-dropdown-toggle="hover" aria-expanded="true">
+				<a href="#" class="m-portlet__nav-link btn btn-lg btn-secondary  m-btn m-btn--outline-2x m-btn--air m-btn--icon m-btn--icon-only m-btn--pill  m-dropdown__toggle">
+					<i class="la la-plus m--hide"></i>
+					<i class="la la-ellipsis-h"></i>
+				</a>
+				<div class="m-dropdown__wrapper">
+					<span class="m-dropdown__arrow m-dropdown__arrow--right m-dropdown__arrow--adjust" style="left: auto; right: 21.5px;"></span>
+					<div class="m-dropdown__inner">
+						<div class="m-dropdown__body">
+							<div class="m-dropdown__content">
+								<ul class="m-nav">
+									<li class="m-nav__section m-nav__section--first m--hide">
+										<span class="m-nav__section-text">
+											Tác vụ nhanh
+										</span>
+									</li>
+									<li class="m-nav__item">
+										<a href="" class="m-nav__link">
+											<i class="m-nav__link-icon flaticon-share"></i>
+											<span class="m-nav__link-text">
+												Hoạt động
+											</span>
+										</a>
+									</li>
+									<li class="m-nav__item">
+										<a href="" class="m-nav__link">
+											<i class="m-nav__link-icon flaticon-chat-1"></i>
+											<span class="m-nav__link-text">
+												Thông báo
+											</span>
+										</a>
+									</li>
+									<li class="m-nav__item">
+										<a href="" class="m-nav__link">
+											<i class="m-nav__link-icon flaticon-lifebuoy"></i>
+											<span class="m-nav__link-text">
+												Hỗ trợ
+											</span>
+										</a>
+									</li>
+									<li class="m-nav__separator m-nav__separator--fit"></li>
+									<li class="m-nav__item">
+										<a href="#" class="btn btn-outline-danger m-btn m-btn--pill m-btn--wide btn-sm">
+											Gửi đi
+										</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
     </div>
 </div>
  
@@ -46,19 +90,19 @@
                 <div class="m-portlet__body">
                     <div class="m-card-profile">
                         <div class="m-card-profile__title m--hide">
-                            Your Profile
+                            Thông tin cá nhân
                         </div>
                         <div class="m-card-profile__pic">
                             <div class="m-card-profile__pic-wrapper">
-                                <img src="{{ asset('app/media/img/users/id.jpg') }}" alt=""/>
+                                <img src="{{ Storage::disk('public')->url('avatars/' . $user->profiles->avatar) }}" alt=""/>
                             </div>
                         </div>
                         <div class="m-card-profile__details">
                             <span class="m-card-profile__name">
-                                Mark Andre
+                                {{ Auth::user()->name }}
                             </span>
                             <a href="" class="m-card-profile__email m-link">
-                                mark.andre@gmail.com
+                                {{ Auth::user()->email }}
                             </a>
                         </div>
                     </div>
@@ -71,26 +115,9 @@
                         </li>
                         <li class="m-nav__item">
                             <a href="../header/profile&amp;demo=default.html" class="m-nav__link">
-                                <i class="m-nav__link-icon flaticon-profile-1"></i>
-                                <span class="m-nav__link-title">
-                                    <span class="m-nav__link-wrap">
-                                        <span class="m-nav__link-text">
-                                            My Profile
-                                        </span>
-                                        <span class="m-nav__link-badge">
-                                            <span class="m-badge m-badge--success">
-                                                2
-                                            </span>
-                                        </span>
-                                    </span>
-                                </span>
-                            </a>
-                        </li>
-                        <li class="m-nav__item">
-                            <a href="../header/profile&amp;demo=default.html" class="m-nav__link">
-                                <i class="m-nav__link-icon flaticon-share"></i>
+                                <i class="m-nav__link-icon flaticon-time-3"></i>
                                 <span class="m-nav__link-text">
-                                    Activity
+                                    Hoạt động
                                 </span>
                             </a>
                         </li>
@@ -98,23 +125,7 @@
                             <a href="../header/profile&amp;demo=default.html" class="m-nav__link">
                                 <i class="m-nav__link-icon flaticon-chat-1"></i>
                                 <span class="m-nav__link-text">
-                                    Messages
-                                </span>
-                            </a>
-                        </li>
-                        <li class="m-nav__item">
-                            <a href="../header/profile&amp;demo=default.html" class="m-nav__link">
-                                <i class="m-nav__link-icon flaticon-graphic-2"></i>
-                                <span class="m-nav__link-text">
-                                    Sales
-                                </span>
-                            </a>
-                        </li>
-                        <li class="m-nav__item">
-                            <a href="../header/profile&amp;demo=default.html" class="m-nav__link">
-                                <i class="m-nav__link-icon flaticon-time-3"></i>
-                                <span class="m-nav__link-text">
-                                    Events
+                                    Thông báo
                                 </span>
                             </a>
                         </li>
@@ -122,7 +133,7 @@
                             <a href="../header/profile&amp;demo=default.html" class="m-nav__link">
                                 <i class="m-nav__link-icon flaticon-lifebuoy"></i>
                                 <span class="m-nav__link-text">
-                                    Support
+                                    Hỗ trợ
                                 </span>
                             </a>
                         </li>
@@ -140,17 +151,17 @@
                             <li class="nav-item m-tabs__item">
                                 <a class="nav-link m-tabs__link active" data-toggle="tab" href="#m_user_profile_tab_1" role="tab">
                                     <i class="flaticon-share m--hide"></i>
-                                    Update Profile
+                                    Cập nhật thông tin
                                 </a>
                             </li>
                             <li class="nav-item m-tabs__item">
                                 <a class="nav-link m-tabs__link" data-toggle="tab" href="#m_user_profile_tab_2" role="tab">
-                                    Messages
+                                    Chữ ký điện tử
                                 </a>
                             </li>
                             <li class="nav-item m-tabs__item">
                                 <a class="nav-link m-tabs__link" data-toggle="tab" href="#m_user_profile_tab_3" role="tab">
-                                    Settings
+                                    Thiết lập
                                 </a>
                             </li>
                         </ul>
@@ -163,35 +174,43 @@
                             <div class="m-portlet__body">
                                 <div class="form-group m-form__group m--margin-top-10 m--hide">
                                     <div class="alert m-alert m-alert--default" role="alert">
-                                        The example form below demonstrates common HTML form elements that receive updated styles from Bootstrap with additional classes.
+                                        <!-- TODO: Hiện alert nếu user cần thêm thông tin nào đó, ví dụ như số điện thoại, báo chưa xác thực -->
                                     </div>
                                 </div>
                                 <div class="form-group m-form__group row">
                                     <div class="col-10 ml-auto">
                                         <h3 class="m-form__section">
-                                            Personal Details
+                                            Thông tin cá nhân
                                         </h3>
                                     </div>
                                 </div>
                                 <div class="form-group m-form__group row">
                                     <label for="example-text-input" class="col-2 col-form-label">
-                                        Full Name
+                                        Tên hiển thị
                                     </label>
                                     <div class="col-7">
-                                        <input class="form-control m-input" type="text" value="Mark Andre">
+                                        <input class="form-control m-input" type="text" value="{{ $user->name }}">
                                     </div>
                                 </div>
                                 <div class="form-group m-form__group row">
                                     <label for="example-text-input" class="col-2 col-form-label">
-                                        Occupation
+                                        Tên
                                     </label>
                                     <div class="col-7">
-                                        <input class="form-control m-input" type="text" value="CTO">
+                                        <input class="form-control m-input" type="text" value="{{ $user->profiles->first_name }}">
                                     </div>
                                 </div>
                                 <div class="form-group m-form__group row">
                                     <label for="example-text-input" class="col-2 col-form-label">
-                                        Company Name
+                                        Họ
+                                    </label>
+                                    <div class="col-7">
+                                        <input class="form-control m-input" type="text" value="{{ $user->profiles->last_name }}">
+                                    </div>
+                                </div>
+                                <!-- <div class="form-group m-form__group row">
+                                    <label for="example-text-input" class="col-2 col-form-label">
+                                        Công ty
                                     </label>
                                     <div class="col-7">
                                         <input class="form-control m-input" type="text" value="Keenthemes">
@@ -199,32 +218,79 @@
                                             If you want your invoices addressed to a company. Leave blank to use your full name.
                                         </span>
                                     </div>
-                                </div>
+                                </div> -->
                                 <div class="form-group m-form__group row">
                                     <label for="example-text-input" class="col-2 col-form-label">
-                                        Phone No.
+                                        Giới tính
                                     </label>
                                     <div class="col-7">
-                                        <input class="form-control m-input" type="text" value="+456669067890">
-                                    </div>
-                                </div>
-                                
-                                <div class="form-group m-form__group row">
-                                    <label for="example-text-input" class="col-2 col-form-label">
-                                        Address
-                                    </label>
-                                    <div class="col-7">
-                                        <input class="form-control m-input" type="text" value="L-12-20 Vertex, Cybersquare">
+                                        <input class="form-control m-input" type="text" value="{{ @$user->profiles->gender }}">
                                     </div>
                                 </div>
                                 <div class="form-group m-form__group row">
                                     <label for="example-text-input" class="col-2 col-form-label">
-                                        City
+                                        Ngày sinh
                                     </label>
                                     <div class="col-7">
-                                        <input class="form-control m-input" type="text" value="San Francisco">
+                                        <input class="form-control m-input" type="text" value="{{ @$user->profiles->date_of_birth }}">
                                     </div>
                                 </div>
+                                <div class="form-group m-form__group row">
+                                    <label for="example-text-input" class="col-2 col-form-label">
+                                        Số điện thoại
+                                    </label>
+                                    <div class="col-7">
+                                        <input class="form-control m-input" type="text" value="{{ @$user->profiles->phone }}">
+                                    </div>
+                                </div>
+                                <div class="form-group m-form__group row">
+                                    <label for="example-text-input" class="col-2 col-form-label">
+                                        Địa chỉ
+                                    </label>
+                                    <div class="col-7">
+                                        <input class="form-control m-input" type="text" value="{{ @$user->profiles->address }}">
+                                    </div>
+                                </div>
+                                <div class="m-form__seperator m-form__seperator--dashed m-form__seperator--space-2x"></div>
+													<div class="form-group m-form__group row">
+														<div class="col-10 ml-auto">
+															<h3 class="m-form__section">
+																Liên kết mạng xã hội
+															</h3>
+														</div>
+													</div>
+													<div class="form-group m-form__group row">
+														<label for="example-text-input" class="col-2 col-form-label">
+															Linkedin
+														</label>
+														<div class="col-7">
+															<input class="form-control m-input" type="text" value="www.linkedin.com/Mark.Andre">
+														</div>
+													</div>
+													<div class="form-group m-form__group row">
+														<label for="example-text-input" class="col-2 col-form-label">
+															Facebook
+														</label>
+														<div class="col-7">
+															<input class="form-control m-input" type="text" value="www.facebook.com/Mark.Andre">
+														</div>
+													</div>
+													<div class="form-group m-form__group row">
+														<label for="example-text-input" class="col-2 col-form-label">
+															Twitter
+														</label>
+														<div class="col-7">
+															<input class="form-control m-input" type="text" value="www.twitter.com/Mark.Andre">
+														</div>
+													</div>
+													<div class="form-group m-form__group row">
+														<label for="example-text-input" class="col-2 col-form-label">
+															Instagram
+														</label>
+														<div class="col-7">
+															<input class="form-control m-input" type="text" value="www.instagram.com/Mark.Andre">
+														</div>
+													</div>
                             </div>
                             <div class="m-portlet__foot m-portlet__foot--fit">
                                 <div class="m-form__actions">
@@ -232,11 +298,11 @@
                                         <div class="col-2"></div>
                                         <div class="col-7">
                                             <button type="reset" class="btn btn-accent m-btn m-btn--air m-btn--custom">
-                                                Save changes
+                                                Lưu thay đổi
                                             </button>
                                             &nbsp;&nbsp;
                                             <button type="reset" class="btn btn-secondary m-btn m-btn--air m-btn--custom">
-                                                Cancel
+                                                Huỷ
                                             </button>
                                         </div>
                                     </div>

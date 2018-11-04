@@ -15,6 +15,8 @@ class Secrets extends Model
      */
     public $incrementing = false;
 
+    protected $guarded = [];
+
     protected $table = 'secrets';
     
     public function Users()

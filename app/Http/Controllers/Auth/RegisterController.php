@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Users;
+use App\Profiles;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 
 use App\Mail\VerifyUser;
@@ -91,7 +93,9 @@ class RegisterController extends Controller
 
         $user = $this->create($request->all());
 
-        
+        Profiles::create([
+            'user_id' => $user->id,
+        ]);
 
         Mail::to($user)->send(new VerifyUser($user));
 

@@ -8,8 +8,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use App\Accounts;
-use App\User;
+use App\Users;
 use App\Notes;
+use App\Profiles;
+use App\Secrets;
 use Hash;
 
 
@@ -50,12 +52,14 @@ class HomeController extends Controller
         $account->description = $request->description;
         $account->save();
 
-        //TODO: nối id tới secret ứng mỗi user khác nhau
-        // $secret = new Secrets;
-        // $user = user();
-        // $secret->user_id()->save($user);
-        // $secret->account_id()->save($account);
-        // $secret->data = bcrypt($request->password);
+        // Nối id tới secret ứng mỗi user khác nhau
+        $secret = new Secrets;
+        $user = Auth::user();
+        $secret->user_id = $user->id;
+        $secret->account_id = $account->id;
+        // TODO: encrypt OpenGPG
+        $secret->data = $request->password;
+        $secret->save();
         
         $accounts = Accounts::all() ;
         return response()->json([
@@ -116,8 +120,16 @@ class HomeController extends Controller
     {
         $note = new Notes();
         $note->title = $req->title;
-        $note->content = $req->note;
         $note->save();
+
+        // Nối id tới secret ứng mỗi user khác nhau
+        $secret = new Secrets;
+        $user = Auth::user();
+        $secret->user_id = $user->id;
+        $secret->note_id = $note->id;
+        // TODO: encrypt OpenGPG
+        $secret->data = bcrypt($req->note);
+        $secret->save();
 
         $notes = Notes::all();
         return response()->json([
@@ -234,7 +246,7 @@ class HomeController extends Controller
         ]);
     }
 
-    public function downFile(Request $request)
+    public function downloadFile(Request $request)
     {
         $filename  = $request->filename;
         return Storage::disk('userstorage')->download(Auth::user()->id.'/'.$filename);
@@ -343,9 +355,10 @@ class HomeController extends Controller
     {
         return view('page.groups');
     }
-    public function profile()
-    {
-        return view('page.profile');
-    }
+    public function profiles()
+    { 
+        $user = Auth::user();
+        return view('page.profiles',compact('user',$user));
+    } 
 
 }

@@ -49,7 +49,7 @@ Route::get('drive','HomeController@drive');
 Route::group(['prefix'=>'drive','as'=>'drive'], function(){
     Route::post('add','HomeController@addFile');
     Route::post('delete','HomeController@delFile');
-    Route::post('download','HomeController@downFile');
+    Route::post('download','HomeController@downloadFile');
 });
 
 
@@ -57,8 +57,8 @@ Route::get('credential','HomeController@credential');
 Route::get('dashboard','HomeController@dashboard');
 Route::get('groups','HomeController@groups');
 Route::get('sharewith','HomeController@sharewith');
-Route::get('setting','HomeController@setting');
-Route::get('profile','HomeController@profile');
+Route::get('settings','HomeController@settings');
+Route::get('profiles','HomeController@profiles');
 
 Route::get('init_roles', function () {
     App\Roles::create(
@@ -79,5 +79,14 @@ Route::get('init_roles', function () {
             'name' => 'user',
             'description' => 'Normal user',
         ]);
+
+    App\Users::create(
+        [
+            'name' => 'root',
+            'email' => 'master@secpass.com',
+            'role_id' => '5bdf5220-d75c-11e8-843b-a7f6cbee423d',
+        ]);
+        
     return 'Roles created. Good to go !!';
+
 });

@@ -14,10 +14,12 @@ class Profiles extends Model
      */
     public $incrementing = false;
 
+    protected $guarded = [];
+
     protected $table = 'profiles';
 
     public function Users()
     {
-        return $this->hasOne('App\Profiles','user_id','id');
+        return $this->belongsTo('App\Profiles','user_id','id');
     }
 }
