@@ -60,6 +60,11 @@ Route::get('sharewith','HomeController@sharewith');
 Route::get('settings','HomeController@settings');
 Route::get('profiles','HomeController@profiles');
 
+Route::get('email','HomeController@sendMail');
+
+Route::get('test',function(){
+    return view('page.test');
+});
 Route::get('init_roles', function () {
     App\Roles::create(
         [

@@ -64,5 +64,8 @@ class Users extends Authenticatable
     { 
            return $this->hasOne('App\GPGKeys','user_id','id');
     }
-
+    public function Accounts()
+    {
+        return $this->hasManyThrough('App\Accounts','App\Secrets'.'user_id','account_id');
+    }
 }
