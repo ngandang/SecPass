@@ -60,6 +60,7 @@ Route::get('sharewith','HomeController@sharewith');
 Route::get('settings','HomeController@settings');
 Route::get('profiles','HomeController@profiles');
 
+<<<<<<< HEAD
 Route::get('test_gpg', function () {
     echo '<pre>';
 
@@ -76,6 +77,13 @@ Route::get('test_gpg', function () {
 
 });
 
+=======
+Route::get('email','HomeController@sendMail');
+
+Route::get('test',function(){
+    return view('page.test');
+});
+>>>>>>> faa39b3650c433b716fb69c475b3b53474eed8ee
 Route::get('init_roles', function () {
     App\Roles::create(
         [

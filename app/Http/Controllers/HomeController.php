@@ -275,6 +275,18 @@ class HomeController extends Controller
         return Storage::disk('userstorage')->download(Auth::user()->id.'/'.$filename);
     }
 
+    public function sendMail()
+    {
+        $data = array('name'=>"Ngan", "body" => "Test mail");
+    
+        Mail::send('emails.sendmail', $data, function($message) {
+            $message->to('dangthingan1996@gmail.com', 'Ngan Dang')
+                    ->subject('Web Testing Mail');
+            $message->from('ngandt52@gmail.com','SecPass');
+        });
+        return "Your email has been sent successfully";
+    }
+
     // public function generate($pass){
     //     return Keygen::numeric(16)->generate();
     // }

@@ -69,3 +69,25 @@ table i{
 #generate-password{
     margin-top:27px;
 }
+.file-upload{
+    display: none;
+}
+.profile-pic{
+    width: 130px;
+    height: 130px;
+}
+
+.p-picture{
+    position: relative;
+}
+.p-image{
+    position: absolute;
+    bottom: 32px;
+    right: 13px;
+}
+.p-image .fa-camera{
+    font-size: 20px;
+}
+.p-image:hover{
+    color: #88898a;
+}

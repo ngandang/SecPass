@@ -92,11 +92,38 @@
                         <div class="m-card-profile__title m--hide">
                             Thông tin cá nhân
                         </div>
-                        <div class="m-card-profile__pic">
+                        <div class="m-card-profile__pic p-picture">
                             <div class="m-card-profile__pic-wrapper">
-                                <img src="{{ Storage::disk('public')->url('avatars/' . $user->profiles->avatar) }}" alt=""/>
+                                <img class="profile-pic" src="{{ url('storage/avatars/' . $user->profiles->avatar) }}" alt=""/>
+                            </div>
+                            <div class="p-image">
+                                <i class="fa fa-camera upload-button"></i>
+                                <input class="file-upload" type="file" accept="image/*"/>
                             </div>
                         </div>
+
+                        <!-- <div class="modal fade" id="cropImagePop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						    <div class="modal-dialog">
+						        <div class="modal-content">
+							        <div class="modal-header">
+							            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							            <h4 class="modal-title" id="myModalLabel">
+							  	        Edit Photo
+                                        </h4>
+							        </div>
+                                    <div class="modal-body">
+                                        <div id="upload-demo" class="center-block"></div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        <button type="button" id="cropImageBtn" class="btn btn-primary">Crop</button>
+                                    </div>
+						        </div>
+						    </div>
+						</div> -->
+                        
+
+
                         <div class="m-card-profile__details">
                             <span class="m-card-profile__name">
                                 {{ Auth::user()->name }}
@@ -297,7 +324,7 @@
                                     <div class="row">
                                         <div class="col-2"></div>
                                         <div class="col-7">
-                                            <button type="reset" class="btn btn-accent m-btn m-btn--air m-btn--custom">
+                                            <button id="saveSubmit" type="submit" class="btn btn-accent m-btn m-btn--air m-btn--custom">
                                                 Lưu thay đổi
                                             </button>
                                             &nbsp;&nbsp;
@@ -318,5 +345,37 @@
 </div>
 <!-- END: Content -->
 
-
 @endsection
+
+
+<!-- BEGIN: Page Scripts -->
+@section('pageSnippets')
+<script>
+    $(document).ready(function(){
+        var readURL = function(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('.profile-pic').attr('src', e.target.result);
+                }
+        
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        $('.file-upload').on('change', function()
+        {
+            readURL(this);
+        });
+        $('.upload-button').on('click', function() 
+        {
+            $('.file-upload').click();
+        });
+
+        
+    });
+</script>
+
+<!-- END: Page Scripts -->
+@endsection
+
