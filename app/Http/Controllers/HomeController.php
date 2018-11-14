@@ -43,7 +43,7 @@ class HomeController extends Controller
         $accounts = DB::table('accounts')
             ->join('secrets', 'accounts.id', '=', 'secrets.account_id')
             ->where('secrets.user_id', '=', Auth::user()->id)
-            ->select('accounts.*')
+            ->select('accounts.*','secrets.data')
             ->get();
         
         return $accounts;
@@ -131,7 +131,17 @@ class HomeController extends Controller
         $acc = Account::find($idShare);
         //TODO: share account
     }
-   
+    public function copyPassword(Request $request)
+    {
+        $account_id = $request->id;
+        $secret = Secrets::where('account_id', $account_id)->first();
+        // TODO: decrypt OpenPGP
+        return response()->json([
+            'success' => true,
+            'message' => 'Đã sao chép mật khẩu',
+            'password' => $secret->data
+        ]);
+    }
     public function notes()
     {
         $notes = $this->getUserNotes();
@@ -151,7 +161,7 @@ class HomeController extends Controller
         $secret->user_id = $user->id;
         $secret->note_id = $note->id;
         // TODO: encrypt OpenGPG
-        $secret->data = bcrypt($req->note);
+        $secret->data = $req->note;
         $secret->save();
 
         $notes = $this->getUserNotes();
