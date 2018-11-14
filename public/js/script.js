@@ -38,8 +38,30 @@ var DataDismiss = function () {
     });
 };
 
+// addon
+var connectAddon = function () {
+    var editorExtensionId = "bmifpeofnjjhlefcaflhdegmpeljhede";
+    chrome.runtime.sendMessage(editorExtensionId, {openUrlInEditor: "https://www.google.com"},
+        function(response) {
+        //   if (!response.success)
+            // handleError  (url);
+            console.log(response);
+        });
+
+
+    // $('[data-dismiss=modal]').on('click', function () {
+    //     var form = $(this).closest('form');
+    //     form.clearForm();
+    //     form.validate().resetForm();
+    // });
+};
+
 jQuery(document).ready(function() {    
     SessionTimeout.init();
     DataDismiss();
+    connectAddon();
 });
+
+
+
 

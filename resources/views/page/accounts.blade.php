@@ -81,8 +81,9 @@
                                     <input id="password-field" type="password" name="password" class="form-control" required>
                                     <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
                                 </div>
-                                <div class="col-md-2">
-                                    <button onclick="generate();" type="button" id="generate-password" class="btn btn-metal">
+                                <div class="col-md-2" style="padding-left:8px;">
+                                    <label class="text-info">&nbsp</label>
+                                    <button onclick="generate();" type="button" class="btn btn-metal">
                                         <i class="fa fa-magic fa-fw fa-lg"></i>
                                     </button>
                                 </div>
@@ -135,11 +136,12 @@
                                 </div>
                                 <div class="col-md-5">
                                 <label for="password" class="text-info">Mật khẩu</label>
-                                    <input id="password-edit" type="password" name="password" placeholder="Đã được bảo mật" class="form-control" required>
+                                    <input id="password-edit" type="password" name="password" placeholder="Nhấn lấy mật khẩu" class="form-control" required>
                                     <span toggle="#password-edit" class="fa fa-fw fa-eye field-icon toggle-edit"></span>
                                 </div>
-                                <div class="col-md-2">
-                                    <button onclick="generateEdit();" type="button" id="generate-password" class="btn btn-metal">
+                                <div class="col-md-2" style="padding-left:8px;">
+                                    <label class="text-info">&nbsp</label>
+                                    <button onclick="generateEdit();" type="button" class="btn btn-metal">
                                         <i class="fa fa-magic fa-fw fa-lg"></i>
                                     </button>
                                 </div>
@@ -219,6 +221,53 @@
 <script src="{{ asset('js/validation_vi.js') }}" type="text/javascript"></script>
 
 <script> 
+    function copy(data) {
+        var copyText = data;
+        var $temp = $("<input>");
+        $("body").append($temp);        
+        $temp.val(copyText);
+        setTimeout(() => {
+            $temp.select();
+            document.execCommand("copy");
+            $temp.remove();
+        }, 500);
+        
+    }
+
+    function copyPassword(accId) {
+        var data = {
+            "_token": "{{ csrf_token() }}",
+            'id': accId,
+        };
+        $.ajax({
+            url: 'account/copyPassword',
+            type: 'POST',
+            data: data,
+            success: function(response, status, xhr, $form) {
+                var $temp = $("<input id='tempInput'>");
+                $("body").append($temp);        
+                $temp.val(response.password);   
+
+                swal({
+                    position: 'center',
+                    type: 'success',
+                    title: 'Đã sao chép mật khẩu',
+                    showConfirmButton: false,
+                    timer: 1500
+                });       
+            },
+            error: function(response, status, xhr, $form) {
+                console.log(response);
+                swal("", response.message.serialize(), "error");
+            }
+        });
+        setTimeout(() => {
+            var $temp = $("#tempInput");
+            $temp.select();        
+            document.execCommand("copy");
+            $temp.remove();
+        }, 500);
+    }    
 
     function edit(id, name, username, url, description){
         $('#editForm input[name=id]').val(id);
@@ -255,6 +304,7 @@
     function generateEdit(){
         $('#editForm input[name=password]').val(randomPassword());
     }
+
     $(document).ready(function(){
 
         $('.toggle-password').click(function() {
@@ -277,14 +327,21 @@
         });
 
         $('.copyusername').click(function(e){
-            var copyText = $(this).text();
-            var $temp = $("<input>");
-            $("body").append($temp);
-            $temp.val(copyText);
-            $temp.select();
-            document.execCommand("copy");
-            alert("Copied");
-            $temp.remove();
+            // var copyText = $(this).text();
+            // var $temp = $("<input>");
+            // $("body").append($temp);
+            // $temp.val(copyText);
+            // $temp.select();
+            // document.execCommand("copy");            
+            // $temp.remove();
+            copy($(this).text());
+            swal({
+                position: 'center',
+                type: 'success',
+                title: 'Đã sao chép tên đăng nhập',
+                showConfirmButton: false,
+                timer: 1500
+            });
         })
         $('#addSubmit').click(function(e){
             e.preventDefault();

@@ -16,11 +16,12 @@
             <tbody>
                 @foreach($accounts->sortByDesc('updated_at') as $acc)
                 <tr class="{{($loop->iteration % 2 != 0) ? 'odd' : 'even'}} gradeX" align="center">
+                    
                     <td>{{$acc->uri}}</td>
                     <td>
                         <a class="copyusername">{{$acc->username}}</a>
                     </td>
-                    <td><a href="">Copy</a></td>
+                    <td><a href="javascript:void();" onclick="copyPassword('{{$acc->id}}')">Sao chép</a></td>
                     <td>{{$acc->description}}</td>
                     <td>
                     @if ($acc->updated_at)
