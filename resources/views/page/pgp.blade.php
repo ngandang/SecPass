@@ -1,7 +1,7 @@
 @extends('layouts.master')
 @section('content')
 <div class="container">
-    <form id="run" action="">
+    <form id="pgp" action="">
         <input name="uid_name" type="text" placeholder="Name">
         <input name="uid_email" type="text" placeholder="Email">
         <input name="passphrase" type="text" placeholder="Password/Passphrase">
@@ -14,7 +14,7 @@
 
 @endsection
 
-@section('pageSnippets')
+@section('pageSnippetss')
 <script>
     var SnippetTest = function() {
         var handleSubmit = function () {
