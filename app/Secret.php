@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 
-class Secrets extends Model
+class Secret extends Model
 {
     use Uuids;
     /**
@@ -19,18 +19,18 @@ class Secrets extends Model
 
     protected $table = 'secrets';
     
-    public function Users()
+    public function User()
     {
-        return $this->belongsTo('App\Users', 'user_id','id');
+        return $this->belongsTo('App\User', 'user_id','id');
     }
 
-    public function Accounts()
+    public function Account()
     {
-        return $this->belongsTo('App\Accounts', 'account_id','id');
+        return $this->belongsTo('App\Account', 'account_id','id');
     }
 
-    public function Notes()
+    public function Note()
     {
-        return $this->belongsTo('App\Notes', 'note_id','id');
+        return $this->belongsTo('App\Note', 'note_id','id');
     }
 }

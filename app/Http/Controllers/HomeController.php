@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\SendMailable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
-use App\Accounts;
-use App\Users;
-use App\Notes;
-use App\Profiles;
-use App\Secrets;
+
+use App\Account;
+use App\User;
+use App\Note;
+use App\Profile;
+use App\Secret;
 use Hash;
+use App\Mail\SendMailable;
 
 
 class HomeController extends Controller
@@ -37,37 +38,38 @@ class HomeController extends Controller
     {
         return view('page.dashboard');
     }
-    public function getUserAccounts()
-    {
+    // public function getUserAccounts()
+    // {
 
-        $accounts = DB::table('accounts')
-            ->join('secrets', 'accounts.id', '=', 'secrets.account_id')
-            ->where('secrets.user_id', '=', Auth::user()->id)
-            ->select('accounts.*','secrets.data')
-            ->get();
+    //     $accounts = DB::table('accounts')
+    //         ->join('secrets', 'accounts.id', '=', 'secrets.account_id')
+    //         ->where('secrets.user_id', '=', Auth::user()->id)
+    //         ->select('accounts.*','secrets.data')
+    //         ->get();
         
-        return $accounts;
-    }
-    public function getUserNotes()
-    {
-        $notes = DB::table('notes')
-            ->join('secrets', 'notes.id', '=', 'secrets.note_id')
-            ->where('secrets.user_id', '=', Auth::user()->id)
-            ->select('notes.*')
-            ->get();
+    //     return $accounts;
+    // }
+    // public function getUserNotes()
+    // {
+    //     // $notes = DB::table('notes')
+    //     //     ->join('secrets', 'notes.id', '=', 'secrets.note_id')
+    //     //     ->where('secrets.user_id', '=', Auth::user()->id)
+    //     //     ->select('notes.*')
+    //     //     ->get();
+    //     $notes = Auth::user()->note()->get();
         
-        return $notes;
-    }
+    //     return $notes;
+    // }
     public function accounts()
     {
-        $accounts = $this->getUserAccounts();
+        $accounts = Auth::user()->account()->get();
             
         return view('page.accounts', compact('accounts'));
     }
 
     public function addAccount(Request $request)
     {
-        $account = new Accounts;
+        $account = new Account;
         $account->name = $request->name;
         $account->uri = $request->url;
         $account->username = $request->username;
@@ -75,15 +77,15 @@ class HomeController extends Controller
         $account->save();
 
         // Nối id tới secret ứng mỗi user khác nhau
-        $secret = new Secrets;
+        $secret = new Secret;
         $user = Auth::user();
         $secret->user_id = $user->id;
         $secret->account_id = $account->id;
         // TODO: encrypt OpenGPG
-        $secret->data = $request->password;
+        $secret->data = $request->cipher;
         $secret->save();
         
-        $accounts = $this->getUserAccounts();
+        $accounts = Auth::user()->account()->get();
         return response()->json([
             'success' => true,
             // TODO: lang this message
@@ -94,7 +96,7 @@ class HomeController extends Controller
 
     public function editAccount(Request $request){
         $idEdit = $request->id;
-        $acc = Accounts::find($idEdit);
+        $acc = Account::find($idEdit);
         $acc->name = $request->name;
         $acc->username = $request->username;
         $acc->uri = $request->url;
@@ -103,7 +105,7 @@ class HomeController extends Controller
         $acc->description = $request->description;
         $acc->save();
         
-        $accounts = $this->getUserAccounts();
+        $accounts = Auth::user()->account()->get();
         return response()->json([
             'success' => true,
             // TODO: lang this message
@@ -114,10 +116,10 @@ class HomeController extends Controller
 
     public function deleteAccount(Request $request){
         $idDelete = $request->idDelete;
-        $acc = Accounts::find($idDelete);
+        $acc = Account::find($idDelete);
         $acc->delete();
 
-        $accounts = $this->getUserAccounts();
+        $accounts = Auth::user()->account()->get();
         return response()->json([
             'success' => true,
             // TODO: lang this message
@@ -134,7 +136,7 @@ class HomeController extends Controller
     public function copyPassword(Request $request)
     {
         $account_id = $request->id;
-        $secret = Secrets::where('account_id', $account_id)->first();
+        $secret = Secret::where('account_id', $account_id)->first();
         // TODO: decrypt OpenPGP
         return response()->json([
             'success' => true,
@@ -144,19 +146,19 @@ class HomeController extends Controller
     }
     public function notes()
     {
-        $notes = $this->getUserNotes();
+        $notes = Auth::user()->note()->get();
 
         return view('page.notes',compact('notes'));
     }
 
     public function addNote( Request $req)
     {
-        $note = new Notes();
+        $note = new Note();
         $note->title = $req->title;
         $note->save();
 
         // Nối id tới secret ứng mỗi user khác nhau
-        $secret = new Secrets;
+        $secret = new Secret;
         $user = Auth::user();
         $secret->user_id = $user->id;
         $secret->note_id = $note->id;
@@ -164,7 +166,7 @@ class HomeController extends Controller
         $secret->data = $req->note;
         $secret->save();
 
-        $notes = $this->getUserNotes();
+        $notes = Auth::user()->note()->get();
         return response()->json([
             'success' => true,
             // TODO: lang this message
@@ -176,12 +178,12 @@ class HomeController extends Controller
     public function editNote( Request $req)
     {
         $idEdit = $req->id;
-        $note = Notes::find($idEdit);
+        $note = Note::find($idEdit);
         $note->title = $req->title;
         $note->content = $req->note;
         $note->save();
 
-        $notes = $this->getUserNotes();
+        $notes = Auth::user()->note()->get();
         return response()->json([
             'success' => true,
             // TODO: lang this message
@@ -191,10 +193,10 @@ class HomeController extends Controller
     }
     public function delNote(Request $req){
         $idDel = $req->id;
-        $note = Notes::find($idDel);
+        $note = Note::find($idDel);
         $note->delete();
 
-        $notes = $this->getUserNotes();
+        $notes = Auth::user()->note()->get();
         return response()->json([
             'success' => true,
             // TODO: lang this message
@@ -400,10 +402,19 @@ class HomeController extends Controller
     {
         return view('page.groups');
     }
-    public function profiles()
+    public function profile()
     { 
         $user = Auth::user();
-        return view('page.profiles',compact('user',$user));
+        return view('page.profile',compact('user',$user));
     } 
+
+    public function pgp()
+    {
+        return view('page.pgp');
+    }
+    public function keepalive()
+    {
+        return response('',204);
+    }
 
 }

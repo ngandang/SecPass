@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Groups extends Model
+class Group extends Model
 {
     use Uuids;
     /**
@@ -15,8 +15,8 @@ class Groups extends Model
     public $incrementing = false;
     
     protected $table = 'groups';
-    public function GroupsUsers()
+    public function GroupUser()
     {
-        return $this->hasMany('App\GroupsUsers', 'user_id','id');
+        return $this->hasMany('App\GroupUser', 'user_id','id');
     }
 }

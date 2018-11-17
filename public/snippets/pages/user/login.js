@@ -2,6 +2,9 @@
 var SnippetLogin = function() {
 
     var login = $('#m_login');
+    $.validator.addMethod("strong", function( value, element ) {
+        return this.optional( element ) || /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/.test( value );
+    });
 
     var showMsg = function(form, type, msg) {
         var alert = $('<div class="m-alert m-alert--outline alert alert-' + type + ' alert-dismissible" role="alert">\
@@ -184,16 +187,21 @@ var SnippetLogin = function() {
                         email: true
                     },
                     password: {
-                        required: true
+                        required: true,
+                        strong: true
                     },
-                    rpassword: {
-                        required: true
+                    password_confirmation: {
+                        required: true,
+                        equalTo: "#register_password"
                     },
                     agree: {
                         required: true
                     }
                 },
                 messages: {
+                    password_confirmation: {
+                        equalTo: "Mật khẩu nhập lại không khớp."
+                    },
                     agree: {
                         required: "Bạn cần đọc kỹ và chọn đồng ý Các thoả thuận và điều khoản để có thể sử dụng dịch vụ."
                     }

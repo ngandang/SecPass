@@ -106,7 +106,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="note" class="text-info">Nội dung:</label><br>
-                                            <input type="text" name="note" id="note" class="form-control">
+                                            <textarea type="text" name="note_content" id="note_content" class="form-control" placeholder="Nhấn để giải mã nội dung"></textarea>
                                         </div>
                                     </form>
                                 </div>  
@@ -158,7 +158,6 @@
     function edit(id, title, note){
         $('#editForm input[name=id]').val(id);
         $('#editForm input[name=title]').val(title);
-        $('#editForm input[name=note]').val(note);
     }
     
     function del(id){

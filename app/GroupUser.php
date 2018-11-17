@@ -4,7 +4,7 @@ namespace App;
  
 use Illuminate\Database\Eloquent\Model;
 
-class GroupsUsers extends Model
+class GroupUser extends Model
 {
     use Uuids;
     /**
@@ -16,13 +16,13 @@ class GroupsUsers extends Model
     
     protected $table = 'groups_users';
 
-    public function Users()
+    public function User()
     {
-        return $this->belongsToMany('App\Users','user_id','id');
+        return $this->belongsToMany('App\User','user_id','id');
     }
     
-    public function Groups()
+    public function Group()
     {
-        return $this->belongsToMany('App\Groups','group_id','id');
+        return $this->belongsToMany('App\Group','group_id','id');
     }
 }

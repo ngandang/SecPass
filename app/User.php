@@ -6,7 +6,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 
-class Users extends Authenticatable
+class User extends Authenticatable
 {
     use Uuids;
     /**
@@ -40,32 +40,36 @@ class Users extends Authenticatable
 
     protected $table = 'users';
 
-    public function GroupsUsers()
+    public function GroupUser()
     {
-        return $this->hasMany('App\GroupsUsers', 'user_id', 'id');
+        return $this->hasMany('App\GroupUser', 'user_id', 'id');
     }
 
-    public function Profiles()
+    public function Profile()
     {
-        return $this->hasOne('App\Profiles', 'user_id','id');
+        return $this->hasOne('App\Profile', 'user_id','id');
     }
 
-    public function Roles()
+    public function Role()
     { 
-           return $this->belongsTo('App\Roles','role_id','id');
+           return $this->belongsTo('App\Role','role_id','id');
     }
 
-    public function Secrets()
+    public function Secret()
     { 
-           return $this->hasMany('App\Secrets','user_id','id');
+           return $this->hasMany('App\Secret','user_id','id');
     }
     
-    public function GPGKeys()
+    public function GPGKey()
     { 
-           return $this->hasOne('App\GPGKeys','user_id','id');
+           return $this->hasOne('App\GPGKey','user_id','id');
     }
-    public function Accounts()
+    public function Account()
     {
-        return $this->hasManyThrough('App\Accounts','App\Secrets'.'user_id','account_id');
+        return $this->belongsToMany('App\Account','secrets','user_id','account_id');
+    }
+    public function Note()
+    {
+        return $this->belongsToMany('App\Note','secrets','user_id','note_id');
     }
 }

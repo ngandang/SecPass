@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Accounts extends Model
+class Account extends Model
 {
     use Uuids;
     /**
@@ -15,13 +15,15 @@ class Accounts extends Model
     public $incrementing = false;
 
     protected $table = 'accounts';
-    public function Secrets()
+
+    public function Secret()
     {
-        return $this->hasMany('App\Secrets', 'account_id','id');
+        return $this->hasOne('App\Secret', 'account_id','id');
     }
-    public function Users()
+
+    public function User()
     {
-        return $this->belongsTo('App\Users','App\Secrets','account_id','user_id');
+        return $this->belongsToMany('App\User','secrets','account_id','user_id');
     }
 
 }

@@ -59,7 +59,7 @@ Route::get('dashboard','HomeController@dashboard');
 Route::get('groups','HomeController@groups');
 Route::get('sharewith','HomeController@sharewith');
 Route::get('settings','HomeController@settings');
-Route::get('profiles','HomeController@profiles');
+Route::get('profile','HomeController@profile');
 
 Route::get('test_gpg', function () {
     echo '<pre>';
@@ -79,30 +79,30 @@ Route::get('test_gpg', function () {
 
 Route::get('email','HomeController@sendMail');
 
-Route::get('test',function(){
-    return view('page.test');
-});
+Route::get('pgp','HomeController@pgp');
+Route::get('session-timeout/keepalive', 'HomeController@keepalive');
+
 Route::get('init_roles', function () {
-    App\Roles::create(
+    App\Role::create(
         [
             'id' => '5bdf5220-d75c-11e8-843b-a7f6cbee423d',
             'name' => 'root',
             'description' => 'Super User for who the BOSS here.',
         ]);
-    App\Roles::create(
+    App\Role::create(
         [
             'id' => '5bed2760-d75c-11e8-8098-a930bf45516a',
             'name' => 'admin',
             'description' => 'Admin who under root',
         ]);
-    App\Roles::create(
+    App\Role::create(
         [
             'id' => '5bf9dea0-d75c-11e8-965c-95bc72799a6b',
             'name' => 'user',
             'description' => 'Normal user',
         ]);
 
-    App\Users::create(
+    App\User::create(
         [
             'name' => 'root',
             'email' => 'master@secpass.com',

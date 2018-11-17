@@ -86,13 +86,13 @@
 							<form class="m-login__form m-form" action="">
 		  						@csrf
 								<div class="form-group m-form__group">
-									<input class="form-control m-input" type="text" placeholder="Tên hiển thị" name="name">
+									<input class="form-control m-input" type="text" placeholder="Tên hiển thị" name="name" autocomplete="off">
 								</div>
 								<div class="form-group m-form__group">
 									<input class="form-control m-input" type="text" placeholder="Email" name="email" autocomplete="off">
 								</div>
 								<div class="form-group m-form__group">
-									<input class="form-control m-input" type="password" placeholder="Mật khẩu" name="password">
+									<input class="form-control m-input" type="password" placeholder="Mật khẩu" name="password" id="register_password">
 								</div>
 								<div class="form-group m-form__group">
 									<input class="form-control m-input m-login__form-input--last" type="password" placeholder="Nhập lại mật khẩu" name="password_confirmation">

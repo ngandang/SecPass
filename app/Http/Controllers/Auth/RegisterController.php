@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Users;
-use App\Profiles;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -11,6 +9,9 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
+
+use App\User;
+use App\Profile;
 
 use App\Mail\VerifyUser;
 
@@ -57,7 +58,14 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
+            'password' => array(
+                'required',
+                'string',
+                'min:8',
+                'confirmed',
+                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(_|[^\w])).+$/'
+                // Contain at least one uppercase/lowercase letters, one number and one special char
+                )
         ]);
     }
 
@@ -65,11 +73,11 @@ class RegisterController extends Controller
      * Create a new user instance after a valid registration.
      *
      * @param  array  $data
-     * @return \App\Users
+     * @return \App\User
      */
     protected function create(array $data)
     {
-        $user = Users::create([
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
@@ -93,7 +101,7 @@ class RegisterController extends Controller
 
         $user = $this->create($request->all());
 
-        Profiles::create([
+        Profile::create([
             'user_id' => $user->id,
         ]);
 
@@ -104,7 +112,7 @@ class RegisterController extends Controller
 
     public function sendmail(Request $request)
     {
-        $user = Users::where('email', $request->email)->first();
+        $user = User::where('email', $request->email)->first();
         if ($user->count() > 0) {
             $user->update([
                 'verification_code' => time().uniqid(true)
@@ -119,7 +127,7 @@ class RegisterController extends Controller
 
     public function verify($code)
     {
-        $user = Users::where('verification_code', $code);
+        $user = User::where('verification_code', $code);
 
         if ($user->count() > 0) {
             $user->update([

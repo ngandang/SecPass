@@ -5,8 +5,10 @@
         <input name="uid_name" type="text" placeholder="Name">
         <input name="uid_email" type="text" placeholder="Email">
         <input name="passphrase" type="text" placeholder="Password/Passphrase">
+        <textarea name="content" id="content" cols="30" rows="10"></textarea>
         <button id="saveSubmit" type="submit">Run</button>
     </form>
+    <textarea name="results" id="" cols="150" rows="10"></textarea>
 
 </div>
 
@@ -27,6 +29,8 @@
                 console.log(options)
 
                 openpgp.generateKey(options).then(function(key) {
+                    console.log(key)
+                    $("textarea[name=results]").val(key.privateKeyArmored+'\r\n'+key.publicKeyArmored)
                     let user = {}
                     user.privkey = key.privateKeyArmored; // '-----BEGIN PGP PRIVATE KEY BLOCK ... '
                     user.pubkey = key.publicKeyArmored;   // '-----BEGIN PGP PUBLIC KEY BLOCK ... '
@@ -43,11 +47,11 @@
                     
                     const encryptFunction = async() => {
                         console.log('begin process')
-                        const privKeyObj = (await openpgp.key.readArmored(privkey)).keys[0];
-                        await privKeyObj.decrypt(passphrase);
+                        const privKeyObj = (await openpgp.key.readArmored(privkey)).keys[0]
+                        await privKeyObj.decrypt(passphrase)
                         
                         const options = {
-                            message: openpgp.message.fromText('Hello, World!'),       // input as Message object
+                            message: openpgp.message.fromText($('#run textarea[name=content]').val()),       // input as Message object
                             publicKeys: (await openpgp.key.readArmored(pubkey)).keys, // for encryption
                             privateKeys: [privKeyObj]                                 // for signing (optional)
                         }
@@ -63,8 +67,8 @@
 
                     const decryptFunction = async() => {
                         console.log('begin process')
-                        const privKeyObj = (await openpgp.key.readArmored(privkey)).keys[0];
-                        await privKeyObj.decrypt(passphrase);
+                        const privKeyObj = (await openpgp.key.readArmored(privkey)).keys[0]
+                        await privKeyObj.decrypt(passphrase)
                         
                         console.log('config decrypt')
                         const options = {

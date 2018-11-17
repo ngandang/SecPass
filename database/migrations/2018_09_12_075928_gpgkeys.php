@@ -18,7 +18,7 @@ class Gpgkeys extends Migration
             $table->primary('id');
             $table->uuid('user_id');
             $table->string('armored_key');
-            $table->integer('bits') ->default(2048);
+            $table->integer('bits')->default(2048);
             $table->string('uid');
             $table->char('key_id');
             $table->string('fingerprint');

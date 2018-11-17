@@ -14,7 +14,11 @@
             @foreach($notes->sortByDesc('updated_at') as $note)
                 <tr class="odd" align="center">
                     <td>{{$note->title}}</td>
-                    <td style="word-wrap: break-word;"></td>
+                    <td style="word-wrap: break-word;">
+                        <a onclick="edit('{{$note->id}}','{{$note->title}}')" href="#editForm" data-toggle="modal">
+                            Xem
+                        </a>
+                    </td>
                     <td align="center">
                     @if ($note->updated_at)
                         {{$note->updated_at}}
@@ -27,7 +31,7 @@
                             <span onclick="share('{{$note->id}}')" href="#shareForm" data-toggle="modal" class="btn btn-sm">
                                 <i class="flaticon-share"></i>
                             </span>
-                            <span onclick="edit('{{$note->id}}','{{$note->title}}','{{$note->secret}}')" href="#editForm" data-toggle="modal" class="btn btn-sm">
+                            <span onclick="edit('{{$note->id}}','{{$note->title}}')" href="#editForm" data-toggle="modal" class="btn btn-sm">
                                 <i class="flaticon-edit"></i>
                             </span>
                             <span onclick="del('{{$note->id}}')" href="#deleteForm" data-toggle="modal" class="btn btn-sm">

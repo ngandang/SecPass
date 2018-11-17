@@ -94,7 +94,7 @@
                         </div>
                         <div class="m-card-profile__pic p-picture">
                             <div class="m-card-profile__pic-wrapper">
-                                <img class="profile-pic" src="{{ url('storage/avatars/' . $user->profiles->avatar) }}" alt=""/>
+                                <img class="profile-pic" src="{{ url('storage/avatars/' . $user->profile->avatar) }}" alt=""/>
                             </div>
                             <div class="p-image">
                                 <i class="fa fa-camera upload-button"></i>
@@ -224,7 +224,7 @@
                                         Tên
                                     </label>
                                     <div class="col-7">
-                                        <input class="form-control m-input" type="text" value="{{ $user->profiles->first_name }}">
+                                        <input class="form-control m-input" type="text" value="{{ $user->profile->first_name }}">
                                     </div>
                                 </div>
                                 <div class="form-group m-form__group row">
@@ -232,7 +232,7 @@
                                         Họ
                                     </label>
                                     <div class="col-7">
-                                        <input class="form-control m-input" type="text" value="{{ $user->profiles->last_name }}">
+                                        <input class="form-control m-input" type="text" value="{{ $user->profile->last_name }}">
                                     </div>
                                 </div>
                                 <!-- <div class="form-group m-form__group row">
@@ -251,7 +251,7 @@
                                         Giới tính
                                     </label>
                                     <div class="col-7">
-                                        <input class="form-control m-input" type="text" value="{{ @$user->profiles->gender }}">
+                                        <input class="form-control m-input" type="text" value="{{ @$user->profile->gender }}">
                                     </div>
                                 </div>
                                 <div class="form-group m-form__group row">
@@ -259,7 +259,7 @@
                                         Ngày sinh
                                     </label>
                                     <div class="col-7">
-                                        <input class="form-control m-input" type="text" value="{{ @$user->profiles->date_of_birth }}">
+                                        <input class="form-control m-input" type="text" value="{{ @$user->profile->date_of_birth }}">
                                     </div>
                                 </div>
                                 <div class="form-group m-form__group row">
@@ -267,7 +267,7 @@
                                         Số điện thoại
                                     </label>
                                     <div class="col-7">
-                                        <input class="form-control m-input" type="text" value="{{ @$user->profiles->phone }}">
+                                        <input class="form-control m-input" type="text" value="{{ @$user->profile->phone }}">
                                     </div>
                                 </div>
                                 <div class="form-group m-form__group row">
@@ -275,49 +275,49 @@
                                         Địa chỉ
                                     </label>
                                     <div class="col-7">
-                                        <input class="form-control m-input" type="text" value="{{ @$user->profiles->address }}">
+                                        <input class="form-control m-input" type="text" value="{{ @$user->profile->address }}">
                                     </div>
                                 </div>
-                                <div class="m-form__seperator m-form__seperator--dashed m-form__seperator--space-2x"></div>
-													<div class="form-group m-form__group row">
-														<div class="col-10 ml-auto">
-															<h3 class="m-form__section">
-																Liên kết mạng xã hội
-															</h3>
-														</div>
-													</div>
-													<div class="form-group m-form__group row">
-														<label for="example-text-input" class="col-2 col-form-label">
-															Linkedin
-														</label>
-														<div class="col-7">
-															<input class="form-control m-input" type="text" value="www.linkedin.com/Mark.Andre">
-														</div>
-													</div>
-													<div class="form-group m-form__group row">
-														<label for="example-text-input" class="col-2 col-form-label">
-															Facebook
-														</label>
-														<div class="col-7">
-															<input class="form-control m-input" type="text" value="www.facebook.com/Mark.Andre">
-														</div>
-													</div>
-													<div class="form-group m-form__group row">
-														<label for="example-text-input" class="col-2 col-form-label">
-															Twitter
-														</label>
-														<div class="col-7">
-															<input class="form-control m-input" type="text" value="www.twitter.com/Mark.Andre">
-														</div>
-													</div>
-													<div class="form-group m-form__group row">
-														<label for="example-text-input" class="col-2 col-form-label">
-															Instagram
-														</label>
-														<div class="col-7">
-															<input class="form-control m-input" type="text" value="www.instagram.com/Mark.Andre">
-														</div>
-													</div>
+                                <!-- <div class="m-form__seperator m-form__seperator--dashed m-form__seperator--space-2x"></div>
+                                <div class="form-group m-form__group row">
+                                    <div class="col-10 ml-auto">
+                                        <h3 class="m-form__section">
+                                            Liên kết mạng xã hội
+                                        </h3>
+                                    </div>
+                                </div>
+                                <div class="form-group m-form__group row">
+                                    <label for="example-text-input" class="col-2 col-form-label">
+                                        Linkedin
+                                    </label>
+                                    <div class="col-7">
+                                        <input class="form-control m-input" type="text" value="www.linkedin.com/Mark.Andre">
+                                    </div>
+                                </div>
+                                <div class="form-group m-form__group row">
+                                    <label for="example-text-input" class="col-2 col-form-label">
+                                        Facebook
+                                    </label>
+                                    <div class="col-7">
+                                        <input class="form-control m-input" type="text" value="www.facebook.com/Mark.Andre">
+                                    </div>
+                                </div>
+                                <div class="form-group m-form__group row">
+                                    <label for="example-text-input" class="col-2 col-form-label">
+                                        Twitter
+                                    </label>
+                                    <div class="col-7">
+                                        <input class="form-control m-input" type="text" value="www.twitter.com/Mark.Andre">
+                                    </div>
+                                </div>
+                                <div class="form-group m-form__group row">
+                                    <label for="example-text-input" class="col-2 col-form-label">
+                                        Instagram
+                                    </label>
+                                    <div class="col-7">
+                                        <input class="form-control m-input" type="text" value="www.instagram.com/Mark.Andre">
+                                    </div>
+                                </div> -->
                             </div>
                             <div class="m-portlet__foot m-portlet__foot--fit">
                                 <div class="m-form__actions">

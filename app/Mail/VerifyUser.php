@@ -7,7 +7,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
     
-use App\Users;
+use App\User;
 
 class VerifyUser extends Mailable
 {
@@ -17,7 +17,7 @@ class VerifyUser extends Mailable
     /**
      * The user instance.
      *
-     * @var Users
+     * @var User
      */
     public $user;
 
@@ -26,7 +26,7 @@ class VerifyUser extends Mailable
      *
      * @return void
      */
-    public function __construct(Users $user)
+    public function __construct(User $user)
     {
         $this->user = $user;
     }

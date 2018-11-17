@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Roles extends Model
+class Role extends Model
 {
     use Uuids;
     /**
@@ -25,8 +25,8 @@ class Roles extends Model
         'name', 'description',
     ];
 
-    public function Users()
+    public function User()
     {
-        return $this->hasMany('App\Users', 'role_id','id');
+        return $this->hasMany('App\User', 'role_id','id');
     }
 }
