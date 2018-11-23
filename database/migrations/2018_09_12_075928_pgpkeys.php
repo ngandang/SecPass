@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class Gpgkeys extends Migration
+class PGPkeys extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class Gpgkeys extends Migration
      */
     public function up()
     {
-        Schema::create('gpgkeys', function(Blueprint $table){
+        Schema::create('pgpkeys', function(Blueprint $table){
             $table->uuid('id');
             $table->primary('id');
             $table->uuid('user_id');
@@ -37,6 +37,6 @@ class Gpgkeys extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('gpgkeys');
+        Schema::dropIfExists('pgpkeys');
     }
 }

@@ -54,12 +54,20 @@ Route::group(['prefix'=>'drive','as'=>'drive'], function(){
 });
 
 
-Route::get('credential','HomeController@credential');
 Route::get('dashboard','HomeController@dashboard');
-Route::get('groups','HomeController@groups');
 Route::get('sharewith','HomeController@sharewith');
-Route::get('settings','HomeController@settings');
+
 Route::get('profile','HomeController@profile');
+Route::get('credential','HomeController@profile');
+Route::get('settings','HomeController@profile');
+
+Route::get('groups','HomeController@groups');
+Route::group(['prefix' => 'group', 'as' => 'group'], function(){
+    Route::get('{tab}', ['uses' =>'HomeController@profile']);
+});
+
+Route::get('quicksearch','HomeController@quickSearch');
+
 
 Route::get('test_gpg', function () {
     echo '<pre>';
@@ -80,6 +88,8 @@ Route::get('test_gpg', function () {
 Route::get('email','HomeController@sendMail');
 
 Route::get('pgp','HomeController@pgp');
+Route::get('pgp/add','HomeController@addPGP');
+
 Route::get('session-timeout/keepalive', 'HomeController@keepalive');
 
 Route::get('init_roles', function () {

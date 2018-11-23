@@ -55,9 +55,7 @@ tbody{
 table i{
     font-size: 16px !important;
 }
-.copyusername:hover{
-    cursor: pointer;
-}
+
 .field-icon {
     float: right;
     margin-right: 7px;
@@ -91,3 +89,23 @@ table i{
 .p-image:hover{
     color: #88898a;
 }
+
+.copyusername:hover{
+    cursor: pointer;
+}
+
+.text-container{
+    display:flex;
+}
+.text-overflow {
+    -ms-text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.custom-file-control:lang(vi):empty::after {
+    content: "Chọn tập tin..."; }
+.custom-file-control:lang(vi)::before {
+    content: "Chọn"; }

@@ -176,18 +176,18 @@
                     <div class="m-portlet__head-tools">
                         <ul class="nav nav-tabs m-tabs m-tabs-line   m-tabs-line--left m-tabs-line--primary" role="tablist">
                             <li class="nav-item m-tabs__item">
-                                <a class="nav-link m-tabs__link active" data-toggle="tab" href="#m_user_profile_tab_1" role="tab">
+                                <a class="nav-link m-tabs__link {{ (Request::segment(1) == 'profile') ? 'active' : '' }}" data-toggle="tab" href="#m_user_profile_tab_1" role="tab">
                                     <i class="flaticon-share m--hide"></i>
                                     Cập nhật thông tin
                                 </a>
                             </li>
                             <li class="nav-item m-tabs__item">
-                                <a class="nav-link m-tabs__link" data-toggle="tab" href="#m_user_profile_tab_2" role="tab">
+                                <a class="nav-link m-tabs__link {{ (Request::segment(1) == 'credential') ? 'active' : '' }}" data-toggle="tab" href="#m_user_profile_tab_2" role="tab">
                                     Chữ ký điện tử
                                 </a>
                             </li>
                             <li class="nav-item m-tabs__item">
-                                <a class="nav-link m-tabs__link" data-toggle="tab" href="#m_user_profile_tab_3" role="tab">
+                                <a class="nav-link m-tabs__link {{ (Request::segment(1) == 'settings') ? 'active' : '' }}" data-toggle="tab" href="#m_user_settings_tab_3" role="tab">
                                     Thiết lập
                                 </a>
                             </li>
@@ -196,7 +196,7 @@
                     
                 </div>
                 <div class="tab-content">
-                    <div class="tab-pane active" id="m_user_profile_tab_1">
+                    <div class="tab-pane {{ (Request::segment(1) == 'profile') ? 'active' : '' }}" id="m_user_profile_tab_1">
                         <form class="m-form m-form--fit m-form--label-align-right">
                             <div class="m-portlet__body">
                                 <div class="form-group m-form__group m--margin-top-10 m--hide">
@@ -324,7 +324,7 @@
                                     <div class="row">
                                         <div class="col-2"></div>
                                         <div class="col-7">
-                                            <button id="saveSubmit" type="submit" class="btn btn-accent m-btn m-btn--air m-btn--custom">
+                                            <button id="saveSubmit" type="submit" class="btn btn-primary m-btn m-btn--air m-btn--custom">
                                                 Lưu thay đổi
                                             </button>
                                             &nbsp;&nbsp;
@@ -337,7 +337,206 @@
                             </div>
                         </form>
                     </div>
-                    <div class="tab-pane active" id="m_user_profile_tab_2"></div>
+                    <div class="tab-pane {{ (Request::segment(1) == 'credential') ? 'active' : '' }}" id="m_user_profile_tab_2">
+                        <form class="m-form m-form--fit m-form--label-align-left">
+                            <div class="m-portlet__body">
+                                <div class="form-group m-form__group m--margin-top-10">
+                                    <div class="alert m-alert m-alert--outline alert-danger" role="alert">
+                                        Chúng tôi chỉ lưu trữ khoá công khai của bạn tại máy chủ. <br>Khoá riêng tư được lưu trong Tiện ích SecPass trên thiết bị của bạn. Bạn cần sao lưu và bảo đảm an toàn thông tin cho cặp khoá này.
+                                    </div>
+                                </div>
+                                <div class="form-group m-form__group row">
+                                    <div class="col-10 ml-auto">
+                                        <h3 class="m-form__section">
+                                            Thông tin chữ ký điện tử
+                                        </h3>
+                                    </div>
+                                </div>
+                                <div class="form-group m-form__group row">
+                                    <div class="col-1"></div>
+                                    <label for="example-text-input" class="col-11">
+                                        Khoá riêng tư
+                                    </label>
+                                    <div class="col-1"></div>
+                                    <div class="col-10">
+                                        <!-- TODO: Get privateKey from Addon -->
+                                        <textarea name="privKey" class="form-control m-input m-input--air"></textarea>
+                                        <span class="m-form__help">
+                                            Khoá riêng tư hiện đang được bảo vệ với mật khẩu của bạn.
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="form-group m-form__group row">
+                                    <div class="col-1"></div>
+                                    <label for="example-text-input" class="col-11">
+                                        Khoá công khai
+                                    </label>
+                                    <div class="col-1"></div>
+                                    <div class="col-10">
+                                        <textarea class="form-control m-input m-input--air">{{ $user->PGPkey->armored_key }}</textarea>
+                                    </div>
+                                </div>
+                                <div class="m-form__seperator m-form__seperator--dashed m-form__seperator--space-3x"></div>
+                                <div class="form-group m-form__group row">
+                                    <div class="col-10 ml-auto">
+                                        <h3 class="m-form__section">
+                                            Chữ ký điện tử được cấp
+                                        </h3>
+                                    </div>
+                                </div>
+                                <div class="form-group m-form__group row">
+                                    <div class="col-1"></div>
+                                    <div class="col-10">
+                                        <label class="custom-file">
+                                            <input type="file" id="key_upload" class="custom-file-input">
+                                            <span class="custom-file-control form-control"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group m-form__group row">
+                                    <div class="col-1"></div>
+                                    <div class="col">
+                                        <button type="reset" class="btn btn-metal m-btn m-btn--air">
+                                            Đồng bộ lên máy chủ
+                                        </button>
+                                        <span class="m-form__help">
+                                            Nếu bạn sử dụng chữ ký điện tử được cấp từ chính phủ, bạn cũng có thể sử dụng nó cho SecPass.
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="m-portlet__foot m-portlet__foot--fit">
+                                <div class="m-form__actions">
+                                    <div class="row">
+                                        <div class="col-2"></div>
+                                        <div class="col-7">
+                                            <button id="saveSubmit" type="submit" class="btn btn-primary m-btn m-btn--air m-btn--custom">
+                                                Lưu thay đổi
+                                            </button>
+                                            &nbsp;&nbsp;
+                                            <button type="reset" class="btn btn-secondary m-btn m-btn--air m-btn--custom">
+                                                Huỷ
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="tab-pane {{ (Request::segment(1) == 'settings') ? 'active' : '' }}" id="m_user_settings_tab_3">
+                        <form class="m-form m-form--fit m-form--label-align-right">
+                        <div class="m-portlet__body">
+                                <div class="form-group m-form__group m--margin-top-10 m--hide">
+                                    <div class="alert m-alert m-alert--default" role="alert">
+                                        <!-- TODO: Hiện alert nếu user cần thêm thông tin nào đó, ví dụ như số điện thoại, báo chưa xác thực -->
+                                    </div>
+                                </div>
+                                <div class="form-group m-form__group row">
+                                    <div class="col-10 ml-auto">
+                                        <h3 class="m-form__section">
+                                            
+                                        </h3>
+                                    </div>
+                                </div>
+                                <div class="m-form__group form-group row">
+                                    <label class="col-3 col-form-label">
+                                        Success
+                                    </label>
+                                    <div class="col-3">
+                                        <span class="m-switch m-switch--icon m-switch--success">
+                                            <label>
+                                                <input type="checkbox" checked="checked" name="">
+                                                <span></span>
+                                            </label>
+                                        </span>
+                                    </div>
+                                    <label class="col-3 col-form-label">
+                                        Warning
+                                    </label>
+                                    <div class="col-3">
+                                        <span class="m-switch m-switch--icon m-switch--warning">
+                                            <label>
+                                                <input type="checkbox" checked="checked" name="">
+                                                <span></span>
+                                            </label>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="m-form__group form-group row">
+                                    <label class="col-3 col-form-label">
+                                        Info
+                                    </label>
+                                    <div class="col-3">
+                                        <span class="m-switch m-switch--icon m-switch--info">
+                                            <label>
+                                                <input type="checkbox" checked="checked" name="">
+                                                <span></span>
+                                            </label>
+                                        </span>
+                                    </div>
+                                    <label class="col-3 col-form-label">
+                                        Danger
+                                    </label>
+                                    <div class="col-3">
+                                        <span class="m-switch m-switch--icon m-switch--danger">
+                                            <label>
+                                                <input type="checkbox" checked="checked" name="">
+                                                <span></span>
+                                            </label>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="m-form__group form-group row">
+                                    <label class="col-3 col-form-label">
+                                        Primary
+                                    </label>
+                                    <div class="col-3">
+                                        <span class="m-switch m-switch--icon m-switch--primary">
+                                            <label>
+                                                <input type="checkbox" checked="checked" name="">
+                                                <span></span>
+                                            </label>
+                                        </span>
+                                    </div>
+                                    <label class="col-3 col-form-label">
+                                        Accent
+                                    </label>
+                                    <div class="col-3">
+                                        <span class="m-switch m-switch--icon m-switch--accent">
+                                            <label>
+                                                <input type="checkbox" checked="checked" name="">
+                                                <span></span>
+                                            </label>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="m-form__group form-group row">
+                                    <label class="col-3 col-form-label">
+                                        Brand
+                                    </label>
+                                    <div class="col-3">
+                                        <span class="m-switch m-switch--icon m-switch--brand">
+                                            <label>
+                                                <input type="checkbox" checked="checked" name="">
+                                                <span></span>
+                                            </label>
+                                        </span>
+                                    </div>
+                                    <label class="col-3 col-form-label">
+                                        Metal
+                                    </label>
+                                    <div class="col-3">
+                                        <span class="m-switch m-switch--icon m-switch--metal">
+                                            <label>
+                                                <input type="checkbox" checked="checked" name="">
+                                                <span></span>
+                                            </label>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

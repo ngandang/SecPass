@@ -52,17 +52,17 @@ class User extends Authenticatable
 
     public function Role()
     { 
-           return $this->belongsTo('App\Role','role_id','id');
+        return $this->belongsTo('App\Role','role_id','id');
     }
 
     public function Secret()
     { 
-           return $this->hasMany('App\Secret','user_id','id');
+        return $this->hasMany('App\Secret','user_id','id');
     }
     
-    public function GPGKey()
+    public function PGPkey()
     { 
-           return $this->hasOne('App\GPGKey','user_id','id');
+        return $this->hasOne('App\PGPkey','user_id','id');
     }
     public function Account()
     {

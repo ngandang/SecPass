@@ -1,7 +1,7 @@
 @extends('layouts.master')
 @section('content')
 <div class="container">
-    <form id="pgp" action="">
+    <form id="pgp" action="" method="POST">
         <input name="uid_name" type="text" placeholder="Name">
         <input name="uid_email" type="text" placeholder="Email">
         <input name="passphrase" type="text" placeholder="Password/Passphrase">
@@ -14,17 +14,17 @@
 
 @endsection
 
-@section('pageSnippetss')
+@section('pageSnippets')
 <script>
     var SnippetTest = function() {
         var handleSubmit = function () {
             $('#saveSubmit').click(function(e) {
                 e.preventDefault();
                 var options = {
-                    userIds: [{ name: $('#run input[name=uid_name]').val() , 
-                                email: $('#run input[name=uid_email]').val() }], // multiple user IDs
+                    userIds: [{ name: $('#pgp input[name=uid_name]').val() , 
+                                email: $('#pgp input[name=uid_email]').val() }], // multiple user IDs
                     numBits: 2048,                                            // RSA key size
-                    passphrase: $('#run input[name=passphrase]').val()         // protects the private key
+                    passphrase: $('#pgp input[name=passphrase]').val()         // protects the private key
                 };
                 console.log(options)
 
@@ -43,15 +43,18 @@
                     // put keys in backtick (``) to avoid errors caused by spaces or tabs
                     const pubkey = user.pubkey
                     const privkey = user.privkey //encrypted private key
-                    const passphrase = $('#run input[name=passphrase]').val() //what the privKey is encrypted with
+                    const passphrase = $('#pgp input[name=passphrase]').val() //what the privKey is encrypted with
                     
-                    const encryptFunction = async() => {
+                    var messageToEncrypt = ""
+                    var cipherToDecrypt = ""
+                    
+                    async function encryptFunction (callback) {
                         console.log('begin process')
                         const privKeyObj = (await openpgp.key.readArmored(privkey)).keys[0]
                         await privKeyObj.decrypt(passphrase)
                         
                         const options = {
-                            message: openpgp.message.fromText($('#run textarea[name=content]').val()),       // input as Message object
+                            message: openpgp.message.fromText($('#pgp textarea[name=content]').val()),       // input as Message object
                             publicKeys: (await openpgp.key.readArmored(pubkey)).keys, // for encryption
                             privateKeys: [privKeyObj]                                 // for signing (optional)
                         }
@@ -59,13 +62,13 @@
                         openpgp.encrypt(options).then(ciphertext => {
                             encrypted = ciphertext.data // '-----BEGIN PGP MESSAGE ... END PGP MESSAGE-----'
                             console.log(encrypted)
-                            return encrypted
+                            callback(encrypted)
                         })
                         
                         console.log('end process')
                     }
 
-                    const decryptFunction = async() => {
+                    async function decryptFunction (callback) {
                         console.log('begin process')
                         const privKeyObj = (await openpgp.key.readArmored(privkey)).keys[0]
                         await privKeyObj.decrypt(passphrase)
@@ -78,15 +81,20 @@
                         }
                         console.log('begin decrypt')
                         openpgp.decrypt(options).then(plaintext => {
-                            console.log(plaintext.data)
-                            return plaintext.data // 'Hello, World!'
+                            decrypted = plaintext.data
+                            console.log(decrypted)
+                            callback(decrypted) // 'Hello, World!'
                         })
 
                         console.log('end process')
                     }
 
-                    encryptFunction()
-                    decryptFunction()
+                    encryptFunction(function(result) {
+                        cipherToDecrypt = result
+                    })
+                    decryptFunction(function(result) {
+                        console.log(result)
+                    })
                 
                 });
             })

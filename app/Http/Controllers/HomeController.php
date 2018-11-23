@@ -12,6 +12,7 @@ use App\Account;
 use App\User;
 use App\Note;
 use App\Profile;
+use App\PGPkey;
 use App\Secret;
 use Hash;
 use App\Mail\SendMailable;
@@ -392,7 +393,7 @@ class HomeController extends Controller
     
     public function settings()
     {
-        return view('page.settings');
+        return view('page.settings', compact());
     }
     public function sharewith()
     {
@@ -405,13 +406,38 @@ class HomeController extends Controller
     public function profile()
     { 
         $user = Auth::user();
-        return view('page.profile',compact('user',$user));
+        return view('page.profile', compact('user'));
+    }
+
+    public function quickSearch(Request $request)
+    { 
+        $user = Auth::user();
+        return view('content.quicksearch', compact('user'));
     } 
 
     public function pgp()
     {
         return view('page.pgp');
     }
+
+    public function addPGP()
+    {
+        // TODO: receiving Info and publicKey from addon.
+        $pgp_key = new PGPkey;
+        $pgp_key->user_id = Auth::user()->id;
+        $pgp_key->armored_key = "abc";
+        $pgp_key->uid = "Nguyen Phi Cuong (cuong@secpass.com)";
+        $pgp_key->key_id = "ABCDDBCA";
+        $pgp_key->fingerprint = "ABCDDBCAABCDDBCAABCDDBCAABCDDBCA";
+        $pgp_key->type = "what is this??";
+        $pgp_key->expires = NOW();
+        $pgp_key->key_created = NOW();
+        $pgp_key->save();
+        
+        return $pgp_key;
+    }
+
+
     public function keepalive()
     {
         return response('',204);
