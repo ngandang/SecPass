@@ -39,6 +39,24 @@ var DataDismiss = function () {
     });
 };
 
+var MessengerToggle = function () {
+    $('#messenger_toggle').on('click', function(){
+        $('#m_quick_sidebar_toggle').click();
+        $('#m_quick_sidebar_tabs li a')[0].click();
+    });
+}
+var LogsToggle = function () {
+    $('#logs_toggle').on('click', function(){
+        $('#m_quick_sidebar_toggle').click();
+        $('#m_quick_sidebar_tabs li a')[1].click();
+    });
+}
+var FAQToggle = function () {
+    $('#faq_toggle').on('click', function(){
+        $('#m_quick_sidebar_toggle').click();
+        $('#m_quick_sidebar_tabs li a')[2].click();
+    });
+}
 // addon
 // var connectAddon = function () {
 //     var editorExtensionId = "bmifpeofnjjhlefcaflhdegmpeljhede";
@@ -60,7 +78,12 @@ var DataDismiss = function () {
 jQuery(document).ready(function() {    
     SessionTimeout.init();
     DataDismiss();
+    // Asidebar toggle
+    MessengerToggle();
+    LogsToggle();
+    FAQToggle();
     // connectAddon();
+    const test ="abc";
 });
 
 

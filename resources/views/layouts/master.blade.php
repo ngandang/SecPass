@@ -44,6 +44,7 @@
 		<script src="{{ asset('default/base/scripts.bundle.js') }}" type="text/javascript"></script>
 		<!--END: Base Scripts -->   
 		<!--BEGIN: Page Vendors -->
+		<script src="{{ asset('js/nayuki-password-generator.js') }}"></script>
 		<script src="{{ asset('vendors/custom/fullcalendar/fullcalendar.bundle.js') }}" type="text/javascript"></script>
 		<!--END: Page Vendors -->  
 		<!--BEGIN: Page Snippets -->

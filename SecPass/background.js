@@ -20,7 +20,7 @@
 // });
 
 chrome.browserAction.onClicked.addListener(function(activeTab){
-  var newURL = "http://localhost:8080/SecPass/public/dashboard";
+  var newURL = "http://localhost";
   chrome.tabs.create({ url: newURL });
 });
 

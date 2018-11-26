@@ -2,16 +2,30 @@
 <html>
 <head>
 	<meta charset="utf-8" />
-	<title>Storage test</title>
+	<title>SECPASS</title>
+	<style>
+		h1 {
+			text-align: center;
+			font-size: 160%;
+		}
+		input {
+			margin: 5px;
+		}
+	</style>
 	<script type="text/javascript" src="main.js"></script>
 </head>
 <body>
-	<textarea id="saveLine"></textarea>
-	<input type="button" id="save" value="Save Line">
+	<h1>SECPASS</h1>
 
-	<input type="button" id="get" value="Get Saved Line">
+	<textarea id="result"></textarea>
 
-	<input type="button" id="goPage" value="Open Website">
+	<input type="button" id="get" value="Lấy dữ liệu PGP đã lưu">
+
+	<input type="button" id="backup" value="Sao lưu PGP key vào thiết bị">
+
+	<input type="button" id="passGen" value="Sinh mật khẩu mạnh">
+	
+	<input type="button" id="goPage" value="Mở web SECPASS">
 
 
 </body>

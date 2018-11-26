@@ -259,6 +259,44 @@
 														</div>
 													</div>
 												</div>
+												<!-- <form action="javascript:void();" method="POST" onsubmit="doGenerate(event);">
+													<div id="gen-charset" class="section">
+														<p>Bộ ký tự:</p>
+														<table>
+															<tbody>
+																<tr>
+																	<td><input type="checkbox" id="gen-custom"></td>
+																	<td><label for="custom"> Khác:</label> <input type="text" id="gen-customchars" value="" size="15" oninput="document.getElementById('custom').checked=true;"></td>
+																</tr>
+															</tbody>
+														</table>
+													</div>
+													<div class="section">
+														<table id="type">
+															<tbody>
+																<tr>
+																	<td><input type="radio" name="type" id="gen-by-length" checked="checked"> <label for="gen-by-length">Độ dài:&#xA0;</label></td>
+																	<td><input type="number" min="0" value="10" step="1" id="gen-length" style="width:4em" oninput="document.getElementById('by-length').checked=true;"> ký tự</td>
+																</tr>
+																<tr>
+																	<td><input type="radio" name="type" id="gen-by-entropy"> <label for="gen-by-entropy">Mức độ hỗn loạn:</label>&#xA0;</td>
+																	<td><input type="number" min="0" value="128" step="any" id="gen-entropy" style="width:4em" oninput="document.getElementById('by-entropy').checked=true;"> bit</td>
+																</tr>
+															</tbody>
+														</table>
+													</div>
+													<p style="text-align:center">
+														<input type="submit" id="gen-submit-button" value="Sinh mật khẩu">
+														<input type="button" value="Sao chép" onclick="doCopy();" disabled="disabled">
+													</p>
+													<p style="max-width:unset; word-break:break-all">
+														Mật khẩu: <span id="gen-password"></span>
+													</p>
+													<p id="gen-statistics" class="lowlight">&#xA0;</p>
+													<p class="lowlight" style="max-width:unset">Nguồn sinh hỗn loạn:<br>
+														✓ <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random"><code>Math.random()</code></a> (bảo mật cơ bản)<br>
+														<span id="crypto-getrandomvalues-entropy"></span> <a href="https://developer.mozilla.org/en-US/docs/Web/API/RandomSource/getRandomValues"><code>crypto.getRandomValues()</code></a> (bảo mật cao)</p>
+												</form> -->
 											</div>
 										</div>
 									</div>
@@ -475,15 +513,15 @@
 														</a>
 													</li>
 													<li class="m-nav__item">
-														<a href="logs" class="m-nav__link">
-															<i class="m-nav__link-icon flaticon-share"></i>
+														<a href="javascript:void()" id="logs_toggle" class="m-nav__link">
+															<i class="m-nav__link-icon flaticon-route"></i>
 															<span class="m-nav__link-text">
 																Lịch sử hoạt động
 															</span>
 														</a>
 													</li>
 													<li class="m-nav__item">
-														<a href="message" class="m-nav__link">
+														<a href="javascript:void()" id="messenger_toggle" class="m-nav__link">
 															<i class="m-nav__link-icon flaticon-chat-1"></i>
 															<span class="m-nav__link-text">
 																Tin nhắn
@@ -492,7 +530,7 @@
 													</li>
 													<li class="m-nav__separator m-nav__separator--fit"></li>
 													<li class="m-nav__item">
-														<a href="fqa" class="m-nav__link">
+														<a href="javascript:void()" id="faq_toggle" class="m-nav__link">
 															<i class="m-nav__link-icon flaticon-info"></i>
 															<span class="m-nav__link-text">
 																FAQ

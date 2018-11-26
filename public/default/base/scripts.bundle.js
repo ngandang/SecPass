@@ -8474,10 +8474,10 @@ var mQuickSidebar = function() {
         mUtil.addResizeHandler(init);
     }
 
-    var initSettings = function() { 
+    var initFAQ = function() { 
         // init dropdown tabbable content
         var init = function() {
-            var settings = $('#m_quick_sidebar_tabs_settings');
+            var settings = $('#m_quick_sidebar_tabs_faq');
             var height = mUtil.getViewPort().height - topbarAsideTabs.outerHeight(true) - 60;
 
             // init settings scrollable content
@@ -8510,8 +8510,8 @@ var mQuickSidebar = function() {
 
     var initOffcanvasTabs = function() {
         initMessages();
-        initSettings();
-        initLogs();
+        initLogs();        
+        initFAQ();
     }
 
     var initOffcanvas = function() {

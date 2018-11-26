@@ -1,14 +1,14 @@
 {
   // Required
   "manifest_version": 2,
-  "name": "Test Extension",
+  "name": "SECPASS Extension",
   "version": "0.0.1",
   // Recommended
   "description": "Chrome storage.",
   // Optional
   "author": "Ngan Dang",
   "browser_action": {
-      "default_title": "SecPass",
+      "default_title": "SECPASS",
       "default_icon": "icon.png",
       "default_popup": "main.html"
   },
@@ -18,7 +18,7 @@
   "content_scripts": [
         {
             "matches": [
-                "http://localhost:8080/*"
+                "http://localhost/*"
                 // "https://*/*"
             ],
             "js": [

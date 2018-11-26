@@ -67,15 +67,19 @@ $(document).ready(function(){
     	GeneratePGP.init();
     else {
     	console.log('getin');
-    	document.addEventListener('getUserPGPEvent', function (event) {
-			var user_pgp = chrome.storage.local.get('user_pgp', function(data){
-				console.log('storage');
-				// Lỗi tại thằng return
-				return data.user_pgp;
-			});
-			console.log("data"+user_pgp);
-			return	user_pgp;
-		});
+    	
+        document.addEventListener('setUserPGPEvent', function (event) {
+            chrome.storage.local.set({'user_pgp': event.detail}, function(){
+                console.log(event.detail);
+            });
+        });
+
+        document.addEventListener('letgetUserPGPEvent', function (event) {
+            chrome.storage.local.get('user_pgp', function(result){
+                document.dispatchEvent(new CustomEvent('getUserPGPEvent', {detail: result.user_pgp}));
+            });
+        });
+        
 
     }
 });
