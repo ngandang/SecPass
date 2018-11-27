@@ -86,7 +86,7 @@
 							<form class="m-login__form m-form" action="">
 		  						@csrf
 								<div class="form-group m-form__group">
-									<input class="form-control m-input" type="text" placeholder="Tên hiển thị" name="name" autocomplete="off">
+									<input class="form-control m-input" type="text" placeholder="Tên đăng nhập" name="name" autocomplete="off">
 								</div>
 								<div class="form-group m-form__group">
 									<input class="form-control m-input" type="text" placeholder="Email" name="email" autocomplete="off">
@@ -179,7 +179,8 @@
 		<script src="{{ asset('vendors/base/vendors.bundle.js') }}" type="text/javascript"></script>
 		<script src="{{ asset('default/base/scripts.bundle.js') }}" type="text/javascript"></script>
 		<!--end::Base Scripts -->   
-        <!--begin::Page Snippets -->
+		<!--begin::Page Snippets -->
+		<script src="{{ asset('js/openpgp.js') }}" type="text/javascript"></script>
 		<script src="{{ asset('js/validation_vi.js') }}" type="text/javascript"></script>
 		<script src="{{ asset('snippets/pages/user/login.js') }}" type="text/javascript"></script>
 		<!--end::Page Snippets -->

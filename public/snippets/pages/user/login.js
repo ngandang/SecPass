@@ -18,9 +18,10 @@ var SnippetLogin = function() {
         alert.animateClass('fadeIn animated');
         alert.find('span').html(msg);
         setTimeout(function () { 
-            form.find('.alert').fadeOut('1000').then(function (){
+            form.find('.alert').fadeOut('1000');
+            // then(function (){
                 form.find('.alert').remove();
-            });
+            // });
         }, 3000);
     }
 
@@ -214,39 +215,88 @@ var SnippetLogin = function() {
 
             btn.addClass('m-loader m-loader--right m-loader--light').attr('disabled', true);
             showMsg(form, '', 'Vui lòng chờ trong giây lát.');
-            
-            form.ajaxSubmit({
-                url: 'register',                
-                type: 'POST',
-                success: function(response, status, xhr, $form) {
-                	// similate 1s delay
-                	setTimeout(function() {
-	                    btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false);
-	                    form.clearForm();
-                        form.validate().resetForm();
+           
+            // Generate PGP key
+            var options = {
+                userIds: [{ name: form.find('input[name=name]').val() , 
+                            email: form.find('input[name=email]').val() }], // multiple user IDs
+                numBits: 2048,                                            // RSA key size
+                passphrase: form.find('input[name=password]').val()         // protects the private key
+            };
+            console.log(options);
 
-	                    // display signin form
-	                    displaySignInForm();
-	                    var signInForm = login.find('.m-login__signin form');
-	                    signInForm.clearForm();
-	                    signInForm.validate().resetForm();
+            openpgp.generateKey(options).then(function(key) {
+                console.log(key)
+                 // Set PGP to addon
+                document.dispatchEvent(new CustomEvent('setUserPGPEvent', {detail: key}));
 
-	                    showMsg(signInForm, 'success', response.message);
-                    }, 1000);
-                },
-                error: function(response, status, xhr, $form) {
-                    // similate 1s delay
-                    setTimeout(function() {
-                        console.log(response);
-	                    btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false);
-                        $.each(response.responseJSON.errors, function(any, errors){
-                            $.each(errors, function(idx) {
-                                showMsg(form, 'danger', errors[idx]);
+                form.ajaxSubmit({
+                    url: 'register',                
+                    type: 'POST',
+                    success: function(response, status, xhr, $form) {
+                        // similate 1s delay
+                        setTimeout(function() {
+                            btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false);
+                            form.clearForm();
+                            form.validate().resetForm();
+
+                            // display signin form
+                            displaySignInForm();
+                            var signInForm = login.find('.m-login__signin form');
+                            signInForm.clearForm();
+                            signInForm.validate().resetForm();
+
+                            showMsg(signInForm, 'success', response.message);
+                        }, 1000);
+                    },
+                    error: function(response, status, xhr, $form) {
+                        // similate 1s delay
+                        setTimeout(function() {
+                            console.log(response);
+                            btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false);
+                            $.each(response.responseJSON.errors, function(any, errors){
+                                $.each(errors, function(idx) {
+                                    showMsg(form, 'danger', errors[idx]);
+                                });
                             });
-                        });
-                    }, 1000);
-                }
+                        }, 1000);
+                    }
+                })
+                .done(function(response){
+                    let pgp_key = {
+                        'user_id': response.user_id,
+                        'key_created': key.keyPacket.created,
+                        'fingerprint': key.keyPacket.fingerprint,
+                        'key_id': key.keyPacket.keyid,
+                        'uid': key.keyPacket.userid,
+                        'armored_key': key.publicKeyArmored,
+                        // 'revocationCertificate': key.revocationCertificate
+                    };
+                    console.log(pgp_key);
+                    form.ajaxSubmit({
+                        url: 'register/pgp',
+                        type: 'POST',
+                        data: pgp_key,
+                        success: function(response, status, xhr, $form){
+                            console.log(response);
+                            showMsg(form, 'success', response.message);
+                        },
+                        error: function(response, status, xhr, $form) {
+                            // similate 1s delay
+                            setTimeout(function() {
+                                console.log(response);
+                                btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false);
+                                $.each(response.responseJSON.errors, function(any, errors){
+                                    $.each(errors, function(idx) {
+                                        showMsg(form, 'danger', errors[idx]);
+                                    });
+                                });
+                            }, 1000);
+                        }
+                    });
+                });
             });
+            
         });
     }
 

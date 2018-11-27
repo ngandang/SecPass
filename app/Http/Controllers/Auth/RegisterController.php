@@ -125,6 +125,11 @@ class RegisterController extends Controller
         return response()->json(['status' => 'danger', 'message' => 'Email được nhập không tồn tại. Vui lòng kiểm tra lại.']);
     }
 
+    public function pgp(Request $request)
+    {
+        s;
+    }
+
     public function verify($code)
     {
         $user = User::where('verification_code', $code);

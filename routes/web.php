@@ -24,6 +24,7 @@ Route::get('register/verify',function () {
     return view('auth.verify', compact('status'));
 });
 Route::post('register/verify','Auth\RegisterController@sendmail');
+Route::post('register/pgp','Auth\RegisterController@pgp');
 
 Route::post('legal/terms',function () {
     return view('page.terms');
