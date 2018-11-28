@@ -16,7 +16,8 @@ class Secrets extends Migration
         Schema::create('secrets', function(Blueprint $table){
             $table->uuid('id');
             $table->primary('id');
-            $table->uuid('user_id');
+            $table->uuid('user_id')->nullable();
+            $table->uuid('group_id')->nullable();
             $table->uuid('account_id')->nullable();
             $table->uuid('note_id')->nullable(); 
             $table->longtext('data');

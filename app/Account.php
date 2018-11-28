@@ -25,5 +25,9 @@ class Account extends Model
     {
         return $this->belongsToMany('App\User','secrets','account_id','user_id');
     }
+    public function Group()
+    {
+        return $this->belongsToMany('App\Group','secrets','account_id','group_id');
+    }
 
 }
