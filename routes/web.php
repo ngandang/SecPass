@@ -17,6 +17,8 @@ Route::get('/', function () {
 
 
 Auth::routes();
+Route::post('register/pgp','Auth\RegisterController@addPGP');
+
 Route::get('register/verify/{code}', 'Auth\RegisterController@verify');
 Route::get('register/verify',function () {
     $status=false;
@@ -24,7 +26,6 @@ Route::get('register/verify',function () {
     return view('auth.verify', compact('status'));
 });
 Route::post('register/verify','Auth\RegisterController@sendmail');
-Route::post('register/pgp','Auth\RegisterController@pgp');
 
 Route::post('legal/terms',function () {
     return view('page.terms');
@@ -89,7 +90,6 @@ Route::get('test_gpg', function () {
 Route::get('email','HomeController@sendMail');
 
 Route::get('pgp','HomeController@pgp');
-Route::get('pgp/add','HomeController@addPGP');
 
 Route::get('session-timeout/keepalive', 'HomeController@keepalive');
 
@@ -117,6 +117,8 @@ Route::get('init_roles', function () {
         [
             'name' => 'root',
             'email' => 'master@secpass.com',
+            'password' => '',
+            'active' => 1,
             'role_id' => '5bdf5220-d75c-11e8-843b-a7f6cbee423d',
         ]);
         

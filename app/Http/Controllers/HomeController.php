@@ -437,7 +437,6 @@ class HomeController extends Controller
         return $pgp_key;
     }
 
-
     public function keepalive()
     {
         return response('',204);

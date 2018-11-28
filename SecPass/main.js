@@ -7,13 +7,13 @@ window.onload = function()
 	document.getElementById('backup').onclick = function()
 	{
 		chrome.storage.local.get('user_pgp', function(data){
-			data.user_pgp.privkey;
+			data.user_pgp.privateKeyArmored;
 		});
 	};
 	document.getElementById('get').onclick = function()
 	{
 		chrome.storage.local.get('user_pgp', function(data){
-			dw(data.user_pgp.privkey);
+			dw(data.user_pgp.privateKeyArmored+"\r\n"+data.user_pgp.publicKeyArmored);
 		});
 	}
 

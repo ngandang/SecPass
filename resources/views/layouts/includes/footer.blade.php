@@ -6,7 +6,7 @@
 				<span class="m-footer__copyright">
 					2018 &copy;
 					<a href="#" class="m-link">
-						SecPass
+						SecPASS
 					</a>
 				</span>
 			</div>

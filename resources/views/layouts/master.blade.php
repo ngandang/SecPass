@@ -40,10 +40,14 @@
 		<!-- END: Quick Nav -->
 
 		<!--BEGIN: Base Scripts -->
+
 		<script src="{{ asset('vendors/base/vendors.bundle.js') }}" type="text/javascript"></script>
 		<script src="{{ asset('default/base/scripts.bundle.js') }}" type="text/javascript"></script>
 		<!--END: Base Scripts -->   
 		<!--BEGIN: Page Vendors -->
+		<script src="{{ asset('js/openpgp.js') }}"></script>
+		<script src="{{ asset('js/script.js') }}"></script>
+		
 		<script src="{{ asset('js/nayuki-password-generator.js') }}"></script>
 		<script src="{{ asset('vendors/custom/fullcalendar/fullcalendar.bundle.js') }}" type="text/javascript"></script>
 		<!--END: Page Vendors -->  

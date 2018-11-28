@@ -4,13 +4,13 @@
 	<head>
 		<meta charset="utf-8" />
 		<title>
-			SecPass | Đăng nhập
+			SecPASS | Đăng nhập
 		</title>
-		<meta name="description" content="Latest updates and statistic charts">
+		<meta name="description" content="SecPASS - The password management system for indiviuals and groups">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		<!--begin::Web font -->
-		<script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.16/webfont.js"></script>
+		<script src="{{ asset('vendors/base/webfont.js') }}"></script>
 		<script>
           WebFont.load({
             google: {"families":["Helvetica:300,400,500,600,700","Roboto:300,400,500,600,700"]},
@@ -24,7 +24,7 @@
 		<link href="{{ asset('vendors/base/vendors.bundle.css') }}" rel="stylesheet" type="text/css" />
 		<link href="{{ asset('default/base/style.bundle.css') }}" rel="stylesheet" type="text/css" />
 		<!--end::Base Styles -->
-		<!-- <link rel="shortcut icon" href="default/media/img/logo/favicon.ico" /> -->
+		<link rel="shortcut icon" href="default/media/img/logo/favicon.ico" />
 	</head>
 	<!-- end::Head -->
     <!-- end::Body -->
@@ -54,10 +54,10 @@
 									<input class="form-control m-input m-login__form-input--last" type="password" placeholder="Mật khẩu" name="password">
 								</div>
 								<div class="row m-login__form-sub">
-									<div id="m_login_remember_me" class="col m--align-left m-login__form-left">
+									<div id="m_login_remember_me" class="col m--align-left m-login__form-left" data-container="body" data-toggle="m-popover" data-placement="left" data-content="Tuỳ chọn này giúp bạn không cần nhập mật khẩu thường xuyên trong quá trình sử dụng." data-original-title="" title="">
 										<label class="m-checkbox  m-checkbox--light">
 											<input type="checkbox" name="remember">
-											Nhớ mật khẩu
+												Xử lý mật khẩu tự động
 											<span></span>
 										</label>
 									</div>
