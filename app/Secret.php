@@ -33,4 +33,8 @@ class Secret extends Model
     {
         return $this->belongsTo('App\Note', 'note_id','id');
     }
+    public function Group()
+    {
+        return $this->belongsTo('App\Group','group_id','id');
+    }
 }

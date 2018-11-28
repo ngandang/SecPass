@@ -25,4 +25,9 @@ class Note extends Model
     {
         return $this->belongsToMany('App\User','secrets','note_id','user_id');
     }
+    public function Group()
+    {
+        return $this->belongsToMany('App\Group','secrets','note_id','group_id');
+    }
 }
+

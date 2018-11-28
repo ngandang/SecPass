@@ -19,4 +19,15 @@ class Group extends Model
     {
         return $this->hasMany('App\GroupUser', 'user_id','id');
     }
+    public function Secret(){
+        return $this->hasMany('App\Secret','groups_id','id');
+    }
+    public function Account()
+    {
+        return $this->belongsToMany('App\Account','secrets','group_id','account_id');
+    }
+    public function Note()
+    {
+        return $this->belongsToMany('App\Note','secrets','group_id','note_id');
+    }
 }

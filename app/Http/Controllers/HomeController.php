@@ -52,7 +52,7 @@ class HomeController extends Controller
     // }
     // public function getUserNotes()
     // {
-    //     // $notes = DB::table('notes')
+        // $notes = DB::table('notes')
     //     //     ->join('secrets', 'notes.id', '=', 'secrets.note_id')
     //     //     ->where('secrets.user_id', '=', Auth::user()->id)
     //     //     ->select('notes.*')
@@ -399,10 +399,29 @@ class HomeController extends Controller
     {
         return view('page.sharewith');
     }
+
     public function groups()
     {
         return view('page.groups');
     }
+    public function checkUser(Request $request)
+    {
+        $user = User::where('email', $request->email)->first();
+        if($user)
+        {
+            return response()->json([
+                'success' => true,
+            ]);
+        }
+        
+        return response()->json([
+            'success' => false,
+            // TODO: lang this message
+            'message' => 'Người dùng không tồn tại.'
+        ]);
+    }
+
+
     public function profile()
     { 
         $user = Auth::user();
