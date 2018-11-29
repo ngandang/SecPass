@@ -8,9 +8,8 @@
             <div class="m-portlet__head">
                 <div class="m-portlet__head-caption">
                     <div class="m-portlet__head-title">
-                        <span class="m-portlet__head-icon" data-container="body" data-toggle="m-popover" data-placement="top" data-content="Mật khẩu chưa được giải mã" data-original-title="" title="">
-                            <i class="la la-unlock"></i>
-                            <!-- <i class="la la-unlock-alt"></i> -->
+                        <span class="m-portlet__head-icon">
+                            <i class="la la-angle-double-down"></i>
                         </span>
                         <h3 class="m-portlet__head-text">
                         </h5>
@@ -47,7 +46,7 @@
                                                     </a>
                                                 </li>
                                                 <li class="m-nav__item">
-                                                    <a href="javascript:;" onclick="copyPassword('{{$acc->id}}')" class="m-nav__link">
+                                                    <a href="javascript:;" onclick="copyContent('{{$acc->id}}')" class="m-nav__link">
                                                         <i class="m-nav__link-icon flaticon-lock-1"></i>
                                                         <span class="m-nav__link-text">
                                                             Sao chép mật khẩu
@@ -88,6 +87,9 @@
             <div class="m-portlet__body">
                 <div class="text-container">
                     <h5 class="text-overflow">{{$acc->name}}</h5>
+                </div>
+                <div class="text-container">
+                    &nbsp;
                 </div>
                 <div class="text-container">
                     <a href="javascript:;" class="m-link text-overflow" onclick="copyUsername('{{$acc->username}}');">{{$acc->username}}</a>

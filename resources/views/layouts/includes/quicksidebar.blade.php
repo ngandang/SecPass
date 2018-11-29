@@ -22,7 +22,7 @@
 		</ul>
 		<div class="tab-content">
 			<div class="tab-pane active m-scrollable" id="m_quick_sidebar_tabs_messenger" role="tabpanel">
-				<div class="m-messenger m-messenger--message-arrow m-messenger--skin-light">
+				<!-- <div class="m-messenger m-messenger--message-arrow m-messenger--skin-light">
 					<div class="m-messenger__messages">
 						<div class="m-messenger__message m-messenger__message--in">
 							<div class="m-messenger__message-pic">
@@ -174,10 +174,10 @@
 							</a>
 						</div>
 					</div>
-				</div>
+				</div> -->
 			</div>
 			<div class="tab-pane  m-scrollable" id="m_quick_sidebar_tabs_logs" role="tabpanel">
-				<div class="m-list-timeline">
+				<!-- <div class="m-list-timeline">
 					<div class="m-list-timeline__group">
 						<div class="m-list-timeline__heading">
 							System Logs
@@ -430,7 +430,7 @@
 							</div>
 						</div>
 					</div>
-				</div>
+				</div> -->
 			</div>
 			<div class="tab-pane  m-scrollable" id="m_quick_sidebar_tabs_faq" role="tabpanel">
 				<p>Hiện chưa có câu hỏi đáp nào.</p>

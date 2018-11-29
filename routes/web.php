@@ -37,8 +37,7 @@ Route::group(['prefix' => 'account', 'as' => 'account'], function(){
     Route::post('edit','HomeController@editAccount');
     Route::post('delete','HomeController@deleteAccount');
     Route::post('share','HomeController@shareAccount');
-    Route::post('generate','HomeController@generatePassword');
-    Route::post('copyPassword','HomeController@copyPassword');
+    Route::post('getContent','HomeController@getPassword');
 });
 
 Route::get('securenotes','HomeController@notes');
@@ -46,6 +45,8 @@ Route::group(['prefix'=>'securenote','as'=>'securenote'], function(){
     Route::post('add','HomeController@addNote');
     Route::post('edit','HomeController@editNote');
     Route::post('delete','HomeController@delNote');
+    Route::post('share','HomeController@shareNote');
+    Route::post('getContent','HomeController@getNoteContent');
 });
 
 Route::get('drive','HomeController@drive');

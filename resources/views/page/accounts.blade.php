@@ -136,13 +136,13 @@
                                 </div>
                                 <div class="col-md-5">
                                 <label for="password" class="text-info">Mật khẩu</label>
-                                    <input id="password-edit" type="password" name="password" placeholder="Nhấn lấy mật khẩu" class="form-control" required>
+                                    <input id="password-edit" type="password" name="password" placeholder="Đã được bảo mật" class="form-control">
                                     <span toggle="#password-edit" class="fa fa-fw fa-eye field-icon toggle-edit"></span>
                                 </div>
                                 <div class="col-md-2" style="padding-left:8px;">
                                     <label class="text-info">&nbsp</label>
-                                    <button onclick="generateEdit();" type="button" class="btn btn-metal">
-                                        <i class="fa fa-magic fa-fw fa-lg"></i>
+                                    <button id="getPassword" type="button" class="btn btn-metal">
+                                        <i class="fa fa-lock fa-fw fa-lg"></i>
                                     </button>
                                 </div>
                             </div>
@@ -224,8 +224,7 @@
 <script src="{{ asset('js/validation_vi.js') }}" type="text/javascript"></script>
 
 <script> 
-    
-    
+
     let privkey = ""
     let pubkey  = ""
     let passphrase = ""
@@ -262,6 +261,7 @@
             publicKeys: (await openpgp.key.readArmored(pubkey)).keys, // for verification (optional)
             privateKeys: [privKeyObj]                                 // for decryption
         }
+        
         openpgp.decrypt(options).then(plaintext => {
             console.log(plaintext.data)
             decrypted = plaintext.data // 'Hello, World!'
@@ -299,21 +299,17 @@
         // });
     }
 
-    function copyPassword(accId) {
+    function copyContent(accId) {
         var data = {
-            "_token": "{{ csrf_token() }}",
             'id': accId,
         };
         $.ajax({
-            url: 'account/copyPassword',
+            url: 'account/getContent',
             type: 'POST',
             data: data,
             success: function(response, status, xhr, $form) {
-                cipherToDecrypt = response.password;
-            
-                // send data through a DOM event
-                // var user_pgp = document.dispatchEvent(new CustomEvent('getUserPGPEvent', {data: ""}));  
-                
+                cipherToDecrypt = response.content;
+
                 decryptFunction(function (result) {
                     console.log(result);
                     var $temp = $("<input id='tempInput'>");
@@ -340,7 +336,7 @@
             document.execCommand("copy");
             $temp.remove();
         }, 500);
-    }    
+    }
 
     function edit(id, name, username, url, description, last_updated){
         $('#editForm input[name=id]').val(id);
@@ -422,27 +418,53 @@
             }
         });
 
+        $('#getPassword').click(function () {
+            var data = {
+                'id': $('#editForm input[name=id]').val(),
+            };
+            $.ajax({
+                url: 'account/getContent',
+                type: 'POST',
+                data: data,
+                success: function(response, status, xhr, $form) {
+                    cipherToDecrypt = response.content;
+
+                    decryptFunction(function (result) {
+                        console.log(result);      
+                        $('#editForm input[name=password]').val(result);
+                        $('#getPassword i').removeClass('fa-lock');
+                        $('#getPassword i').addClass('fa-unlock');
+                    });
+                },
+                error: function(response, status, xhr, $form) {
+                    console.log(response);
+                    swal("", response.message.serialize(), "error");
+                }
+            });
+        });
+
         $('#addSubmit').click(function(e){
             e.preventDefault();
             var btn = $(this);
             var form = $(this).closest('form');
 
-            form.validate({
-                rules: {
-                    url: {
-                        url: true
-                    }
-                }
-            });
+            // form.validate({
+            //     rules: {
+            //         url: {
+            //             url: true
+            //         }
+            //     }
+            // });
 
-            if (!form.valid()) {
-                return;
-            }
+            // if (!form.valid()) {
+            //     return;
+            // }
+
             btn.addClass('m-loader m-loader--right m-loader--light');
             btn.attr('disabled', true);
 
             // Encrypt password with OpenPGPjs
-            form.find('input[name="password"]').prop('disabled', true);
+            form.find('input[name=password]').prop('disabled', true);
 
             messageToEncrypt = form.find("input[name=password]").val();
 
@@ -476,7 +498,7 @@
                     }
                 });
                 $temp.remove();
-                form.find('input[name="password"]').prop('disabled', false);
+                form.find('input[name=password]').prop('disabled', false);
             });            
         });
 
@@ -485,21 +507,23 @@
             var btn = $(this);
             var form = $(this).closest('form');
 
-            form.validate({
-                rules: {
-                    url: {
-                        url: true
-                    }
-                }
-            });
+            // form.validate({
+            //     rules: {
+            //         url: {
+            //             url: true
+            //         }
+            //     }
+            // });
 
-            if (!form.valid()) {
-                return;
-            }
+            // if (!form.valid()) {
+            //     return;
+            // }
+
             btn.addClass('m-loader m-loader--right m-loader--light').attr('disabled', true);
-            
+            btn.attr('disabled', true);
+
             // Encrypt password with OpenPGPjs
-            form.find('input[name="password"]').prop('disabled', true);
+            form.find('input[name=password]').prop('disabled', true);
 
             messageToEncrypt = form.find("input[name=password]").val();
             encryptFunction(function (result) {
@@ -530,7 +554,7 @@
                     }
                 });
                 $temp.remove();
-                form.find('input[name="password"]').prop('disabled', false);
+                form.find('input[name=password]').prop('disabled', false);
             });
         });
 
