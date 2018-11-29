@@ -14,6 +14,8 @@ use App\Note;
 use App\Profile;
 use App\PGPkey;
 use App\Secret;
+use App\Group;
+use App\GroupUser;
 use Hash;
 use App\Mail\SendMailable;
 
@@ -355,7 +357,7 @@ class HomeController extends Controller
     {
         $email = $request->email;
         $user = User::where('email',$request->email)->first();
-        if($user)
+        if($user != null)
         {
             return response()->json([
                 'success' => true,
@@ -369,12 +371,39 @@ class HomeController extends Controller
                 'success' => false,
                 // TODO: lang this message
                 'message' => 'Người dùng không tồn tại.'
-            ]);
+            ],500);
         }
-       
-        
     }
+    public function addGroup(Request $request)
+    {
+        $user_admin = Auth::user();
+        $group = new Group;
+        $group->name = $request->name;
+        $group->created_by = $user_admin->name;
+        $group->modified_by = $user_admin->name;
+        $group->save();
 
+        $group_user = new GroupUser;
+        $group_user->group_id = $group->id;
+        $group_user->user_id = $user_admin->id;
+        $group_user->is_admin = true;
+        $group_user->save();
+       
+        $users = User::where('email',$request->email)->get();
+        foreach ($users as $user)
+        {
+            
+            $group_user = new GroupUser;
+            $group_user->group_id = $group->id;
+            $group_user->user_id = $user->id;
+            $group_user->save();
+        }
+        return response()->json([
+            'success' => true,
+            // TODO: lang this message
+            'message' => 'Tạo nhóm mới thành công.',
+        ]);
+    }
 
     public function profile()
     { 

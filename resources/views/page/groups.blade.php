@@ -91,7 +91,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary pull-left" data-dismiss="modal">Huỷ</button>
-                    <button type="button" class="btn btn-primary pull-right" id="addSubmit">Lưu</button>
+                    <button type="submit" class="btn btn-primary pull-right" id="addSubmit">Lưu</button>
                 </div>
             </div>
         </div>
@@ -103,9 +103,13 @@
         $('#addUser').click(function(e){
             e.preventDefault();
             
+            email =  {
+                'email' : $('#addForm input[name=email]').val()
+            };
             $.ajax({
                 url: 'group/checkUser',
                 type: 'POST',
+                data: email,
                 success: function(response, status, xhr, $form) {
                     var list = document.getElementById('users');
                     var email = document.getElementById('email').value;
@@ -113,17 +117,41 @@
                     entry.appendChild(document.createTextNode(email));
                     
                     list.appendChild(entry);
-                    console.log('2');
-                    return false;
+                    console.log(response.message);
                 },
                 error: function(response, status, xhr, $form) {
                     // btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false); // remove 
-                    swal("Có lỗi xảy ra", "", status);
-                    console.log('1');
+                    swal("Không tìm thấy người dùng", "", status);
                     console.log(response);
                 }
             });
         });
+        $('#addSubmit').click(function(e){
+            e.preventDefault();
+            var btn = $(this);
+            var form = $(this).closest('form');
+            form.ajaxSubmit({
+                url: 'group/addGroup',
+                type: 'POST',
+                success: function(response, status, xhr, $form) {
+                    swal({
+                        position: 'center',
+                        type: 'success',
+                        title: response.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(function(result){$('#addForm').modal('hide');});
+
+                    $('.m-content').html(response.view);
+                    form.clearForm();
+	                form.validate().resetForm();
+                },
+                error: function(response, status, xhr, $form) {
+                    swal("Có lỗi xảy ra", "", status);
+                    console.log(response.mesage);
+                }
+            })
+        })
     });
 </script>
 

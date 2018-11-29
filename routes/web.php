@@ -66,8 +66,9 @@ Route::get('settings','HomeController@profile');
 
 Route::get('groups','HomeController@groups');
 Route::group(['prefix' => 'group', 'as' => 'group'], function(){
-    Route::post('checkUser','HomeController@checkUser');
     Route::get('{tab}', ['uses' =>'HomeController@profile']);
+    Route::post('checkUser','HomeController@checkUser');
+    Route::post('addGroup','HomeController@addGroup');
     
 });
 
