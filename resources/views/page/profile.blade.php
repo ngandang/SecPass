@@ -342,7 +342,7 @@
                             <div class="m-portlet__body">
                                 <div class="form-group m-form__group m--margin-top-10">
                                     <div class="alert m-alert m-alert--outline alert-danger" role="alert">
-                                        Chúng tôi chỉ lưu trữ khoá công khai của bạn tại máy chủ. <br>Khoá riêng tư được lưu trong Tiện ích SecPass trên thiết bị của bạn. Bạn cần sao lưu và bảo đảm an toàn thông tin cho cặp khoá này.
+                                        Chúng tôi chỉ lưu trữ khoá công khai của bạn tại máy chủ. <br>Khoá riêng tư được lưu trong Tiện ích SecPASS trên thiết bị của bạn. Bạn cần sao lưu và bảo đảm an toàn thông tin cho cặp khoá này.
                                     </div>
                                 </div>
                                 <div class="form-group m-form__group row">
@@ -400,7 +400,7 @@
                                             Đồng bộ lên máy chủ
                                         </button>
                                         <span class="m-form__help">
-                                            Nếu bạn sử dụng chữ ký điện tử được cấp từ chính phủ, bạn cũng có thể sử dụng nó cho SecPass.
+                                            Nếu bạn sử dụng chữ ký điện tử được cấp từ chính phủ, bạn cũng có thể sử dụng nó cho SecPASS.
                                         </span>
                                     </div>
                                 </div>

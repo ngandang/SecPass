@@ -19,7 +19,7 @@ class Secrets extends Migration
             $table->uuid('user_id')->nullable();
             $table->uuid('group_id')->nullable();
             $table->uuid('account_id')->nullable();
-            $table->uuid('note_id')->nullable(); 
+            $table->uuid('note_id')->nullable();
             $table->longtext('data');
             $table->timestamps();
 

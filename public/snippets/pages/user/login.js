@@ -31,7 +31,7 @@ var SnippetLogin = function() {
         login.removeClass('m-login--forget-password');
         login.removeClass('m-login--signin');
 
-        document.title = 'SecPass | Đăng ký';
+        document.title = 'SecPASS | Đăng ký';
         login.addClass('m-login--signup');
         login.find('.m-login__signup').animateClass('flipInX animated');
     }
@@ -40,7 +40,7 @@ var SnippetLogin = function() {
         login.removeClass('m-login--forget-password');
         login.removeClass('m-login--signup');
 
-        document.title = 'SecPass | Đăng nhập';
+        document.title = 'SecPASS | Đăng nhập';
         login.addClass('m-login--signin');
         login.find('.m-login__signin').animateClass('flipInX animated');
     }
@@ -49,23 +49,32 @@ var SnippetLogin = function() {
         login.removeClass('m-login--signin');
         login.removeClass('m-login--signup');
 
-        document.title = 'SecPass | Quên mật khẩu';
+        document.title = 'SecPASS | Quên mật khẩu';
         login.addClass('m-login--forget-password');
-        login.find('.m-login__forget-password').animateClass('flipInX animated');
+        var form = login.find('.m-login__forget-password');
+        form.animateClass('flipInX animated');
+        var alert = $('<div class="m-alert m-alert--outline alert alert-' + 'danger' + ' alert-dismissible" role="alert">\
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>\
+                <span></span>\
+            </div>');
+        form.find('.alert').remove();
+        alert.prependTo(form);
+        alert.animateClass('fadeIn animated');
+        alert.find('span').html("Về mặt kỹ thuật, chỉ một mình bạn biết mật khẩu của mình. Điều đó có nghĩa tài khoản của bạn không thể sử dụng được nữa. Hãy liên hệ với chúng tôi để cùng xử lý khối dữ liệu của bạn. Tuy nhiên chúng tôi không thể giúp gì hơn thế. Rất xin lỗi.");
     }
    
     var handleRememberMe = function() {
         $('#m_login_remember_me').click(function(e) {
-            e.preventDefault();
-            var form = login.find('.m-login__signin form');
-            var alert = $('<div class="m-alert m-alert--outline alert alert-' + 'success' + ' alert-dismissible" role="alert">\
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>\
-                <span></span>\
-            </div>');
-            form.find('.alert').remove();
-            alert.prependTo(form);
-            alert.animateClass('fadeIn animated');
-            alert.find('span').html('Bạn không chỉ ngây thơ còn lười nữa. Hãy thức tỉnh đi!');
+            // e.preventDefault();
+            // var form = login.find('.m-login__signin form');
+            // var alert = $('<div class="m-alert m-alert--outline alert alert-' + 'success' + ' alert-dismissible" role="alert">\
+            //     <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>\
+            //     <span></span>\
+            // </div>');
+            // form.find('.alert').remove();
+            // alert.prependTo(form);
+            // alert.animateClass('fadeIn animated');
+            // alert.find('span').html('Bạn không chỉ ngây thơ còn lười nữa. Hãy thức tỉnh đi!');
         });
     }
 
@@ -153,6 +162,13 @@ var SnippetLogin = function() {
                         }, 1000);
                     }
                     else {
+                        if($('input[name=remember]').prop('checked')) {
+                            // console.log('remember checked');
+                            
+                            var passphrase = form.find('input[name=password]').val();
+                            document.dispatchEvent(new CustomEvent('setUserPassphraseEvent', {detail: passphrase}));
+                        }
+
                         window.location = response.intended;
                     }
                 },
@@ -226,28 +242,72 @@ var SnippetLogin = function() {
             console.log(options);
 
             openpgp.generateKey(options).then(function(key) {
-                console.log(key)
+                console.log(key);
                  // Set PGP to addon
-                document.dispatchEvent(new CustomEvent('setUserPGPEvent', {detail: key}));
+                let user_pgp = {
+                    'privateKeyArmored': key.privateKeyArmored,
+                    'publicKeyArmored': key.publicKeyArmored,
+                    'revocationCertificate': key.revocationCertificate
+                };
+
+                let pgp_key = {
+                    "_token": form.find("input[name=_token]").val(),
+                    'user_id': "",
+                    'armored_key': key.publicKeyArmored,
+                    'uid': key.key.users[0].userId.userid,
+                    'key_id': key.key.keyPacket.keyid.bytes,
+                    'fingerprint': key.key.keyPacket.fingerprint,
+                    // 'type': key.key.keyPacket.tag,
+                    'expires': key.key.keyPacket.expirationTimeV3,
+                    'key_created': key.key.keyPacket.created
+                };
 
                 form.ajaxSubmit({
                     url: 'register',                
                     type: 'POST',
-                    success: function(response, status, xhr, $form) {
-                        // similate 1s delay
-                        setTimeout(function() {
-                            btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false);
-                            form.clearForm();
-                            form.validate().resetForm();
+                    success: function(response, status, xhr, $form) { 
+                        pgp_key.user_id = response.user_id;
+                        console.log(pgp_key);
 
-                            // display signin form
-                            displaySignInForm();
-                            var signInForm = login.find('.m-login__signin form');
-                            signInForm.clearForm();
-                            signInForm.validate().resetForm();
+                        showMsg(form, 'success', response.message);
+                        
+                        // Send user_pgp to extension
+                        document.dispatchEvent(new CustomEvent('setUserPGPEvent', {detail: user_pgp}));
+                        
+                        $.ajax({
+                            url: 'register/pgp',
+                            type: 'POST',
+                            data: pgp_key,
+                            success: function(response, status, xhr, $form){
+                                // similate 1s delay
+                                setTimeout(function() {
+                                    btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false);
+                                    form.clearForm();
+                                    form.validate().resetForm();
 
-                            showMsg(signInForm, 'success', response.message);
-                        }, 1000);
+                                    // display signin form
+                                    displaySignInForm();
+                                    var signInForm = login.find('.m-login__signin form');
+                                    signInForm.clearForm();
+                                    signInForm.validate().resetForm();
+
+                                    showMsg(signInForm, 'success', response.message);
+                                }, 1000);
+                                console.log(response);
+                            },
+                            error: function(response, status, xhr, $form) {
+                                // similate 1s delay
+                                setTimeout(function() {
+                                    console.log(response);
+                                    btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false);
+                                    $.each(response.responseJSON.errors, function(any, errors){
+                                        $.each(errors, function(idx) {
+                                            showMsg(form, 'danger', errors[idx]);
+                                        });
+                                    });
+                                }, 1000);
+                            }
+                        });
                     },
                     error: function(response, status, xhr, $form) {
                         // similate 1s delay
@@ -261,39 +321,6 @@ var SnippetLogin = function() {
                             });
                         }, 1000);
                     }
-                })
-                .done(function(response){
-                    let pgp_key = {
-                        'user_id': response.user_id,
-                        'key_created': key.keyPacket.created,
-                        'fingerprint': key.keyPacket.fingerprint,
-                        'key_id': key.keyPacket.keyid,
-                        'uid': key.keyPacket.userid,
-                        'armored_key': key.publicKeyArmored,
-                        // 'revocationCertificate': key.revocationCertificate
-                    };
-                    console.log(pgp_key);
-                    form.ajaxSubmit({
-                        url: 'register/pgp',
-                        type: 'POST',
-                        data: pgp_key,
-                        success: function(response, status, xhr, $form){
-                            console.log(response);
-                            showMsg(form, 'success', response.message);
-                        },
-                        error: function(response, status, xhr, $form) {
-                            // similate 1s delay
-                            setTimeout(function() {
-                                console.log(response);
-                                btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false);
-                                $.each(response.responseJSON.errors, function(any, errors){
-                                    $.each(errors, function(idx) {
-                                        showMsg(form, 'danger', errors[idx]);
-                                    });
-                                });
-                            }, 1000);
-                        }
-                    });
                 });
             });
             

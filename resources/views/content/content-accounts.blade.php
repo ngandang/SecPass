@@ -143,5 +143,8 @@
         </tbody>
     </table>
 </div> -->
-    <p align="center">Background báo empty state màu xám.</p>
+    <div align="center">
+        <img src="{{ asset('default/media/img/misc/emptystate.png') }}"/>
+        <h3><small class="text-muted">Hiện không có tài khoản nào...</small></h3>
+    </div>
 @endif

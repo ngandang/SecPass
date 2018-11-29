@@ -4,13 +4,13 @@
 	<head>
 		<meta charset="utf-8" />
 		<title>
-			SecPass | Xác thực tài khoản
+			SecPASS | Xác thực tài khoản
 		</title>
-		<meta name="description" content="Latest updates and statistic charts">
+		<meta name="description" content="SecPASS - The password management system for indiviuals and groups">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		<!--begin::Web font -->
-		<script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.16/webfont.js"></script>
+		<script src="{{ asset('vendors/base/webfont.js') }}"></script>
 		<script>
           WebFont.load({
             google: {"families":["Helvetica:300,400,500,600,700","Roboto:300,400,500,600,700"]},
@@ -24,7 +24,7 @@
 		<link href="{{ asset('vendors/base/vendors.bundle.css') }}" rel="stylesheet" type="text/css" />
 		<link href="{{ asset('default/base/style.bundle.css') }}" rel="stylesheet" type="text/css" />
 		<!--end::Base Styles -->
-		<!-- <link rel="shortcut icon" href="default/media/img/logo/favicon.ico" /> -->
+		<link rel="shortcut icon" href="default/media/img/logo/favicon.ico" />
 	</head>
 	<!-- end::Head -->
     <!-- end::Body -->

@@ -8,10 +8,12 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 use App\User;
 use App\Profile;
+use App\PGPkey;
 
 use App\Mail\VerifyUser;
 
@@ -96,18 +98,77 @@ class RegisterController extends Controller
      */
     public function register(Request $request)
     {
+        try {
+            $this->validator($request->all())->validate();
 
-        $this->validator($request->all())->validate();
+            $user = $this->create($request->all());
 
-        $user = $this->create($request->all());
+            Mail::to($user)->send(new VerifyUser($user));
+        }
+        catch(\Exception $e) {
+            $user->delete();
+            return response()->json([
+                'success' => false,
+                'message' => 'Đăng ký không thành công. Vui lòng thực hiện lại sau.',
+            ],500);
+        }
 
         Profile::create([
             'user_id' => $user->id,
         ]);
 
-        Mail::to($user)->send(new VerifyUser($user));
+        return response()->json([
+            'success' => true,
+            'message' => 'Đăng ký thành công. Đang khởi tạo cặp khoá PGP.',
+            'user_id' => $user->id
+        ]);
+    }
 
-        return response()->json(['success' => true, 'message' => 'Đăng ký thành công. Vui lòng kiểm tra hộp thư của bạn.']);
+    public function addPGP(Request $request)
+    {
+        // TODO: receiving Info and publicKey from addon.
+        $pgp_key = new PGPkey;
+        $pgp_key->user_id = $request->user_id;
+        $pgp_key->armored_key = $request->armored_key;
+        $pgp_key->uid = $request->uid;
+
+        // // $chars = array_map("chr", $request->key_id);
+        // $bin = join($request->key_id);
+        // $hex = bin2hex($bin);
+        $pgp_key->key_id = $request->key_id;
+
+        $chars = array_map("chr", $request->fingerprint);
+        $bin = join($chars);
+        $hex = bin2hex($bin);
+        $pgp_key->fingerprint = $hex;
+
+        $pgp_key->type = 6;
+        if ( $request->expires != 0 ) {
+            $pgp_key->expires = $request->expires;
+        }
+       ;
+        $key_created = substr( $request->key_created, 0, strpos($request->key_created, '(') );
+        $pgp_key->key_created = date('Y-m-d h:i:s', strtotime($key_created));
+        
+        $pgp_key->save();
+        
+        // $pgp_key = new PGPkey;
+        // $pgp_key->user_id = Auth::user()->id;
+        // $pgp_key->armored_key = "abc";
+        // $pgp_key->uid = "Nguyen Phi Cuong (cuong@secpass.com)";
+        // $pgp_key->key_id = "ABCDDBCA";
+        // $pgp_key->fingerprint = "ABCDDBCAABCDDBCAABCDDBCAABCDDBCA";
+        // $pgp_key->type = "what is this??";
+        // $pgp_key->expires = NOW();
+        // $pgp_key->key_created = NOW();
+        // $pgp_key->save();
+
+
+        return response()->json([
+            'success' => true,
+            // TODO: lang this message
+            'message' => 'Khởi tạo cặp khoá PGP thành công. Vui lòng kiểm tra hộp thư email của bạn.'
+        ]);
     }
 
     public function sendmail(Request $request)
@@ -123,11 +184,6 @@ class RegisterController extends Controller
         }
 
         return response()->json(['status' => 'danger', 'message' => 'Email được nhập không tồn tại. Vui lòng kiểm tra lại.']);
-    }
-
-    public function pgp(Request $request)
-    {
-        s;
     }
 
     public function verify($code)

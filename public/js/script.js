@@ -75,7 +75,7 @@ var FAQToggle = function () {
     // });
 // };
 
-jQuery(document).ready(function() {    
+$(document).ready(function() {    
     SessionTimeout.init();
     DataDismiss();
     // Asidebar toggle
@@ -83,7 +83,6 @@ jQuery(document).ready(function() {
     LogsToggle();
     FAQToggle();
     // connectAddon();
-    const test ="abc";
 });
 
 
