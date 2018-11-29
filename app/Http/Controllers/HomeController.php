@@ -416,19 +416,26 @@ class HomeController extends Controller
     }
     public function checkUser(Request $request)
     {
-        $user = User::where('email', $request->email)->first();
+        $email = $request->email;
+        $user = User::where('email',$request->email)->first();
         if($user)
         {
             return response()->json([
                 'success' => true,
+                // TODO: lang this message
+                'message' => 'Người dùng tồn tại.'
             ]);
         }
         
-        return response()->json([
-            'success' => false,
-            // TODO: lang this message
-            'message' => 'Người dùng không tồn tại.'
-        ]);
+        else{
+            return response()->json([
+                'success' => false,
+                // TODO: lang this message
+                'message' => 'Người dùng không tồn tại.'
+            ]);
+        }
+       
+        
     }
 
 

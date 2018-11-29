@@ -76,13 +76,13 @@
                                 </div>
                                 <div class="col-md-2">
                                     <label class="text-info">&nbsp</label>
-                                    <button id="addUser" type="button" class="btn btn-primary">
+                                    <button id="addUser" type="submit" class="btn btn-primary">
                                         Thêm
                                     </button>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="name" class="text-info">Danh sách người dùng</label>
+                                <label for="list" class="text-info">Danh sách người dùng</label>
                                 <ul id="users"></ul>
                             </div>
                         
@@ -102,9 +102,10 @@
     $(document).ready(function(){
         $('#addUser').click(function(e){
             e.preventDefault();
+            
             $.ajax({
                 url: 'group/checkUser',
-                type: 'GET',
+                type: 'POST',
                 success: function(response, status, xhr, $form) {
                     var list = document.getElementById('users');
                     var email = document.getElementById('email').value;
@@ -112,21 +113,16 @@
                     entry.appendChild(document.createTextNode(email));
                     
                     list.appendChild(entry);
+                    console.log('2');
+                    return false;
                 },
                 error: function(response, status, xhr, $form) {
                     // btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false); // remove 
                     swal("Có lỗi xảy ra", "", status);
+                    console.log('1');
                     console.log(response);
                 }
             });
-
-            // var list = document.getElementById('users');
-            // var email = document.getElementById('email').value;
-            // var entry = document.createElement('li');
-            // entry.appendChild(document.createTextNode(email));
-            
-            // list.appendChild(entry);
-            //     return false;
         });
     });
 </script>
