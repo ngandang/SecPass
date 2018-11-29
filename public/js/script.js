@@ -77,6 +77,12 @@ var FAQToggle = function () {
 
 $(document).ready(function() {    
     SessionTimeout.init();
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    
     DataDismiss();
     // Asidebar toggle
     MessengerToggle();

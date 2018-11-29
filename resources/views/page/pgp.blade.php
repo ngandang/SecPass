@@ -31,6 +31,7 @@
         var handleSubmit = function () {
             $('#test1').click(function(){
                 console.log('set PGP');
+                alert('PGP cũ sẽ bị mất.')
                 var data = {
                     'privateKeyArmored': privkey1,
                     'publicKeyArmored' : pubkey1,

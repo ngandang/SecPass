@@ -27,7 +27,7 @@
             </ul>
         </div>
         <div class="btn-add-note">
-            <a class="btn btn-accent m-btn m-btn--custom m-btn--icon m-btn--pill m-btn--air" href="#addForm" data-toggle="modal">
+            <a class="btn btn-accent m-btn m-btn--custom m-btn--icon m-btn--pill m-btn--air" href="#addForm" data-toggle="modal" data-backdrop="static" data-keyboard="false">
                 <span>
                     <i class="la la-plus"></i>
                     <span>

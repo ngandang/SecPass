@@ -96,15 +96,19 @@ class HomeController extends Controller
     }
 
     public function editAccount(Request $request){
-        $idEdit = $request->id;
-        $acc = Account::find($idEdit);
+        $account_id = $request->id;
+        $acc = Account::find($account_id);
         $acc->name = $request->name;
         $acc->username = $request->username;
         $acc->uri = $request->url;
-        if ($request->password)
-            $acc->password = $request->password;
         $acc->description = $request->description;
         $acc->save();
+
+        if ($request->cipher) {
+            $secret = Secret::where('account_id', $account_id)->first();
+            $secret->data = $request->cipher;
+            $secret->save();
+        }
         
         $accounts = Auth::user()->account()->get();
         return response()->json([
@@ -116,9 +120,13 @@ class HomeController extends Controller
     }
 
     public function deleteAccount(Request $request){
-        $idDelete = $request->idDelete;
-        $acc = Account::find($idDelete);
+        $account_id = $request->id;
+        
+        $acc = Account::find($account_id);
         $acc->delete();
+
+        $secret = Secret::where('account_id', $account_id)->first();
+        $secret->delete();
 
         $accounts = Auth::user()->account()->get();
         return response()->json([
@@ -130,10 +138,11 @@ class HomeController extends Controller
     }
     
     public function shareAccount(Request $request){
-        $idShare = $request->idShare;
-        $acc = Account::find($idShare);
+        $account_id = $request->idShare;
+        $acc = Account::find($account_id);
         //TODO: share account
     }
+
     public function copyPassword(Request $request)
     {
         $account_id = $request->id;
@@ -145,6 +154,7 @@ class HomeController extends Controller
             'password' => $secret->data
         ]);
     }
+    
     public function notes()
     {
         $notes = Auth::user()->note()->get();

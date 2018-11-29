@@ -86,8 +86,8 @@ $(document).ready(function(){
         });
     	
         document.addEventListener('letgetUserPassphraseEvent', function (event) {
+            console.log('addon: read passphrase');
             chrome.storage.local.get('user_passphrase', function(result){
-                console.log('addon: read passphrase');
                 console.log(result);
                 document.dispatchEvent(new CustomEvent('getUserPassphraseEvent', {detail: result.user_passphrase}));
             });

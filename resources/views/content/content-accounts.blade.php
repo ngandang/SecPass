@@ -24,7 +24,7 @@
                             </a>
                         </li>
                         <li class="m-portlet__nav-item m-dropdown m-dropdown--inline m-dropdown--arrow m-dropdown--align-right m-dropdown--align-push" data-dropdown-toggle="hover" aria-expanded="true">
-                            <a href="javascript:void();" class="m-portlet__nav-link m-portlet__nav-link--icon m-dropdown__toggle">
+                            <a href="javascript:;" class="m-portlet__nav-link m-portlet__nav-link--icon m-dropdown__toggle">
                                 <i class="la la-ellipsis-h"></i>
                             </a>
                             <div class="m-dropdown__wrapper">
@@ -39,7 +39,7 @@
                                                     </span>
                                                 </li>
                                                 <li class="m-nav__item">
-                                                    <a href="javascript:void();" onclick="copyUsername('{{$acc->username}}');" class="m-nav__link">
+                                                    <a href="javascript:;" onclick="copyUsername('{{$acc->username}}');" class="m-nav__link">
                                                         <i class="m-nav__link-icon flaticon-user-ok"></i>
                                                         <span class="m-nav__link-text">
                                                             Sao chép tên đăng nhập
@@ -47,7 +47,7 @@
                                                     </a>
                                                 </li>
                                                 <li class="m-nav__item">
-                                                    <a href="javascript:void();" onclick="copyPassword('{{$acc->id}}')" class="m-nav__link">
+                                                    <a href="javascript:;" onclick="copyPassword('{{$acc->id}}')" class="m-nav__link">
                                                         <i class="m-nav__link-icon flaticon-lock-1"></i>
                                                         <span class="m-nav__link-text">
                                                             Sao chép mật khẩu
@@ -55,7 +55,7 @@
                                                     </a>
                                                 </li>
                                                 <li class="m-nav__item">
-                                                    <a onclick="edit('{{$acc->id}}','{{$acc->name}}','{{$acc->username}}','{{$acc->uri}}','{{$acc->description}}','{{$acc->updated_at}}')" href="#editForm" data-toggle="modal" class="m-nav__link">
+                                                    <a onclick="edit('{{$acc->id}}','{{$acc->name}}','{{$acc->username}}','{{$acc->uri}}','{{$acc->description}}','{{$acc->updated_at}}')" href="#editForm" data-toggle="modal" data-backdrop="static" data-keyboard="false" class="m-nav__link">
                                                         <i class="m-nav__link-icon flaticon-edit"></i>
                                                         <span class="m-nav__link-text">
                                                             Chỉnh sửa
@@ -63,7 +63,7 @@
                                                     </a>
                                                 </li>
                                                 <li class="m-nav__item">
-                                                    <a onclick="share('{{$acc->id}}')" href="#shareForm" data-toggle="modal" class="m-nav__link">
+                                                    <a onclick="share('{{$acc->id}}')" href="#shareForm" data-toggle="modal" data-backdrop="static" data-keyboard="false" class="m-nav__link">
                                                         <i class="m-nav__link-icon flaticon-share"></i>
                                                         <span class="m-nav__link-text">
                                                             Chia sẻ
@@ -72,7 +72,7 @@
                                                 </li>
                                                 <li class="m-nav__separator m-nav__separator--fit"></li>
                                                 <li class="m-nav__item">
-                                                    <a onclick="del('{{$acc->id}}')" href = "#deleteForm" data-toggle="modal" class="btn btn-outline-danger m-btn m-btn--pill m-btn--wide btn-sm">
+                                                    <a onclick="del('{{$acc->id}}')" href = "#deleteForm" data-toggle="modal" data-backdrop="static" data-keyboard="false" class="btn btn-outline-danger m-btn m-btn--pill m-btn--wide btn-sm">
                                                         Xoá tài khoản
                                                     </a>
                                                 </li>
@@ -90,7 +90,7 @@
                     <h5 class="text-overflow">{{$acc->name}}</h5>
                 </div>
                 <div class="text-container">
-                    <a href="javascript:void();" class="m-link text-overflow" onclick="copyUsername('{{$acc->username}}');">{{$acc->username}}</a>
+                    <a href="javascript:;" class="m-link text-overflow" onclick="copyUsername('{{$acc->username}}');">{{$acc->username}}</a>
                 </div>
             </div>
         </div>
@@ -119,7 +119,7 @@
                 <td>
                     <a class="copyusername">{{$acc->username}}</a>
                 </td>
-                <td><a href="javascript:void();" onclick="copyPassword('{{$acc->id}}')">Sao chép</a></td>
+                <td><a href="javascript:;" onclick="copyPassword('{{$acc->id}}')">Sao chép</a></td>
                 <td>{{$acc->description}}</td>
                 <td>
                 @if ($acc->updated_at)

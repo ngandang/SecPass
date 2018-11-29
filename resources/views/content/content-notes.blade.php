@@ -15,7 +15,7 @@
                 <tr class="odd" align="center">
                     <td>{{$note->title}}</td>
                     <td style="word-wrap: break-word;">
-                        <a onclick="edit('{{$note->id}}','{{$note->title}}')" href="#editForm" data-toggle="modal">
+                        <a onclick="edit('{{$note->id}}','{{$note->title}}')" href="#editForm" data-toggle="modal" data-backdrop="static" data-keyboard="false" >
                             Xem
                         </a>
                     </td>
@@ -28,13 +28,13 @@
                     </td>
                     <td>
                         <!-- <div style="width=500px;"> -->
-                            <span onclick="share('{{$note->id}}')" href="#shareForm" data-toggle="modal" class="btn btn-sm">
+                            <span onclick="share('{{$note->id}}')" href="#shareForm" data-toggle="modal" data-backdrop="static" data-keyboard="false" class="btn btn-sm">
                                 <i class="flaticon-share"></i>
                             </span>
-                            <span onclick="edit('{{$note->id}}','{{$note->title}}')" href="#editForm" data-toggle="modal" class="btn btn-sm">
+                            <span onclick="edit('{{$note->id}}','{{$note->title}}')" href="#editForm" data-toggle="modal" data-backdrop="static" data-keyboard="false" class="btn btn-sm">
                                 <i class="flaticon-edit"></i>
                             </span>
-                            <span onclick="del('{{$note->id}}')" href="#deleteForm" data-toggle="modal" class="btn btn-sm">
+                            <span onclick="del('{{$note->id}}')" href="#deleteForm" data-toggle="modal" data-backdrop="static" data-keyboard="false" class="btn btn-sm">
                                 <i class="flaticon-cancel"></i>
                             </span>
                         <!-- </div> -->

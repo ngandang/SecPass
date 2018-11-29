@@ -27,7 +27,7 @@
         </div>
 
         <div class="btn-add-account">
-            <a class="btn btn-accent m-btn m-btn--custom m-btn--icon m-btn--pill m-btn--air" href="#addForm" data-toggle="modal">
+            <a class="btn btn-accent m-btn m-btn--custom m-btn--icon m-btn--pill m-btn--air" href="#addForm" data-toggle="modal" data-backdrop="static" data-keyboard="false">
                 <span>
                     <i class="la la-plus"></i>
                     <span>
@@ -278,6 +278,7 @@
         $("body").append($temp);        
         $temp.val(copyText);
         // setTimeout(() => {
+            $temp.focus();
             $temp.select();
             document.execCommand("copy");
             $temp.remove();
@@ -334,6 +335,7 @@
         });
         setTimeout(() => {
             var $temp = $("#tempInput");
+            $temp.focus();
             $temp.select();        
             document.execCommand("copy");
             $temp.remove();
@@ -379,12 +381,12 @@
 
     $(document).ready(function(){
 
-        // Get PGP passphrase 
+        // Get user passphrase 
         document.addEventListener('getUserPassphraseEvent', function (event) {
-                passphrase= event.detail;
-                console.log(passphrase);
+            passphrase= event.detail;
+            console.log(passphrase);
         });
-        document.dispatchEvent(new CustomEvent('letgetUserPassphraseEvent', {detail: ""}));
+        // document.dispatchEvent(new CustomEvent('letgetUserPassphraseEvent', {detail: ""})); 
 
         // Get PGP keys automatically 
         document.addEventListener('getUserPGPEvent', function (event) {
@@ -392,10 +394,14 @@
                 
                 privkey = pgp_key.privateKeyArmored;
                 pubkey = pgp_key.publicKeyArmored;
-                console(pgp_key);
+                console.log(pgp_key);
         });
-        document.dispatchEvent(new CustomEvent('letgetUserPGPEvent', {detail: ""}));
+        // document.dispatchEvent(new CustomEvent('letgetUserPGPEvent', {detail: ""}));
 
+        setTimeout(() => {
+            document.dispatchEvent(new CustomEvent('letgetUserPassphraseEvent', {detail: ""}));
+            document.dispatchEvent(new CustomEvent('letgetUserPGPEvent', {detail: ""}));
+        }, 500);
 
         $('.toggle-password').click(function() {
             $(this).toggleClass("fa-eye fa-eye-slash");
@@ -439,9 +445,6 @@
             form.find('input[name="password"]').prop('disabled', true);
 
             messageToEncrypt = form.find("input[name=password]").val();
-            
-            // send data through a DOM event
-            document.dispatchEvent(new CustomEvent('letgetUserPGPEvent', {detail: ""}));
 
             encryptFunction(function (result) {
                 var $temp = $("<textarea name='cipher'>");

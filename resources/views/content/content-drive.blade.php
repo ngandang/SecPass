@@ -19,14 +19,14 @@
                     <td>{{$file['size']}}Byte</td>
                     <td>{{$file['lastModified']}} </td>
                     <td>                            
-                        <div onclick="share('{{ $file['name'].'.'.$file['extension'] }}')" href = "#shareForm" data-toggle="modal" class="btn btn-sm">
+                        <div onclick="share('{{ $file['name'].'.'.$file['extension'] }}')" href = "#shareForm" data-toggle="modal" data-backdrop="static" data-keyboard="false" class="btn btn-sm">
                             <i class="flaticon-share"></i>
                         </div>
                         <div onclick="download('{{ $file['name'].'.'.$file['extension'] }}')" href="#downloadForm" class="btn btn-download">
                             <i class="flaticon-download"></i>
                         </div>
                         
-                        <div onclick="del('{{ $file['name'].'.'.$file['extension'] }}')" href = "#deleteForm" data-toggle="modal" class="btn btn-sm">
+                        <div onclick="del('{{ $file['name'].'.'.$file['extension'] }}')" href = "#deleteForm" data-toggle="modal" data-backdrop="static" data-keyboard="false" class="btn btn-sm">
                             <i class="flaticon-cancel"></i>
                         </div>
                     </td>

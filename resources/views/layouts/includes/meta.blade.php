@@ -6,6 +6,7 @@
 		<meta name="description" content="SecPASS - The password management system for indiviuals and groups">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="csrf-token" content="{{ csrf_token() }}" />
 		<!--BEGIN::Web font -->
 		<script src="{{ asset('vendors/base/webfont.js') }}"></script>
 		<script>
