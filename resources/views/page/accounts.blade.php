@@ -287,16 +287,14 @@
     }
 
     function copyUsername(data) {
-        copy(data)
-        // .then(function() {
-            swal({
-                position: 'center',
-                type: 'success',
-                title: 'Đã sao chép tên đăng nhập',
-                showConfirmButton: false,
-                timer: 1500
-            });
-        // });
+        copy(data);
+        swal({
+            position: 'center',
+            type: 'success',
+            title: 'Đã sao chép tên đăng nhập',
+            showConfirmButton: false,
+            timer: 1500
+        });
     }
 
     function copyContent(accId) {
@@ -417,6 +415,19 @@
                 input.attr("type", "password");
             }
         });
+
+        $('.m-portlet').click(function (e) {
+            var showEditForm = $(this).find(".account-edit");
+            showEditForm[0].click();
+        });
+        $('.account-external-link').click(function(e) {
+            e.stopPropagation();
+        });
+        $('.account-username').click(function (e) {
+            copyUsername($(this).text());
+            e.stopPropagation();
+        });
+
 
         $('#getPassword').click(function () {
             var data = {

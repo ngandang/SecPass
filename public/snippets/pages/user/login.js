@@ -33,7 +33,9 @@ var SnippetLogin = function() {
 
         document.title = 'SecPASS | Đăng ký';
         login.addClass('m-login--signup');
-        login.find('.m-login__signup').animateClass('flipInX animated');
+        var form = $('.m-login__signup');
+        form.animateClass('flipInX animated');
+        window.scrollTo(0, document.body.scrollHeight)
     }
 
     var displaySignInForm = function() {
@@ -53,14 +55,17 @@ var SnippetLogin = function() {
         login.addClass('m-login--forget-password');
         var form = login.find('.m-login__forget-password');
         form.animateClass('flipInX animated');
-        var alert = $('<div class="m-alert m-alert--outline alert alert-' + 'danger' + ' alert-dismissible" role="alert">\
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>\
-                <span></span>\
-            </div>');
-        form.find('.alert').remove();
-        alert.prependTo(form);
-        alert.animateClass('fadeIn animated');
-        alert.find('span').html("Về mặt kỹ thuật, chỉ một mình bạn biết mật khẩu của mình. Điều đó có nghĩa tài khoản của bạn không thể sử dụng được nữa. Hãy liên hệ với chúng tôi để cùng xử lý khối dữ liệu của bạn. Tuy nhiên chúng tôi không thể giúp gì hơn thế. Rất xin lỗi.");
+        setTimeout(() => {
+            var alert = $('<div class="m-alert m-alert--outline alert alert-' + 'danger' + ' alert-dismissible" role="alert">\
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>\
+                    <span></span>\
+                </div>');
+            form.find('.alert').remove();
+            alert.appendTo(form);
+            alert.animateClass('fadeIn animated');
+            alert.find('span').html("Vì lý tưởng bảo mật, chỉ một mình bạn biết mật khẩu của mình. Điều đó có nghĩa tài khoản của bạn không thể sử dụng được nữa. Hãy liên hệ với chúng tôi để cùng xử lý khối dữ liệu này. Chúng tôi thực sự đồng cảm với bạn.");
+            form.scrollTop = 0;
+        }, 1000);
     }
    
     var handleRememberMe = function() {
