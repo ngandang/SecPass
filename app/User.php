@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Nicolaslopezj\Searchable\SearchableTrait;
 
 
 class User extends Authenticatable
@@ -40,9 +41,16 @@ class User extends Authenticatable
 
     protected $table = 'users';
 
+    use SearchableTrait;
+
     public function GroupUser()
     {
         return $this->hasMany('App\GroupUser', 'user_id', 'id');
+    }
+    
+    public function Group()
+    {
+        return $this->belongsToMany('App\Group','groups_users','user_id','group_id');
     }
 
     public function Profile()
@@ -60,14 +68,21 @@ class User extends Authenticatable
         return $this->hasMany('App\Secret','user_id','id');
     }
     
+    public function Share()
+    { 
+        return $this->hasMany('App\Share','owner_id','id');
+    }
+    
     public function PGPkey()
     { 
-        return $this->hasOne('App\PGPkey','user_id','id');
+        return $this->hasMany('App\PGPkey','user_id','id');
     }
+    
     public function Account()
     {
         return $this->belongsToMany('App\Account','secrets','user_id','account_id');
     }
+    
     public function Note()
     {
         return $this->belongsToMany('App\Note','secrets','user_id','note_id');

@@ -191,8 +191,8 @@
 								<div class="m-dropdown__arrow m-dropdown__arrow--adjust"></div>
 								<div class="m-dropdown__inner">
 									<div class="m-dropdown__body">
-										<div class="m-dropdown__scrollable m-scrollable" data-scrollable="true" data-max-height="300" data-mobile-max-height="200">
-											<div class="m-dropdown__content m-list-search m-list-search--skin-light"></div>
+										<div class="m-dropdown__content m-dropdown__scrollable m-scrollable" data-scrollable="true" data-max-height="300" data-mobile-max-height="200">
+											
 										</div>
 									</div>
 								</div>
@@ -504,12 +504,9 @@
 													</li>
 													<li class="m-nav__separator m-nav__separator--fit"></li>
 													<li class="m-nav__item">
-														<a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="btn m-btn--pill btn-secondary m-btn m-btn--custom m-btn--label-brand m-btn--bolder">
+														<a id="logout" href="/logout" class="btn m-btn--pill btn-secondary m-btn m-btn--custom m-btn--label-brand m-btn--bolder">
 															Đăng xuất
 														</a>
-														<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-															@csrf
-														</form>
 													</li>
 												</ul>
 											</div>

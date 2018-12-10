@@ -98,71 +98,59 @@ class RegisterController extends Controller
      */
     public function register(Request $request)
     {
-        try {
-            $this->validator($request->all())->validate();
+        $this->validator($request->all())->validate();
 
-            $user = $this->create($request->all());
-
-            Mail::to($user)->send(new VerifyUser($user));
-        }
-        catch(\Exception $e) {
-            $user->delete();
-            return response()->json([
-                'success' => false,
-                'message' => 'Đăng ký không thành công. Vui lòng thực hiện lại sau.',
-            ],500);
-        }
-
-        Profile::create([
-            'user_id' => $user->id,
-        ]);
+        $user = $this->create($request->all());
 
         return response()->json([
             'success' => true,
-            'message' => 'Đăng ký thành công. Đang khởi tạo cặp khoá PGP.',
+            'message' => 'Đang khởi tạo cặp khoá PGP...',
             'user_id' => $user->id
         ]);
     }
 
     public function addPGP(Request $request)
     {
-        // TODO: receiving Info and publicKey from addon.
-        $pgp_key = new PGPkey;
-        $pgp_key->user_id = $request->user_id;
-        $pgp_key->armored_key = $request->armored_key;
-        $pgp_key->uid = $request->uid;
+        try {
+            // TODO: receiving Info and publicKey from addon.
+            $pgp_key = new PGPkey;
+            $pgp_key->user_id = $request->user_id;
+            $pgp_key->armored_key = $request->armored_key;
+            $pgp_key->uid = $request->uid;
+            $pgp_key->key_id = $request->key_id;
 
-        // // $chars = array_map("chr", $request->key_id);
-        // $bin = join($request->key_id);
-        // $hex = bin2hex($bin);
-        $pgp_key->key_id = $request->key_id;
+            $chars = array_map("chr", $request->fingerprint);
+            $bin = join($chars);
+            $hex = bin2hex($bin);
+            $pgp_key->fingerprint = $hex;
+            
+            $pgp_key->type = $request->type; // '6' - public key packet
 
-        $chars = array_map("chr", $request->fingerprint);
-        $bin = join($chars);
-        $hex = bin2hex($bin);
-        $pgp_key->fingerprint = $hex;
+            if( $request->expires != "0" ) {
+                $key_expires = substr( $request->key_expires, 0, strpos($request->key_expires, '(') );
+                $pgp_key->expires = $key_expires;
+            }
 
-        $pgp_key->type = 6;
-        if ( $request->expires != 0 ) {
-            $pgp_key->expires = $request->expires;
+            $key_created = substr( $request->key_created, 0, strpos($request->key_created, '(') );
+            $pgp_key->key_created = date('Y-m-d h:i:s', strtotime($key_created));
+            
+            $pgp_key->save();
+
+            $user = User::find($pgp_key->user_id);
+            Mail::to($user)->send(new VerifyUser($user));
+            
+            Profile::create([
+                'user_id' => $user->id,
+            ]);
         }
-       ;
-        $key_created = substr( $request->key_created, 0, strpos($request->key_created, '(') );
-        $pgp_key->key_created = date('Y-m-d h:i:s', strtotime($key_created));
-        
-        $pgp_key->save();
-        
-        // $pgp_key = new PGPkey;
-        // $pgp_key->user_id = Auth::user()->id;
-        // $pgp_key->armored_key = "abc";
-        // $pgp_key->uid = "Nguyen Phi Cuong (cuong@secpass.com)";
-        // $pgp_key->key_id = "ABCDDBCA";
-        // $pgp_key->fingerprint = "ABCDDBCAABCDDBCAABCDDBCAABCDDBCA";
-        // $pgp_key->type = "what is this??";
-        // $pgp_key->expires = NOW();
-        // $pgp_key->key_created = NOW();
-        // $pgp_key->save();
-
+        catch(\Exception $e) {
+            $user = User::find($request->user_id);
+            $user->delete();
+            return response()->json([
+                'success' => false,
+                'message' => 'Đăng ký không thành công. Vui lòng thực hiện lại sau.',
+            ],500);
+        }
 
         return response()->json([
             'success' => true,

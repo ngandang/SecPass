@@ -57,23 +57,21 @@ var FAQToggle = function () {
         $('#m_quick_sidebar_tabs li a')[2].click();
     });
 }
-// addon
-// var connectAddon = function () {
-//     var editorExtensionId = "bmifpeofnjjhlefcaflhdegmpeljhede";
-//     chrome.runtime.sendMessage(editorExtensionId, {openUrlInEditor: "https://www.google.com"},
-//         function(response) {
-//         //   if (!response.success)
-//             // handleError  (url);
-//             console.log(response);
-//         });
 
-
-    // $('[data-dismiss=modal]').on('click', function () {
-    //     var form = $(this).closest('form');
-    //     form.clearForm();
-    //     form.validate().resetForm();
-    // });
-// };
+var LogoutButton = function () {
+    $('#logout').on('click', function(e){
+        e.preventDefault();
+        $.ajax({
+            url: "/logout",
+            method: "POST",
+            success: window.location="/login",
+            error: function(response, status, xhr, $form) {
+                console.log(response);
+                swal("", response.message.serialize(), "error");
+            }
+        });
+    });
+}
 
 $(document).ready(function() {    
     SessionTimeout.init();
@@ -88,7 +86,7 @@ $(document).ready(function() {
     MessengerToggle();
     LogsToggle();
     FAQToggle();
-    // connectAddon();
+    LogoutButton();
 });
 
 

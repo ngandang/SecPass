@@ -10,6 +10,7 @@
         "gladcodes/keygen": "^1.1",
         "laravel/framework": "5.6.*",
         "laravel/tinker": "^1.0",
+        "nicolaslopezj/searchable": "^1.10",
         "webpatser/laravel-uuid": "^3.0"
     },
     "require-dev": {

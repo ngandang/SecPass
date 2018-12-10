@@ -15271,7 +15271,7 @@ code {
       line-height: 0;
       vertical-align: middle; }
   .m-list-search .m-list-search__results .m-list-search__result-item .m-list-search__result-item-text {
-    display: table-cell;
+    /* display: table-cell; */
     height: 100%;
     width: 100%;
     vertical-align: middle;
@@ -15308,7 +15308,7 @@ code {
 .m-list-search .m-list-search__results .m-list-search__result-item .m-list-search__result-item-text {
   color: #3f4047; }
 
-.m-list-search .m-list-search__results .m-list-search__result-item:hover .m-list-search__result-item-text {
+.m-list-search .m-list-search__results .m-list-search__result-item .m-list-search__result-item-text:hover {
   color: #716aca; }
 
 .m-list-search.m-list-search--skin-dark .m-dropdown__header:after {

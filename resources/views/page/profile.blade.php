@@ -183,7 +183,7 @@
                             </li>
                             <li class="nav-item m-tabs__item">
                                 <a class="nav-link m-tabs__link {{ (Request::segment(1) == 'credential') ? 'active' : '' }}" data-toggle="tab" href="#m_user_profile_tab_2" role="tab">
-                                    Chữ ký điện tử
+                                    Chữ ký cá nhân
                                 </a>
                             </li>
                             <li class="nav-item m-tabs__item">
@@ -242,7 +242,7 @@
                                     <div class="col-7">
                                         <input class="form-control m-input" type="text" value="Keenthemes">
                                         <span class="m-form__help">
-                                            If you want your invoices addressed to a company. Leave blank to use your full name.
+                                            Trợ giúp ghi ở đây.
                                         </span>
                                     </div>
                                 </div> -->
@@ -324,7 +324,7 @@
                                     <div class="row">
                                         <div class="col-2"></div>
                                         <div class="col-7">
-                                            <button id="saveSubmit" type="submit" class="btn btn-primary m-btn m-btn--air m-btn--custom">
+                                            <button id="saveProfileSubmit" type="submit" class="btn btn-primary m-btn m-btn--air m-btn--custom">
                                                 Lưu thay đổi
                                             </button>
                                             &nbsp;&nbsp;
@@ -359,11 +359,21 @@
                                     </label>
                                     <div class="col-1"></div>
                                     <div class="col-10">
-                                        <!-- TODO: Get privateKey from Addon -->
-                                        <textarea name="privKey" class="form-control m-input m-input--air"></textarea>
+                                        <textarea name="privKey" rows="10" class="form-control" placeholder="Đang đọc dữ liệu..."></textarea>
                                         <span class="m-form__help">
                                             Khoá riêng tư hiện đang được bảo vệ với mật khẩu của bạn.
                                         </span>
+                                    </div>
+                                </div>
+                                <div class="form-group m-form__group row">
+                                    <div class="col-1"></div>
+                                    <div class="col-10">
+                                        <div class="alert m-alert m-alert--outline alert-brand" role="alert">
+                                            Trong trường hợp bạn mong muốn sao lưu an toàn khoá riêng tư này ngay trên máy chủ SecPASS, vui lòng nhấn nút <b>Sao lưu - Đồng bộ</b> bên dưới.
+                                        </div>
+                                        <button id="syncBtn" class="btn btn-brand m-btn m-btn--air">Sao lưu lên máy chủ</button>
+                                        &nbsp;&nbsp;
+                                        <button id="unsyncBtn" class="btn btn-metal" data-toggle="m-popover" data-placement="right" data-content="Xoá khoá riêng tư khỏi dữ liệu máy chủ SecPASS" {{ (( $user->PGPkey->where('type','5')->count() == 0 ) ? 'disabled' : '' ) }}>Huỷ khoá</button>
                                     </div>
                                 </div>
                                 <div class="form-group m-form__group row">
@@ -373,7 +383,7 @@
                                     </label>
                                     <div class="col-1"></div>
                                     <div class="col-10">
-                                        <textarea class="form-control m-input m-input--air">{{ $user->PGPkey->armored_key }}</textarea>
+                                        <textarea rows="10" class="form-control">{{ $user->PGPkey->where('type','6')->first()->armored_key }}</textarea>
                                     </div>
                                 </div>
                                 <div class="m-form__seperator m-form__seperator--dashed m-form__seperator--space-3x"></div>
@@ -410,7 +420,7 @@
                                     <div class="row">
                                         <div class="col-2"></div>
                                         <div class="col-7">
-                                            <button id="saveSubmit" type="submit" class="btn btn-primary m-btn m-btn--air m-btn--custom">
+                                            <button id="saveCredentialSubmit" type="submit" class="btn btn-primary m-btn m-btn--air m-btn--custom">
                                                 Lưu thay đổi
                                             </button>
                                             &nbsp;&nbsp;
@@ -550,7 +560,41 @@
 <!-- BEGIN: Page Scripts -->
 @section('pageSnippets')
 <script>
+    let privkey = ""
+    let pubkey  = ""
+    let passphrase = ""
+
+    // Get PGP keys automatically 
+    document.addEventListener('getUserPGPEvent', function (event) {
+            pgp_key= event.detail;            
+            privkey = pgp_key.privateKeyArmored;
+            pubkey = pgp_key.publicKeyArmored;
+    });
+    // document.dispatchEvent(new CustomEvent('letgetUserPGPEvent', {detail: ""}));
+
+    function askForPass(){
+        return new Promise(function(resolve, reject) {
+            swal({
+                title: 'Nhập mật khẩu',
+                input: 'password',
+                inputAttributes: {
+                    autocapitalize: 'off'
+                },
+                showCancelButton: true,
+                confirmButtonText: 'Giải mã',
+                showLoaderOnConfirm: true,
+                preConfirm: (input) => resolve(input),
+                allowOutsideClick: () => !swal.isLoading()
+            });
+        });
+    }
+
     $(document).ready(function(){
+        document.dispatchEvent(new CustomEvent('letgetUserPGPEvent', {detail: ""}));
+        setTimeout(() => {
+            $('textarea[name=privKey]').val(privkey);
+        }, 500);
+
         var readURL = function(input) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
@@ -570,8 +614,76 @@
         {
             $('.file-upload').click();
         });
-
         
+        $('#syncBtn').click(async function (e){
+            e.preventDefault();
+            const privKeyObj = (await openpgp.key.readArmored(privkey)).keys[0];
+            if (passphrase) {
+                console.log("have passphrase");
+                await privKeyObj.decrypt(passphrase);
+            }
+            else {
+                console.log("no passphrase");
+                let result = await askForPass();
+                await privKeyObj.decrypt(result).catch(function (error){
+                    swal("Sai mật khẩu, hãy thực hiện lại.","", "error"); // error.message,
+                    throw error;
+                });
+            }
+
+            let pgp_key = {
+                'armored_key': privKeyObj.armor(),
+                'uid': privKeyObj.users[0].userId.userid,
+                'key_id': privKeyObj.keyPacket.keyid.bytes,
+                'fingerprint': privKeyObj.keyPacket.fingerprint,
+                'type': privKeyObj.keyPacket.tag,
+                'expires': privKeyObj.keyPacket.expirationTimeV3,
+                'key_created': privKeyObj.keyPacket.created
+            };
+
+            $.ajax({
+                url: 'credential/sync',
+                type: 'POST',
+                data: pgp_key,
+                success: function(response, status, xhr, $form) {
+                    swal({
+                        position: 'center',
+                        type: 'success',
+                        title: response.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    $("#unsyncBtn").prop('disabled', false);
+                },
+                error: function(response, status, xhr, $form) {
+                    console.log(response);
+                    swal("", response.message.serialize(), "error");
+                }
+            });
+        });
+
+        $('#unsyncBtn').click(function (e){
+            e.preventDefault();
+            $.ajax({
+                url: 'credential/unsync',
+                type: 'POST',
+                success: function(response, status, xhr, $form) {
+                    swal({
+                        position: 'center',
+                        type: 'success',
+                        title: response.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    $(this).prop('disabled', true);
+                },
+                error: function(response, status, xhr, $form) {
+                    console.log(response);
+                    swal("", response.message.serialize(), "error");
+                }
+            });
+        });
+
     });
 </script>
 

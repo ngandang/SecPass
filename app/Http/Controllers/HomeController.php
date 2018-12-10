@@ -39,7 +39,10 @@ class HomeController extends Controller
      */
     public function dashboard()
     {
-        return view('page.dashboard');
+        $accounts = Auth::user()->account()->get();
+        $notes = Auth::user()->note()->get();
+        $groups = Auth::user()->group()->get();
+        return view('page.dashboard', compact('accounts', 'notes', 'groups'));
     }
     // public function getUserAccounts()
     // {
@@ -343,9 +346,9 @@ class HomeController extends Controller
     {
         return view('page.settings', compact());
     }
-    public function sharewith()
+    public function sharewithme()
     {
-        return view('page.sharewith');
+        return view('page.sharewithme');
     }
 
 
@@ -411,10 +414,83 @@ class HomeController extends Controller
         return view('page.profile', compact('user'));
     }
 
+    public function addPrivKey(Request $request)
+    { 
+        try {            
+            $user = Auth::user();
+            // Only allow 2 keys in early development
+            $pgp = PGPkey::where([
+                ['user_id', $user->id],
+                ['type', '5'],
+            ]);
+            $pgp->delete();
+
+            $pgp_key = new PGPkey;
+            $pgp_key->user_id = $user->id;
+            $pgp_key->armored_key = $request->armored_key;
+            $pgp_key->uid = $request->uid;
+            $pgp_key->key_id = $request->key_id;
+
+            $chars = array_map("chr", $request->fingerprint);
+            $bin = join($chars);
+            $hex = bin2hex($bin);
+            $pgp_key->fingerprint = $hex;
+            
+            $pgp_key->type = $request->type; // '5' - private; '6' - public key packet
+
+            if( $request->expires != "0" ) {
+                $key_expires = substr( $request->key_expires, 0, strpos($request->key_expires, '(') );
+                $pgp_key->expires = $key_expires;
+            }
+
+            $key_created = substr( $request->key_created, 0, strpos($request->key_created, '(') );
+            $pgp_key->key_created = date('Y-m-d h:i:s', strtotime($key_created));
+            
+            $pgp_key->save();
+        }
+        catch(\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Lưu khoá không thành công.',
+            ],500);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => "Lưu khoá thành công.",
+        ]);
+    }
+
+    public function delPrivKey()
+    {
+        // Delete private key(s) as user requested
+        $user = Auth::user();
+        $pgp = PGPkey::where([
+            ['user_id', $user->id],
+            ['type', '5'],
+        ]);
+        $pgp->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => "Huỷ khoá thành công.",
+        ]);
+    }
+
     public function quickSearch(Request $request)
     { 
-        $user = Auth::user();
-        return view('content.quicksearch', compact('user'));
+        // $user = Auth::user();
+        // $result = DB::table('accounts')
+        //     ->whereRaw(
+        //         "MATCH (name, username) AGAINST (? IN NATURAL LANGUAGE MODE) LIMIT 10",
+        //         array($request->q)
+        //     )->get();
+
+        $accounts = Account::search($request->q, null, true)->get();
+        $notes = Note::search($request->q, null, true)->get();
+        $groups = Group::search($request->q, null, true)->get();
+        
+        return view('content.quicksearch', compact('accounts','notes','groups'));
     } 
 
     public function pgp()
@@ -422,22 +498,22 @@ class HomeController extends Controller
         return view('page.pgp');
     }
 
-    public function addPGP()
-    {
-        // TODO: receiving Info and publicKey from addon.
-        $pgp_key = new PGPkey;
-        $pgp_key->user_id = Auth::user()->id;
-        $pgp_key->armored_key = "abc";
-        $pgp_key->uid = "Nguyen Phi Cuong (cuong@secpass.com)";
-        $pgp_key->key_id = "ABCDDBCA";
-        $pgp_key->fingerprint = "ABCDDBCAABCDDBCAABCDDBCAABCDDBCA";
-        $pgp_key->type = "what is this??";
-        $pgp_key->expires = NOW();
-        $pgp_key->key_created = NOW();
-        $pgp_key->save();
+    // public function addPGP()
+    // {
+    //     // TODO: receiving Info and publicKey from addon.
+    //     $pgp_key = new PGPkey;
+    //     $pgp_key->user_id = Auth::user()->id;
+    //     $pgp_key->armored_key = "abc";
+    //     $pgp_key->uid = "Nguyen Phi Cuong (cuong@secpass.com)";
+    //     $pgp_key->key_id = "ABCDDBCA";
+    //     $pgp_key->fingerprint = "ABCDDBCAABCDDBCAABCDDBCAABCDDBCA";
+    //     $pgp_key->type = "what is this??";
+    //     $pgp_key->expires = NOW();
+    //     $pgp_key->key_created = NOW();
+    //     $pgp_key->save();
         
-        return $pgp_key;
-    }
+    //     return $pgp_key;
+    // }
 
     public function keepalive()
     {

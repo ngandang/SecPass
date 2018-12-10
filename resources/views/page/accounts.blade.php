@@ -9,7 +9,7 @@
             </h3>
             <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
                 <li class="m-nav__item m-nav__item--home">
-                    <a href="javascript:void();" class="m-nav__link m-nav__link--icon">
+                    <a href="javascript:;" class="m-nav__link m-nav__link--icon">
                         <i class="m-nav__link-icon la la-home"></i>
                     </a>
                 </li>
@@ -79,11 +79,11 @@
                                 <div class="col-md-5">
                                     <label for="password" class="text-info">Mật khẩu</label>
                                     <input id="password-field" type="password" name="password" class="form-control" required>
-                                    <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                                    <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password" data-toggle="m-tooltip" title="Hiện/ẩn mật khẩu"></span>
                                 </div>
                                 <div class="col-md-2" style="padding-left:8px;">
                                     <label class="text-info">&nbsp</label>
-                                    <button onclick="generate();" type="button" class="btn btn-metal">
+                                    <button onclick="generate();" type="button" class="btn btn-metal" data-toggle="m-tooltip" title="Tạo mật khẩu ngẫu nhiên">
                                         <i class="fa fa-magic fa-fw fa-lg"></i>
                                     </button>
                                 </div>
@@ -137,11 +137,11 @@
                                 <div class="col-md-5">
                                 <label for="password" class="text-info">Mật khẩu</label>
                                     <input id="password-edit" type="password" name="password" placeholder="Đã được bảo mật" class="form-control">
-                                    <span toggle="#password-edit" class="fa fa-fw fa-eye field-icon toggle-edit"></span>
+                                    <span toggle="#password-edit" class="fa fa-fw fa-eye field-icon toggle-edit" data-toggle="m-tooltip" title="Hiện/ẩn mật khẩu"></span>
                                 </div>
                                 <div class="col-md-2" style="padding-left:8px;">
                                     <label class="text-info">&nbsp</label>
-                                    <button id="getPassword" type="button" class="btn btn-metal">
+                                    <button id="getPassword" type="button" class="btn btn-metal" data-toggle="m-tooltip" title="Lấy và mã hoá mật khẩu">
                                         <i class="fa fa-lock fa-fw fa-lg"></i>
                                     </button>
                                 </div>
@@ -225,16 +225,24 @@
 
 <script> 
 
-    let privkey = ""
-    let pubkey  = ""
-    let passphrase = ""
+    let privkey = null;
+    let pubkey  = null;
+    let passphrase = null;
     
     // const encryptFunction = async() => {
     async function encryptFunction(callback) {
         console.log('begin encrypt')
 
         const privKeyObj = (await openpgp.key.readArmored(privkey)).keys[0];
-        await privKeyObj.decrypt(passphrase);
+        if (passphrase) {
+            console.log("have passphrase");
+            await privKeyObj.decrypt(passphrase);
+        }
+        else {
+            console.log("no passphrase");
+            let result = await askForPass();
+            await privKeyObj.decrypt(result);
+        }
         
         const options = {
             message: openpgp.message.fromText(messageToEncrypt),       // input as Message object
@@ -254,22 +262,76 @@
     async function decryptFunction(callback) {
         console.log('begin decrypt')
         const privKeyObj = (await openpgp.key.readArmored(privkey)).keys[0];
-        await privKeyObj.decrypt(passphrase);
-
+        if (passphrase) {
+            console.log("have passphrase");
+            await privKeyObj.decrypt(passphrase);
+        }
+        else {
+            console.log("no passphrase");
+            let result = await askForPass();
+            await privKeyObj.decrypt(result);
+        }
+        
         const options = {
             message: await openpgp.message.readArmored(cipherToDecrypt),    // parse armored message
             publicKeys: (await openpgp.key.readArmored(pubkey)).keys, // for verification (optional)
             privateKeys: [privKeyObj]                                 // for decryption
         }
         
-        openpgp.decrypt(options).then(plaintext => {
-            console.log(plaintext.data)
-            decrypted = plaintext.data // 'Hello, World!'
-            console.log('end decrypt')
-            callback(decrypted)
-        })
-
+        try{
+            openpgp.decrypt(options).then(plaintext => {
+                console.log(plaintext.data)
+                decrypted = plaintext.data // 'Hello, World!'
+                console.log('end decrypt')
+                callback(decrypted)
+            })
+        }
+        catch(e) {
+            console.log(e);
+            swal({
+                position: 'center',
+                type: 'danger',
+                title: "Lỗi ",
+                showConfirmButton: false,
+                timer: 1500
+            });   
+        }
     }
+
+    function askForPass(){
+        return new Promise(function(resolve, reject) {
+            swal({
+                title: 'Nhập mật khẩu',
+                input: 'password',
+                inputAttributes: {
+                    autocapitalize: 'off'
+                },
+                showCancelButton: true,
+                confirmButtonText: 'Giải mã',
+                showLoaderOnConfirm: true,
+                preConfirm: (input) => resolve(input),
+                allowOutsideClick: () => !swal.isLoading()
+            });
+        });
+    }
+
+
+    // Get user passphrase 
+    document.addEventListener('getUserPassphraseEvent', function (event) {
+        passphrase= event.detail;
+        console.log("got it: "+passphrase);
+    });
+    // document.dispatchEvent(new CustomEvent('letgetUserPassphraseEvent', {detail: ""})); 
+
+    // Get PGP keys automatically 
+    document.addEventListener('getUserPGPEvent', function (event) {
+            pgp_key= event.detail;
+            
+            privkey = pgp_key.privateKeyArmored;
+            pubkey = pgp_key.publicKeyArmored;
+            console.log(pgp_key);
+    });
+    // document.dispatchEvent(new CustomEvent('letgetUserPGPEvent', {detail: ""}));
 
     function copy(data) {
         console.log(data);
@@ -284,56 +346,6 @@
             $temp.remove();
         // }, 500);
         
-    }
-
-    function copyUsername(data) {
-        copy(data);
-        swal({
-            position: 'center',
-            type: 'success',
-            title: 'Đã sao chép tên đăng nhập',
-            showConfirmButton: false,
-            timer: 1500
-        });
-    }
-
-    function copyContent(accId) {
-        var data = {
-            'id': accId,
-        };
-        $.ajax({
-            url: 'account/getContent',
-            type: 'POST',
-            data: data,
-            success: function(response, status, xhr, $form) {
-                cipherToDecrypt = response.content;
-
-                decryptFunction(function (result) {
-                    console.log(result);
-                    var $temp = $("<input id='tempInput'>");
-                    $("body").append($temp);        
-                    $temp.val(result);   
-                    swal({
-                        position: 'center',
-                        type: 'success',
-                        title: response.message,
-                        showConfirmButton: false,
-                        timer: 1500
-                    });       
-                });
-            },
-            error: function(response, status, xhr, $form) {
-                console.log(response);
-                swal("", response.message.serialize(), "error");
-            }
-        });
-        setTimeout(() => {
-            var $temp = $("#tempInput");
-            $temp.focus();
-            $temp.select();        
-            document.execCommand("copy");
-            $temp.remove();
-        }, 500);
     }
 
     function edit(id, name, username, url, description, last_updated){
@@ -375,27 +387,14 @@
 
     $(document).ready(function(){
 
-        // Get user passphrase 
-        document.addEventListener('getUserPassphraseEvent', function (event) {
-            passphrase= event.detail;
-            console.log(passphrase);
-        });
-        // document.dispatchEvent(new CustomEvent('letgetUserPassphraseEvent', {detail: ""})); 
-
-        // Get PGP keys automatically 
-        document.addEventListener('getUserPGPEvent', function (event) {
-                pgp_key= event.detail;
-                
-                privkey = pgp_key.privateKeyArmored;
-                pubkey = pgp_key.publicKeyArmored;
-                console.log(pgp_key);
-        });
-        // document.dispatchEvent(new CustomEvent('letgetUserPGPEvent', {detail: ""}));
-
-        setTimeout(() => {
+        // setTimeout(() => {
             document.dispatchEvent(new CustomEvent('letgetUserPassphraseEvent', {detail: ""}));
             document.dispatchEvent(new CustomEvent('letgetUserPGPEvent', {detail: ""}));
-        }, 500);
+        // }, 500);
+
+        $("#editForm input[name=password]").on("click", function (){
+            $(this).prop("placeholder","Đổi mật khẩu? Hãy tiếp tục");
+        });
 
         $('.toggle-password').click(function() {
             $(this).toggleClass("fa-eye fa-eye-slash");
@@ -420,14 +419,74 @@
             var showEditForm = $(this).find(".account-edit");
             showEditForm[0].click();
         });
-        $('.account-external-link').click(function(e) {
+        $('.m-portlet__nav-link').click(function(e) {
             e.stopPropagation();
         });
         $('.account-username').click(function (e) {
-            copyUsername($(this).text());
+            copy($(this).text());
+            swal({
+                position: 'center',
+                type: 'success',
+                title: 'Đã sao chép tên đăng nhập',
+                showConfirmButton: false,
+                timer: 1500
+            });            
             e.stopPropagation();
         });
+            
+        $('.account-copy-username').click(function (e) {
+            copy($(this).closest('.m-portlet').find('.account-username').text());
+            swal({
+                position: 'center',
+                type: 'success',
+                title: 'Đã sao chép tên đăng nhập',
+                showConfirmButton: false,
+                timer: 1500
+            });            
+            e.stopPropagation();         
+        });
 
+        $('.account-copy-content').click(function (e) {
+            var data = {
+                'id': $(this).closest('.m-portlet').find('.account-id').text(),
+            };
+            console.log(data.id);
+            $.ajax({
+                url: 'account/getContent',
+                type: 'POST',
+                data: data,
+                success: function(response, status, xhr, $form) {
+                    cipherToDecrypt = response.content;
+
+                    decryptFunction(function (result) {
+                        console.log(result);
+                        var $temp = $("<input id='tempInput'>");
+                        $("body").append($temp);        
+                        $temp.val(result);
+                        $temp.select();        
+                        document.execCommand("copy");
+                        swal({
+                            position: 'center',
+                            type: 'success',
+                            title: response.message,
+                            showConfirmButton: false,
+                            timer: 1500
+                        });       
+                    });
+                },
+                error: function(response, status, xhr, $form) {
+                    console.log(response);
+                    swal("", response.message.serialize(), "error");
+                }
+            });
+            setTimeout(() => {
+                var $temp = $("#tempInput");
+                $temp.select();        
+                document.execCommand("copy");
+                $temp.remove();
+            }, 500);
+            e.stopPropagation();
+        });
 
         $('#getPassword').click(function () {
             var data = {
@@ -454,22 +513,30 @@
             });
         });
 
+        // Lose modal focus to show swal
+        $('#addForm').on('shown.bs.modal', function() {
+            $(document).off('focusin.modal');
+        });
+        $('#editForm').on('shown.bs.modal', function() {
+            $(document).off('focusin.modal');
+        });
+
         $('#addSubmit').click(function(e){
             e.preventDefault();
             var btn = $(this);
             var form = $(this).closest('form');
 
-            // form.validate({
-            //     rules: {
-            //         url: {
-            //             url: true
-            //         }
-            //     }
-            // });
+            form.validate({
+                rules: {
+                    url: {
+                        url: true
+                    }
+                }
+            });
 
-            // if (!form.valid()) {
-            //     return;
-            // }
+            if (!form.valid()) {
+                return;
+            }
 
             btn.addClass('m-loader m-loader--right m-loader--light');
             btn.attr('disabled', true);
@@ -518,17 +585,17 @@
             var btn = $(this);
             var form = $(this).closest('form');
 
-            // form.validate({
-            //     rules: {
-            //         url: {
-            //             url: true
-            //         }
-            //     }
-            // });
+            form.validate({
+                rules: {
+                    url: {
+                        url: true
+                    }
+                }
+            });
 
-            // if (!form.valid()) {
-            //     return;
-            // }
+            if (!form.valid()) {
+                return;
+            }
 
             btn.addClass('m-loader m-loader--right m-loader--light').attr('disabled', true);
             btn.attr('disabled', true);

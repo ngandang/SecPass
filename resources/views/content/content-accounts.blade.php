@@ -38,7 +38,7 @@
                                                     </span>
                                                 </li>
                                                 <li class="m-nav__item">
-                                                    <a href="javascript:;" onclick="copyUsername('{{$acc->username}}');" class="m-nav__link account-copy-username">
+                                                    <a href="javascript:;" class="m-nav__link account-copy-username">
                                                         <i class="m-nav__link-icon flaticon-user-ok"></i>
                                                         <span class="m-nav__link-text">
                                                             Sao chép tên đăng nhập
@@ -46,7 +46,7 @@
                                                     </a>
                                                 </li>
                                                 <li class="m-nav__item">
-                                                    <a href="javascript:;" onclick="copyContent('{{$acc->id}}')" class="m-nav__link">
+                                                    <a href="javascript:;" class="m-nav__link account-copy-content">
                                                         <i class="m-nav__link-icon flaticon-lock-1"></i>
                                                         <span class="m-nav__link-text">
                                                             Sao chép mật khẩu

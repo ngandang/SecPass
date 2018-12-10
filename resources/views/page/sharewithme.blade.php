@@ -1,5 +1,3 @@
-<?php $page = 'sharewith'; ?>
-
 @extends('layouts.master')
 
 @section('content')
@@ -22,7 +20,7 @@
                 <li class="m-nav__item">
                     <a href="" class="m-nav__link">
                         <span class="m-nav__link-text">
-                            Chia sẻ cá nhân
+                            Chia sẻ với tôi
                         </span>
                     </a>
                 </li>

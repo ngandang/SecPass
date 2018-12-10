@@ -67,7 +67,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="note_content" class="text-info">Nội dung:</label><br>
-                                    <textarea type="text" name="note_content" class="form-control"></textarea>
+                                    <textarea rows="10" type="text" name="note_content" class="form-control m-scrollable" data-scrollbar-shown="true" data-scrollable="true" data-max-height="200"></textarea>
                                 </div>
                             </form>
                         </div>  
@@ -90,7 +90,10 @@
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="text-center modal-title" id="editFormTitle">Ghi chú bảo mật</h5>
+                            <div class="text-center modal-title" id="editFormTitle">
+                                <!-- <label for="title" class="text-info">Tiêu đề:</label><br> -->
+                                <input type="text" name="title" class="form-control note-title">
+                            </div>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -98,14 +101,10 @@
                         <div class="modal-body">
                             <div id="editform-row" class="row justify-content-center align-items-center">
                                 <div id="editform-box" class="col-md-12">
-                                    <input type="hidden" name="id" id="idEdit">                                     
-                                    <div class="form-group">
-                                        <label for="title" class="text-info">Tiêu đề:</label><br>
-                                        <input type="text" name="title" class="form-control">
-                                    </div>
+                                    <input type="hidden" name="id" id="idEdit">
                                     <div class="form-group">
                                         <label for="note_content" class="text-info">Nội dung:</label><br>
-                                        <textarea type="text" name="note_content" class="form-control" placeholder="Nhấn để giải mã nội dung"></textarea>
+                                        <textarea type="text" name="note_content" class="form-control m-scrollable" data-scrollbar-shown="true" data-scrollable="true" data-max-height="200" placeholder="Nhấn để giải mã nội dung"></textarea>
                                     </div>
                                     <div class="alert m-alert m-alert--default" role="alert">
                                         <i>Cập nhật cuối: </i><span id="last_updated"></span>												
@@ -164,7 +163,15 @@
         console.log('begin encrypt')
 
         const privKeyObj = (await openpgp.key.readArmored(privkey)).keys[0];
-        await privKeyObj.decrypt(passphrase);
+        if (passphrase) {
+            console.log("have passphrase");
+            await privKeyObj.decrypt(passphrase);
+        }
+        else {
+            console.log("no passphrase");
+            let result = await askForPass();
+            await privKeyObj.decrypt(result);
+        }
         
         const options = {
             message: openpgp.message.fromText(messageToEncrypt),       // input as Message object
@@ -184,7 +191,15 @@
     async function decryptFunction(callback) {
         console.log('begin decrypt')
         const privKeyObj = (await openpgp.key.readArmored(privkey)).keys[0];
-        await privKeyObj.decrypt(passphrase);
+        if (passphrase) {
+            console.log("have passphrase");
+            await privKeyObj.decrypt(passphrase);
+        }
+        else {
+            console.log("no passphrase");
+            let result = await askForPass();
+            await privKeyObj.decrypt(result);
+        }
 
         const options = {
             message: await openpgp.message.readArmored(cipherToDecrypt),    // parse armored message
@@ -201,6 +216,41 @@
 
     }
     
+    function askForPass(){
+        return new Promise(function(resolve, reject) {
+            swal({
+                title: 'Nhập mật khẩu',
+                input: 'password',
+                inputAttributes: {
+                    autocapitalize: 'off'
+                },
+                showCancelButton: true,
+                confirmButtonText: 'Giải mã',
+                showLoaderOnConfirm: true,
+                preConfirm: (input) => resolve(input),
+                allowOutsideClick: () => !swal.isLoading()
+            });
+        });        
+    }
+
+    // Get user passphrase 
+    document.addEventListener('getUserPassphraseEvent', function (event) {
+        passphrase= event.detail;
+        console.log(passphrase);
+    });
+    // document.dispatchEvent(new CustomEvent('letgetUserPassphraseEvent', {detail: ""})); 
+
+    // Get PGP keys automatically 
+    document.addEventListener('getUserPGPEvent', function (event) {
+            pgp_key= event.detail;
+            
+            privkey = pgp_key.privateKeyArmored;
+            pubkey = pgp_key.publicKeyArmored;
+            console.log(pgp_key);
+    });
+    // document.dispatchEvent(new CustomEvent('letgetUserPGPEvent', {detail: ""}));
+
+        
     function copyContent(noteId) {
         var data = {
             'id': noteId,
@@ -258,28 +308,17 @@
 
     $(document).ready(function(){
 
-         // Get user passphrase 
-         document.addEventListener('getUserPassphraseEvent', function (event) {
-            passphrase= event.detail;
-            console.log(passphrase);
+        document.dispatchEvent(new CustomEvent('letgetUserPassphraseEvent', {detail: ""}));
+        document.dispatchEvent(new CustomEvent('letgetUserPGPEvent', {detail: ""}));
+
+
+        $('.m-portlet').click(function (e) {
+            var showEditForm = $(this).find(".note-edit");
+            showEditForm[0].click();
         });
-        // document.dispatchEvent(new CustomEvent('letgetUserPassphraseEvent', {detail: ""})); 
-
-        // Get PGP keys automatically 
-        document.addEventListener('getUserPGPEvent', function (event) {
-                pgp_key= event.detail;
-                
-                privkey = pgp_key.privateKeyArmored;
-                pubkey = pgp_key.publicKeyArmored;
-                console.log(pgp_key);
+        $('.m-portlet__nav-link').click(function(e) {
+            e.stopPropagation();
         });
-        // document.dispatchEvent(new CustomEvent('letgetUserPGPEvent', {detail: ""}));
-
-        setTimeout(() => {
-            document.dispatchEvent(new CustomEvent('letgetUserPassphraseEvent', {detail: ""}));
-            document.dispatchEvent(new CustomEvent('letgetUserPGPEvent', {detail: ""}));
-        }, 500);
-
         $('#editForm textarea[name=note_content]').click(function () {
             var data = {
                 'id': $('#editForm input[name=id]').val(),
@@ -294,6 +333,7 @@
                     decryptFunction(function (result) {
                         console.log(result);      
                         $('#editForm textarea[name=note_content]').val(result);
+                        $('#editForm textarea[name=note_content]').prop('rows','10');
                     });
                 },
                 error: function(response, status, xhr, $form) {
@@ -301,6 +341,14 @@
                     swal("", response.message.serialize(), "error");
                 }
             });
+        });
+
+        // Lose modal focus to show swal
+        $('#addForm').on('shown.bs.modal', function() {
+            $(document).off('focusin.modal');
+        });
+        $('#editForm').on('shown.bs.modal', function() {
+            $(document).off('focusin.modal');
         });
 
         $('#addSubmit').click(function(e){

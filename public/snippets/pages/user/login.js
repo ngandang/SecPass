@@ -55,17 +55,17 @@ var SnippetLogin = function() {
         login.addClass('m-login--forget-password');
         var form = login.find('.m-login__forget-password');
         form.animateClass('flipInX animated');
-        setTimeout(() => {
-            var alert = $('<div class="m-alert m-alert--outline alert alert-' + 'danger' + ' alert-dismissible" role="alert">\
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>\
-                    <span></span>\
-                </div>');
-            form.find('.alert').remove();
-            alert.appendTo(form);
-            alert.animateClass('fadeIn animated');
-            alert.find('span').html("Vì lý tưởng bảo mật, chỉ một mình bạn biết mật khẩu của mình. Điều đó có nghĩa tài khoản của bạn không thể sử dụng được nữa. Hãy liên hệ với chúng tôi để cùng xử lý khối dữ liệu này. Chúng tôi thực sự đồng cảm với bạn.");
-            form.scrollTop = 0;
-        }, 1000);
+        // setTimeout(() => {
+        //     var alert = $('<div class="m-alert m-alert--outline alert alert-' + 'danger' + ' alert-dismissible" role="alert">\
+        //             <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>\
+        //             <span></span>\
+        //         </div>');
+        //     form.find('.alert').remove();
+        //     alert.appendTo(form);
+        //     alert.animateClass('fadeIn animated');
+        //     alert.find('span').html("Vì lý tưởng bảo mật, chỉ một mình bạn biết mật khẩu của mình. Điều đó có nghĩa tài khoản của bạn không thể sử dụng được nữa. Hãy liên hệ với chúng tôi để cùng xử lý khối dữ liệu này.");
+        //     form.scrollTop = 0;
+        // }, 1000);
     }
    
     var handleRememberMe = function() {
@@ -246,31 +246,36 @@ var SnippetLogin = function() {
             };
             console.log(options);
 
-            openpgp.generateKey(options).then(function(key) {
+            openpgp.generateKey(options).then(async function(key) {
                 console.log(key);
-                 // Set PGP to addon
+                 // Declare for set PGP to addon
                 let user_pgp = {
                     'privateKeyArmored': key.privateKeyArmored,
                     'publicKeyArmored': key.publicKeyArmored,
                     'revocationCertificate': key.revocationCertificate
                 };
+                
+                const pubKeyObj = (await openpgp.key.readArmored(key.publicKeyArmored)).keys[0];
 
                 let pgp_key = {
-                    "_token": form.find("input[name=_token]").val(),
                     'user_id': "",
                     'armored_key': key.publicKeyArmored,
-                    'uid': key.key.users[0].userId.userid,
-                    'key_id': key.key.keyPacket.keyid.bytes,
-                    'fingerprint': key.key.keyPacket.fingerprint,
-                    // 'type': key.key.keyPacket.tag,
-                    'expires': key.key.keyPacket.expirationTimeV3,
-                    'key_created': key.key.keyPacket.created
+                    'uid': pubKeyObj.users[0].userId.userid,
+                    'key_id': pubKeyObj.keyPacket.keyid.bytes,
+                    'fingerprint': pubKeyObj.keyPacket.fingerprint,
+                    'type': pubKeyObj.keyPacket.tag,
+                    'expires': pubKeyObj.keyPacket.expirationTimeV3,
+                    'key_created': pubKeyObj.keyPacket.created
                 };
 
                 form.ajaxSubmit({
                     url: 'register',                
                     type: 'POST',
                     success: function(response, status, xhr, $form) { 
+                        // Clear form
+                        form.each(function(){
+                            this.reset();
+                        });
                         pgp_key.user_id = response.user_id;
                         console.log(pgp_key);
 
@@ -355,7 +360,8 @@ var SnippetLogin = function() {
             btn.addClass('m-loader m-loader--right m-loader--light').attr('disabled', true);
 
             form.ajaxSubmit({
-                url: '',
+                url: 'password/email',
+                method: 'POST',
                 success: function(response, status, xhr, $form) { 
                 	// similate 2s delay
                 	setTimeout(function() {
@@ -400,4 +406,9 @@ var SnippetLogin = function() {
 //== Class Initialization
 jQuery(document).ready(function() {
     SnippetLogin.init();
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
 });

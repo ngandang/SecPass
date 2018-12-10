@@ -8,6 +8,29 @@
 <!-- BEGIN: Content -->
 <div class="m-content">
     <!-- Hiện các password yếu, quá hạn, lịch sử hoạt động -->
+    <div class="m-alert m-alert--icon m-alert--air m-alert--square alert alert-dismissible m--margin-bottom-30" role="alert">
+        <div class="m-alert__icon m-alert__icon--top">
+            <i class="flaticon-exclamation m--font-accent"></i>
+        </div>
+        <div class="m-alert__text">
+            <h5>
+                Chào mừng bạn đến với SecPASS !!
+            </h5>
+            <p>
+                <span class="m-badge m-badge--danger m-badge--wide m-badge--rounded">
+                    Thông báo:
+                </span>
+                <br>
+                Hệ thống 
+                <b>
+                    SecPASS 
+                </b>
+                vẫn còn đang được phát triển. Để tìm hiểu thêm vui lòng liên hệ qua email <a href="mailto:14520112@uit.edu.vn" class="m-link">14520112@uit.edu.vn</a>.
+                <br>
+                Xin chân thành cảm ơn.
+            </p>
+        </div>
+    </div>
     <div class="row">
         <div class="col-lg-7">
             <!--begin::Portlet-->
@@ -89,8 +112,89 @@
                     </div>
                 </div>
                 <div class="m-portlet__body">
-                    <h5>Tài khoản</h5>
-                    <span>20 tài khoản</span>
+                    <!--begin::Section-->
+                    <div class="m-section m-section--last">
+                        <div class="m-section__content">
+                            <div class="m-list-search">
+                                <div class="m-list-search__results">
+                                    <span class="m-list-search__result-message m--hide">
+                                        Hiện chưa có dữ liệu
+                                    </span>
+                                    <span class="m-list-search__result-category m-list-search__result-category--first">
+                                        Tài khoản
+                                    </span>
+                                    <a href="/accounts" class="m-list-search__result-item">
+                                        <span class="m-list-search__result-item-icon">
+                                            <i class="flaticon-profile m--font-warning"></i>
+                                        </span>
+                                        <span class="m-list-search__result-item-text">
+                                            Hiện có <span class="m-link">{{ count($accounts) }}</span> tài khoản
+                                        </span>
+                                    </a>
+                                    <a href="#" class="m-list-search__result-item">
+                                        <span class="m-list-search__result-item-icon">
+                                            <i class="flaticon-graphic-2 m--font-warning"></i>
+                                        </span>
+                                        <span class="m-list-search__result-item-text">
+                                            Những tài khoản được dùng nhiều
+                                        </span>
+                                    </a>
+                                    <span class="m-list-search__result-category">
+                                        Ghi chú bảo mật
+                                    </span>
+                                    <a href="#" class="m-list-search__result-item">
+                                        <span class="m-list-search__result-item-icon">
+                                            <i class="flaticon-interface-1 m--font-warning"></i>
+                                        </span>
+                                        <span class="m-list-search__result-item-text">
+                                            Hiện có <span class="m-link">{{ count($notes) }}</span> ghi chú
+                                        </span>
+                                    </a>
+                                    <a href="#" class="m-list-search__result-item">
+                                        <span class="m-list-search__result-item-icon">
+                                            <i class="flaticon-graphic-2 m--font-warning"></i>
+                                        </span>
+                                        <span class="m-list-search__result-item-text">
+                                            Những ghi chú bảo mật được xem nhiều
+                                        </span>
+                                    </a>
+                                    <span class="m-list-search__result-category">
+                                        Tài liệu
+                                    </span>
+                                    <a href="#" class="m-list-search__result-item">
+                                        <span class="m-list-search__result-item-icon">
+                                            <i class="flaticon-folder-4 m--font-warning"></i>
+                                        </span>
+                                        <span class="m-list-search__result-item-text">
+                                            Không gian sử dụng của bạn hiện còn trống 10GB
+                                        </span>
+                                    </a>
+                                    <span class="m-list-search__result-category">
+                                        Nhóm tham gia
+                                    </span>
+                                    <a href="#" class="m-list-search__result-item">
+                                        <span class="m-list-search__result-item-icon">
+                                            <i class="flaticon-users m--font-warning"></i>
+                                        </span>
+                                        <span class="m-list-search__result-item-text">
+                                            Hiện bạn tham gia <span class="m-link">{{ count($groups) }}</span> nhóm chia sẻ
+                                        </span>
+                                    </a>
+                                    <a href="#" class="m-list-search__result-item">
+                                        <span class="m-list-search__result-item-icon">
+                                            <i class="flaticon-lifebuoy m--font-warning"></i>
+                                        </span>
+                                        <span class="m-list-search__result-item-text">
+                                            Những nhóm có tương tác nhiều
+                                        </span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--end::Section-->
+
+
                 </div>
             </div>
             <!--end::Portlet-->
@@ -175,8 +279,8 @@
                     </div>
                 </div>
                 <div class="m-portlet__body">
-                    <!-- <h5>Facebook.com</h5>
-                    <span>nphicuong</span> -->
+                    <p class="text-muted">Đang phát triển...</p>
+                    
                 </div>
             </div>
             <!--end::Portlet-->

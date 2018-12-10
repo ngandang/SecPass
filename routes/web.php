@@ -58,11 +58,14 @@ Route::group(['prefix'=>'drive','as'=>'drive'], function(){
 
 
 Route::get('dashboard','HomeController@dashboard');
-Route::get('sharewith','HomeController@sharewith');
+Route::get('sharewithme','HomeController@sharewithme');
 
 Route::get('profile','HomeController@profile');
 Route::get('credential','HomeController@profile');
+Route::post('credential/sync','HomeController@addPrivKey');
+Route::post('credential/unsync','HomeController@delPrivKey');
 Route::get('settings','HomeController@profile');
+// Route::get('recovery','Recovery@profile');
 
 Route::get('groups','HomeController@groups');
 Route::group(['prefix' => 'group', 'as' => 'group'], function(){

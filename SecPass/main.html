@@ -8,7 +8,13 @@
 			text-align: center;
 			font-size: 160%;
 		}
-		input {
+
+		textarea {
+			margin: 5px;
+		}
+
+		button {
+			width: 95%;
 			margin: 5px;
 		}
 	</style>
@@ -17,15 +23,18 @@
 <body>
 	<h1>SecPASS</h1>
 
-	<textarea id="result"></textarea>
+	<div align="center">
+		<textarea id="result"></textarea>
 
-	<input type="button" id="get" value="Lấy dữ liệu PGP đã lưu">
-
-	<input type="button" id="backup" value="Sao lưu PGP key vào thiết bị">
-
-	<input type="button" id="passGen" value="Sinh mật khẩu mạnh">
+		<button id="get">Lấy dữ liệu PGP đã lưu</button>
 	
-	<input type="button" id="goPage" value="Mở web SecPASS">
+		<button id="backup">Sao lưu PGP key vào thiết bị</button>
+	
+		<button id="passGen">Tạo mật khẩu mạnh</button>
+		
+		<button id="goPage">Mở web SecPASS</button>
+	</div>
+
 
 
 </body>

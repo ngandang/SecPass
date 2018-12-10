@@ -6850,7 +6850,7 @@ jQuery.fn.extend({
                 
                 $.ajax({
                     url: qs.options.source,
-                    data: {query: query},
+                    data: {q: query},
                     dataType: 'html',
                     success: function(res) {
                         qs.processing = false;

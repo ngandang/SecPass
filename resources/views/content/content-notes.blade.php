@@ -3,7 +3,7 @@
     @foreach($notes->sortByDesc('updated_at') as $note)
     <div class="col-lg-4">
         <!--begin::Portlet-->
-        <div class="m-portlet m-portlet--brand m-portlet--head-solid-bg m-portlet--head-sm">
+        <div class="m-portlet m-portlet-nolight m-portlet--head-solid-bg m-portlet--head-sm">
             <div class="m-portlet__head">
                 <div class="m-portlet__head-caption">
                     <div class="m-portlet__head-title">
@@ -16,11 +16,6 @@
                 </div>
                 <div class="m-portlet__head-tools">
                     <ul class="m-portlet__nav">
-                        <li class="m-portlet__nav-item" data-container="body" data-toggle="m-popover" data-placement="top" data-content="Mở tab mới đến trang này" data-original-title="" title="">
-                            <a href="{{$note->uri}}" target="_blank" class="m-portlet__nav-link m-portlet__nav-link--icon">
-                                <i class="la la-external-link"></i>
-                            </a>
-                        </li>
                         <li class="m-portlet__nav-item m-dropdown m-dropdown--inline m-dropdown--arrow m-dropdown--align-right m-dropdown--align-push" data-dropdown-toggle="hover" aria-expanded="true">
                             <a href="javascript:;" class="m-portlet__nav-link m-portlet__nav-link--icon m-dropdown__toggle">
                                 <i class="la la-ellipsis-h"></i>
@@ -45,7 +40,7 @@
                                                     </a>
                                                 </li>
                                                 <li class="m-nav__item">
-                                                    <a onclick="edit('{{$note->id}}','{{$note->title}}','{{$note->updated_at}}')" href="#editForm" data-toggle="modal" data-backdrop="static" data-keyboard="false" class="m-nav__link">
+                                                    <a onclick="edit('{{$note->id}}','{{$note->title}}','{{$note->updated_at}}')" href="#editForm" data-toggle="modal" data-backdrop="static" data-keyboard="false" class="m-nav__link note-edit">
                                                         <i class="m-nav__link-icon flaticon-edit"></i>
                                                         <span class="m-nav__link-text">
                                                             Chỉnh sửa
