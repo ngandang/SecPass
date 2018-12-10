@@ -31,7 +31,7 @@
 	<body class="m--skin- m-header--fixed m-header--fixed-mobile m-aside-left--enabled m-aside-left--skin-dark m-aside-left--offcanvas m-footer--push m-aside--offcanvas-default"  >
 		<!-- begin:: Page -->
 		<div class="m-grid m-grid--hor m-grid--root m-page">
-			<div class="m-grid__item m-grid__item--fluid m-grid m-grid--hor m-login m-login--signin m-login--2 m-login-2--skin-3" id="m_login" style="background-image: url({{ asset('app/media/img/bg/bg-2.jpg') }});">
+			<div class="m-grid__item m-grid__item--fluid m-grid m-grid--hor m-login m-login--signin m-login--2 m-login-2--skin-1" id="m_login" style="background-image: url({{ asset('app/media/img/bg/bg-5.jpg') }});">
 				<div class="m-grid__item m-grid__item--fluid	m-login__wrapper">
 					<div class="m-login__container">
 						<div class="m-login__logo">
@@ -68,7 +68,7 @@
 									</div>
 								</div>
 								<div class="m-login__form-action">
-									<button id="m_login_signin_submit" class="btn btn-focus m-btn m-btn--pill m-btn--custom m-btn--air  m-login__btn">
+									<button id="m_login_signin_submit" class="btn btn-brand m-btn m-btn--pill m-btn--custom m-btn--air m-login__btn m-login__btn--primary">
 										Đăng nhập
 									</button>
 								</div>
@@ -91,7 +91,8 @@
 								<div class="form-group m-form__group">
 									<input class="form-control m-input" type="text" placeholder="Email" name="email" autocomplete="off">
 								</div>
-								<div class="form-group m-form__group">
+								
+								<div class="form-group m-form__group last password-strength" data-container="body" data-toggle="m-popover" data-html="true" data-placement="left" data-content="Mật khẩu phải chứa ít nhất 8 ký tự bao gồm ít nhất:<br><ul><li>một ký tự hoa,</li><li>một ký tự thường,</li><li>một ký tự số,</li><li>một ký tự đăc biệt.</li></ul>" data-original-title="" title="">
 									<input class="form-control m-input" type="password" placeholder="Mật khẩu" name="password" id="register_password">
 								</div>
 								<div class="form-group m-form__group">
@@ -124,7 +125,7 @@
 									Quên mật khẩu ?
 								</h3>
 								<div class="m-login__desc">
-									Vui lòng nhập email mà bạn sử dụng để đăng ký dịch vụ.
+									Vui lòng nhập email mà bạn đang sử dụng dịch vụ.
 								</div>
 							</div>
 							<form class="m-login__form m-form" action="">
@@ -181,6 +182,7 @@
 		<!--end::Base Scripts -->   
 		<!--begin::Page Snippets -->
 		<script src="{{ asset('js/openpgp.js') }}" type="text/javascript"></script>
+		<script src="{{ asset('vendors/base/pwstrength-bootstrap.min.js') }}" type="text/javascript"></script>
 		<script src="{{ asset('js/validation_vi.js') }}" type="text/javascript"></script>
 		<script src="{{ asset('snippets/pages/user/login.js') }}" type="text/javascript"></script>
 		<!--end::Page Snippets -->

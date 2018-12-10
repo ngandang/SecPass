@@ -4,22 +4,21 @@
     @foreach($accounts->sortByDesc('updated_at') as $acc)
     <div class="col-lg-3">
         <!--begin::Portlet-->
-        <div class="m-portlet m-portlet--brand m-portlet--head-solid-bg m-portlet--head-sm">
+        <div class="m-portlet m-portlet--nothing m-portlet--head-solid-bg m-portlet--head-sm">
             <div class="m-portlet__head">
                 <div class="m-portlet__head-caption">
                     <div class="m-portlet__head-title">
-                        <span class="m-portlet__head-icon" data-container="body" data-toggle="m-popover" data-placement="top" data-content="Mật khẩu chưa được giải mã" data-original-title="" title="">
-                            <i class="la la-unlock"></i>
-                            <!-- <i class="la la-unlock-alt"></i> -->
+                        <span class="m-portlet__head-icon">
+                            <i class="la la-angle-double-down"></i>
                         </span>
                         <h3 class="m-portlet__head-text">
-                        </h5>
+                        </h3>
                     </div>
                 </div>
                 <div class="m-portlet__head-tools">
                     <ul class="m-portlet__nav">
                         <li class="m-portlet__nav-item" data-container="body" data-toggle="m-popover" data-placement="top" data-content="Mở tab mới đến trang này" data-original-title="" title="">
-                            <a href="{{$acc->uri}}" target="_blank" class="m-portlet__nav-link m-portlet__nav-link--icon">
+                            <a href="{{$acc->uri}}" target="_blank" class="m-portlet__nav-link m-portlet__nav-link--icon account-external-link">
                                 <i class="la la-external-link"></i>
                             </a>
                         </li>
@@ -39,7 +38,7 @@
                                                     </span>
                                                 </li>
                                                 <li class="m-nav__item">
-                                                    <a href="javascript:;" onclick="copyUsername('{{$acc->username}}');" class="m-nav__link">
+                                                    <a href="javascript:;" onclick="copyUsername('{{$acc->username}}');" class="m-nav__link account-copy-username">
                                                         <i class="m-nav__link-icon flaticon-user-ok"></i>
                                                         <span class="m-nav__link-text">
                                                             Sao chép tên đăng nhập
@@ -47,7 +46,7 @@
                                                     </a>
                                                 </li>
                                                 <li class="m-nav__item">
-                                                    <a href="javascript:;" onclick="copyPassword('{{$acc->id}}')" class="m-nav__link">
+                                                    <a href="javascript:;" onclick="copyContent('{{$acc->id}}')" class="m-nav__link">
                                                         <i class="m-nav__link-icon flaticon-lock-1"></i>
                                                         <span class="m-nav__link-text">
                                                             Sao chép mật khẩu
@@ -55,7 +54,7 @@
                                                     </a>
                                                 </li>
                                                 <li class="m-nav__item">
-                                                    <a onclick="edit('{{$acc->id}}','{{$acc->name}}','{{$acc->username}}','{{$acc->uri}}','{{$acc->description}}','{{$acc->updated_at}}')" href="#editForm" data-toggle="modal" data-backdrop="static" data-keyboard="false" class="m-nav__link">
+                                                    <a onclick="edit('{{$acc->id}}','{{$acc->name}}','{{$acc->username}}','{{$acc->uri}}','{{$acc->description}}','{{$acc->updated_at}}')" href="#editForm" data-toggle="modal" data-backdrop="static" data-keyboard="false" class="m-nav__link account-edit">
                                                         <i class="m-nav__link-icon flaticon-edit"></i>
                                                         <span class="m-nav__link-text">
                                                             Chỉnh sửa
@@ -86,11 +85,12 @@
                 </div>
             </div>
             <div class="m-portlet__body">
+                <span class="account-id">{{ $acc->id }}</span>
                 <div class="text-container">
                     <h5 class="text-overflow">{{$acc->name}}</h5>
                 </div>
                 <div class="text-container">
-                    <a href="javascript:;" class="m-link text-overflow" onclick="copyUsername('{{$acc->username}}');">{{$acc->username}}</a>
+                    <a href="javascript:;" class="m-link text-overflow account-username">{{$acc->username}}</a>
                 </div>
             </div>
         </div>

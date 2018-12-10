@@ -7,7 +7,7 @@ $.extend( $.validator.messages, {
 	remote: "Vui lòng sửa lại trường này.",
 	email: "Vui lòng nhập với định dạng email hợp lệ.",
 	url: "Vui lòng nhập với định dạng URL hợp lệ.",
-	strong: "Mật khẩu phải chứa ít nhất 8 ký tự bao gồm ít nhất:<br><ul><li>một ký tự hoa,</li><li>một ký tự thường,</li><li>một ký tự số,</li><li>một ký tự đăc biệt.</li></ul>",
+	strong: "Đây là mật khẩu yếu.",
 	date: "Vui lòng nhập với định dạng ngày hợp lệ.",
 	dateISO: "Vui lòng nhập ngày theo chuẩn ISO.",
 	number: "Vui lòng chỉ nhập số.",

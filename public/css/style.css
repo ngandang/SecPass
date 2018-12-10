@@ -94,9 +94,14 @@ td{
     cursor: pointer;
 }
 
+.account-id{
+    display:none;
+}
+
 .text-container{
     display:flex;
 }
+
 .text-overflow {
     -ms-text-overflow: ellipsis;
     -o-text-overflow: ellipsis;

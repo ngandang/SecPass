@@ -145,24 +145,37 @@ class HomeController extends Controller
         //TODO: share account
     }
 
-    public function copyPassword(Request $request)
+    public function getPassword(Request $request)
     {
         $account_id = $request->id;
         $secret = Secret::where('account_id', $account_id)->first();
-        // TODO: decrypt OpenPGP
+
         return response()->json([
             'success' => true,
             'message' => 'Đã sao chép mật khẩu',
-            'password' => $secret->data
+            'content' => $secret->data
         ]);
     }
-    
+
     public function notes()
     {
         $notes = Auth::user()->note()->get();
 
         return view('page.notes',compact('notes'));
     }
+
+    public function getNoteContent(Request $request)
+    {
+        $note_id = $request->id;
+        $secret = Secret::where('note_id', $note_id)->first();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Đã sao chép nội dung',
+            'content' => $secret->data
+        ]);
+    }
+
 
     public function addNote( Request $req)
     {
@@ -176,7 +189,7 @@ class HomeController extends Controller
         $secret->user_id = $user->id;
         $secret->note_id = $note->id;
         // TODO: encrypt OpenGPG
-        $secret->data = $req->note;
+        $secret->data = $req->cipher;
         $secret->save();
 
         $notes = Auth::user()->note()->get();
@@ -190,11 +203,16 @@ class HomeController extends Controller
 
     public function editNote( Request $req)
     {
-        $idEdit = $req->id;
-        $note = Note::find($idEdit);
+        $note_id = $req->id;
+        $note = Note::find($note_id);
         $note->title = $req->title;
-        $note->content = $req->note;
         $note->save();
+
+        if ($request->cipher) {
+            $secret = Secret::where('note_id', $note_id)->first();
+            $secret->data = $request->cipher;
+            $secret->save();
+        }
 
         $notes = Auth::user()->note()->get();
         return response()->json([
@@ -204,10 +222,14 @@ class HomeController extends Controller
             'view' => view('content.content-notes', compact('notes'))->render()
         ]);
     }
+
     public function delNote(Request $req){
-        $idDel = $req->id;
-        $note = Note::find($idDel);
+        $note_id = $req->id;
+        $note = Note::find($note_id);
         $note->delete();
+
+        $secret = Secret::where('note_id', $note_id)->first();
+        $secret->delete();
 
         $notes = Auth::user()->note()->get();
         return response()->json([
@@ -311,92 +333,6 @@ class HomeController extends Controller
         });
         return "Your email has been sent successfully";
     }
-
-    // public function generate($pass){
-    //     return Keygen::numeric(16)->generate();
-    // }
-    // public function generatePassword(Request $request){
-        
-    // }
-    // public function generatePassword(){
-    //     addForm.password.value = generatePassword(addForm.pass.value);
-    // }
-
-    // Ngân: Login tự viết
-    // public function getLogin() {
-    // 	return view('login');
-    // }
-    // public function postLogin(Request $req)
-    // {
-    //     $this->validate($req,
-    //         [
-    //             'email'=>'required|email',
-    //             'password'=>'required|min:6|max:20'
-    //         ],
-    //         [
-    //             'email.required'=>'Vui lòng nhập email',
-    //             'email.email'=>'Không đúng định dạng email',
-    //             'password.required'=>'Vui lòng nhập password',
-    //             'password.min'=>'Password ít nhất phải 6 kí tự',
-    //             'password.max'=>'Password không quá 20 kí tự',
-    //         ]);
-    //         $credentials = array('email'=>$req->email,'password'=>$req->password);
-    //         if(Auth::attempt($credentials))
-    //         {
-    //             return redirect('dashboard')->with(['flag'=>'success', 'thongbao'=>'Đăng nhập thành công!!!']);
-    //         }
-    //         else
-    //         {
-    //             return redirect()->back()->with(['flag'=>'danger', 'thongbao'=>'Đăng nhập không thành công!']);
-    //         }
-    // }
-    // public function getSignup() {
-    // 	return view('signup');
-    // }
-    
-    // public function postSignup(Request $req)
-    // {
-    //     $this->validate($req,
-    //     [
-    //         'email'=>'required|email|unique:users,email',
-    //         'password'=>'required|min:6|max:20',
-    //         'fullname'=>'required',
-    //         're_password'=>'required|same:password'
-    //     ],
-    //     [
-    //         'email.required'=>'Vui lòng nhập email',
-    //         'email.email'=>'Không đúng định dạng email',
-    //         'email.unique'=>'Email đã có người sử dụng',
-    //         'password.required'=>'Vui lòng nhập password',
-    //         'password.min'=>'Password ít nhất phải 6 kí tự',
-    //         'password.max'=>'Password không quá 20 kí tự',
-    //         'fullname.required'=>'Vui lòng nhập fullname',
-    //         're_password.same'=>'Password không giống nhau'
-    //     ]);
-    //     $user = new User();
-    //     $user->name = $req->fullname;
-    //     $user->email = $req->email;
-    //     $user->password = Hash::make($req->password);
-    //     $user->save();
-    //     return redirect('login');
-    // }
-
-    // public function forgetPassword() {
-    // 	return view('forgetpassword');
-    // }
-    // public function getLogout(){
-    //     Auth::logout();
-    //     return redirect('login');
-    // }
-
-    // public function dashboard()
-    // {
-    //     return view('page.dashboard');
-    // }
-    // public function accounts()
-    // {
-    //     return view('page.accounts'); 
-    // }
     
     public function credential()
     {
@@ -411,6 +347,7 @@ class HomeController extends Controller
     {
         return view('page.sharewith');
     }
+
 
     public function groups()
     {
