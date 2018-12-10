@@ -87,8 +87,4 @@ class User extends Authenticatable
     {
         return $this->belongsToMany('App\Note','secrets','user_id','note_id');
     }
-    public function Group()
-    {
-        return $this->belongsToMany('App\Group','groups_users','user_id','group_id');
-    }
 }

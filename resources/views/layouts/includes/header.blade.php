@@ -167,7 +167,8 @@
 							</div>
 						</li>
 						<!--begin::Search-->
-						<!-- <li class="m-menu__item m-menu__item--large m-dropdown m-dropdown--arrow m-dropdown--large m-dropdown--mobile-full-width m-dropdown--align-right m-dropdown--skin-light m-header-search m-header-search--expandable m-header-search--skin-" id="m_quicksearch" data-search-type="default">
+						<li class="m-menu__item m-menu__item--large m-dropdown m-dropdown--arrow m-dropdown--large m-dropdown--mobile-full-width m-dropdown--align-right m-dropdown--skin-light m-header-search m-header-search--expandable m-header-search--skin-" id="m_quicksearch" data-search-type="default">
+							<!--begin::Search Form -->
 							
 							<form class="m-header-search__form">
 								<div class="m-header-search__wrapper">
@@ -185,38 +186,22 @@
 									</span>
 								</div>
 							</form>
-							
+							<!--end::Search Form -->
+							<!--begin::Search Results -->
 							<div class="m-dropdown__wrapper ">
 								<div class="m-dropdown__arrow m-dropdown__arrow--adjust"></div>
 								<div class="m-dropdown__inner">
 									<div class="m-dropdown__body">
 										<div class="m-dropdown__content m-dropdown__scrollable m-scrollable" data-scrollable="true" data-max-height="300" data-mobile-max-height="200">
-											
 										</div>
 									</div>
 								</div>
 							</div>
-							
-						</li> -->
+							<!--end::Search Results -->
+						</li>
 						<!--end::Search-->
-
-						
 					</ul>
-
 				</div>
-				<!--Begin: Search -->
-						
-				<div class="search-container">
-					<form>
-						<input type="text" placeholder="Search.." name="search">
-						<button type="submit"><i class="fa fa-search"></i></button>
-					</form>
-				</div>
-				
-				<!--End: Search -->
-
-
-
 				<!-- END: Horizontal Menu -->
 				<!-- BEGIN: Topbar -->
 				<div id="m_header_topbar" class="m-topbar  m-stack m-stack--ver m-stack--general">
