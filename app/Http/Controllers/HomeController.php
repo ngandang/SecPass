@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Query\Builder;
 
 use App\Account;
 use App\User;
@@ -65,8 +66,7 @@ class HomeController extends Controller
     // }
     public function accounts()
     {
-        $accounts = Auth::user()->account()->get();
-            
+        $accounts = Auth::user()->account()->get();         
         return view('page.accounts', compact('accounts'));
     }
 
@@ -414,7 +414,20 @@ class HomeController extends Controller
 
     public function groups()
     {
-        return view('page.groups');
+        $groups = Auth::user()->group()->get();
+        return view('page.groups', compact('groups'));
+    }
+    public function groupDetail(Request $request)
+    {
+        $group_id = $request->get('id');
+        $group = Group::find($group_id);
+        $groups_users = GroupUser::where('group_id', $group_id)->get();
+        
+        $user_id = $groups_users->pluck('user_id');
+       
+        $users = User::whereIn('id',$user_id)->get();
+        return view('page.groupdetail', compact('users', 'groups_users','group'));
+        // return view('page.groupdetail');
     }
     public function checkUser(Request $request)
     {
@@ -452,21 +465,65 @@ class HomeController extends Controller
         $group_user->is_admin = true;
         $group_user->save();
        
-        $users = User::where('email',$request->email)->get();
-        foreach ($users as $user)
-        {
-            
+        $data = json_decode(stripslashes($_POST['li_variable']));
+
+        foreach($data as $d){
+            $user = User::where('email',$d)->first();
             $group_user = new GroupUser;
             $group_user->group_id = $group->id;
             $group_user->user_id = $user->id;
             $group_user->save();
         }
+        
+        // $users = User::where('email',$request->email)->get();
+        // foreach ($list as $email)
+        // {
+        //     $user = User::where('email',$email)->first();
+
+        //     $group_user = new GroupUser;
+        //     $group_user->group_id = $group->id;
+        //     $group_user->user_id = $user->id;
+        //     $group_user->save();
+        // }
+        $groups = Auth::user()->group()->get();
         return response()->json([
             'success' => true,
             // TODO: lang this message
             'message' => 'Tạo nhóm mới thành công.',
+            'view' => view('content.content-group', compact('groups'))->render()
         ]);
     }
+    
+    public function editGroup(Request $request)
+    {
+        $group_id = $request->id;
+        $group = Group::find($group_id);
+        $group->name = $request->name;
+        $group->created_by = $user_admin->name;
+        $group->modified_by = $user_admin->name;
+        $group->save();
+
+    }
+
+    public function deleteGroup(Request $request)
+    {
+        $group_id = $request->id;
+        
+        $group = Group::find($group_id);
+        $group->delete();
+
+        $group_user = GroupUser::where('group_id', $group_id)->first();
+        $group_user->delete();
+
+        $groups = Auth::user()->group()->get();
+        return response()->json([
+            'success' => true,
+            // TODO: lang this message
+            'message' => 'Xóa tài khoản thành công.',
+            'view' => view('content.content-group', compact('groups'))->render()
+        ]);
+    }
+    
 
     public function profile()
     { 

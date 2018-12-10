@@ -43,7 +43,7 @@
 
 <!-- BEGIN: Content -->
 <div class="m-content">
-    Danh sách các nhóm user tham gia và các obj chia sẻ trong nhóm
+    @include('content.content-group')
 </div>
 <!-- END:  -->
 @endsection
@@ -76,14 +76,14 @@
                                 </div>
                                 <div class="col-md-2">
                                     <label class="text-info">&nbsp</label>
-                                    <button id="addUser" type="submit" class="btn btn-primary">
+                                    <button id="addUser" type="button" class="btn btn-primary">
                                         Thêm
                                     </button>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="list" class="text-info">Danh sách người dùng</label>
-                                <ul id="users"></ul>
+                                <ul id="users" class="col-lg-8"></ul>
                             </div>
                         
                         </div>  
@@ -97,12 +97,48 @@
         </div>
     </div>
 </form>
+<!--BEGIN: Delete form -->
+<form id="delete-form" class="form-horizontal" action="" enctype="multipart/form-data" method="POST">
+    {{ csrf_field() }}
+    <div class="modal fade" id="deleteForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <input type="hidden" name="id" id="idDelete">
+                <div class="modal-header">
+                    <h5 class="text-center modal-title" id="addFormTitle">Xóa tài khoản</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Bạn có chắc chắn xóa tài khoản này không???
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary pull-left" data-dismiss="modal">Huỷ</button>
+                    <button type="submit" id="delSubmit" class="btn btn-primary" >Xóa</button>
+                </div> 
+            </div>
+        </div>
+    </div>
+</form>
+<!-- END: Delete form -->
+
 
 <script>
+
+    function del(id){
+        $('#deleteForm input[name=id]').val(id);
+    }
+    function delUser()
+    {
+        $(this).closest('li').remove();
+        // $(this).remove();
+    }
+    
     $(document).ready(function(){
         $('#addUser').click(function(e){
             e.preventDefault();
-            
+
             email =  {
                 'email' : $('#addForm input[name=email]').val()
             };
@@ -111,12 +147,20 @@
                 type: 'POST',
                 data: email,
                 success: function(response, status, xhr, $form) {
-                    var list = document.getElementById('users');
                     var email = document.getElementById('email').value;
-                    var entry = document.createElement('li');
-                    entry.appendChild(document.createTextNode(email));
+                   
+                    var list = $('#users');
+                    var entry = $('<li>');
+                    var span = $('<span>');
+                    span.text(email);
+                    var button = $('<button onclick="delUser()">');
+                    button.text('Xóa');
+                    button.addClass("btn-del-email");
+
+                    list.append(entry);
+                    entry.append(span);
+                    entry.append(button);
                     
-                    list.appendChild(entry);
                     console.log(response.message);
                 },
                 error: function(response, status, xhr, $form) {
@@ -130,9 +174,19 @@
             e.preventDefault();
             var btn = $(this);
             var form = $(this).closest('form');
+            
+            myArray = new Array();
+            cnt = 0;
+            $("#users li span").each(function(){
+                myArray[cnt] = $(this).text();
+            cnt++;
+            });
+            var jsonString = JSON.stringify(myArray);
+
             form.ajaxSubmit({
                 url: 'group/addGroup',
                 type: 'POST',
+                data: {li_variable: jsonString},
                 success: function(response, status, xhr, $form) {
                     swal({
                         position: 'center',
@@ -152,6 +206,37 @@
                 }
             })
         })
+        $('#delSubmit').click(function(e){
+            e.preventDefault();
+            var btn = $(this);
+            var form = $(this).closest('form');
+            
+            btn.addClass('m-loader m-loader--right m-loader--light').attr('disabled', true);
+
+            form.ajaxSubmit({
+                url: 'group/delete',
+                type: 'POST',
+                success: function(response, status, xhr, $form) {
+                    btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false); // remove 
+                    swal({
+                        position: 'center',
+                        type: 'success',
+                        title: response.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(function(result){$('#deleteForm').modal('hide');});
+
+                    $('.m-content').html(response.view);
+                    form.clearForm();
+	                form.validate().resetForm();
+                },
+                error: function(response, status, xhr, $form) {
+                    btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false); // remove 
+                    swal("Có lỗi xảy ra", "", status);
+                    console.log(response);
+                }
+            });
+        });
     });
 </script>
 

@@ -65,11 +65,18 @@ Route::get('settings','HomeController@profile');
 
 Route::get('groups','HomeController@groups');
 Route::group(['prefix' => 'group', 'as' => 'group'], function(){
-    Route::get('{tab}', ['uses' =>'HomeController@profile']);
+    // Route::get('{tab}', ['uses' =>'HomeController@profile']);
     Route::post('checkUser','HomeController@checkUser');
     Route::post('addGroup','HomeController@addGroup');
+    Route::post('delete','HomeController@deleteGroup');
+    // Route::get('/{group_id}','HomeController@groupDetail');
     
 });
+Route::get('detail', [
+    'as' => 'detail', 'uses' => 'HomeController@groupDetail'
+]);
+
+// Route::post('detail','HomeController@groupDetail');
 
 Route::get('quicksearch','HomeController@quickSearch');
 
