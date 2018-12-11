@@ -2,9 +2,7 @@
 
 @section('content')
 
-<div class="m-grid__item m-grid__item--fluid m-wrapper">
-    @include('layouts.includes.subheader')
-</div>
+@include('layouts.includes.subheader')
 <!-- BEGIN: Content -->
 <div class="m-content">
     <!-- Hiện các password yếu, quá hạn, lịch sử hoạt động -->
@@ -25,8 +23,11 @@
                 <b>
                     SecPASS 
                 </b>
-                vẫn còn đang được phát triển. Để tìm hiểu thêm vui lòng liên hệ qua email <a href="mailto:14520112@uit.edu.vn" class="m-link">14520112@uit.edu.vn</a>.
-                <br>
+                vẫn đang được phát triển. Để tìm hiểu thêm vui lòng liên hệ:
+                 <ul>
+                    <li>Nguyễn Phi Cường - <a href="mailto:14520112@gm.uit.edu.vn" class="m-link">14520112@gm.uit.edu.vn</a></li>
+                    <li>Đặng Thị Ngân - <a href="mailto:14520572@gm.uit.edu.vn" class="m-link">14520572@gm.uit.edu.vn</a></li>
+                </ul>
                 Xin chân thành cảm ơn.
             </p>
         </div>

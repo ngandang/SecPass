@@ -23055,6 +23055,7 @@ body.m-portlet--fullscreen {
   color: #f4516c; }
 
 .has-danger .form-control-feedback {
+  background-color: rgba(255, 255, 255, 0.7);
   color: #f4516c; }
 
 .has-danger .input-group-addon,

@@ -69,7 +69,7 @@
     @endforeach
 </div>
 @else
-    <div align="center">
+    <div class="text-center">
         <img src="{{ asset('default/media/img/misc/emptystate.png') }}"/>
         <h3><small class="text-muted">Hiện không có tài khoản nào...</small></h3>
     </div>

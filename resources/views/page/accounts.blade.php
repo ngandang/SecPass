@@ -44,10 +44,6 @@
 </div>
 <!-- END: Datatable -->
 
-@endsection
-
-@section('pageSnippets')
-<!-- BEGIN: Page Scripts -->
 <!-- BEGIN: Add form -->
 <form id="add-form" class="form-horizontal" action="" enctype="multipart/form-data" method="post">
     {{ csrf_field() }}
@@ -220,6 +216,11 @@
     </div>
 </form>
 <!-- END: Share form -->
+@endsection
+
+@section('pageSnippets')
+<!-- BEGIN: Page Scripts -->
+
 
 <script src="{{ asset('js/validation_vi.js') }}" type="text/javascript"></script>
 
@@ -319,17 +320,23 @@
     // Get user passphrase 
     document.addEventListener('getUserPassphraseEvent', function (event) {
         passphrase= event.detail;
-        console.log("got it: "+passphrase);
+        console.log("got it !");
     });
     // document.dispatchEvent(new CustomEvent('letgetUserPassphraseEvent', {detail: ""})); 
 
     // Get PGP keys automatically 
     document.addEventListener('getUserPGPEvent', function (event) {
-            pgp_key= event.detail;
-            
+            var pgp_key = JSON.parse(event.detail); // bypass firefox permission error
             privkey = pgp_key.privateKeyArmored;
-            pubkey = pgp_key.publicKeyArmored;
-            console.log(pgp_key);
+            pubkey =  pgp_key.publicKeyArmored;
+
+            // var newInstance = JSON.parse(JSON.stringify(firstInstance));
+
+            // For a shallow copy:
+            // b = $.extend( {}, a );
+
+            // Or a deep copy:
+            // b = $.extend( true, {}, a );
     });
     // document.dispatchEvent(new CustomEvent('letgetUserPGPEvent', {detail: ""}));
 

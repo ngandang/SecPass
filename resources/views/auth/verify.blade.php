@@ -31,8 +31,8 @@
 	<body class="m--skin- m-header--fixed m-header--fixed-mobile m-aside-left--enabled m-aside-left--skin-dark m-aside-left--offcanvas m-footer--push m-aside--offcanvas-default"  >
 		<!-- begin:: Page -->
 		<div class="m-grid m-grid--hor m-grid--root m-page">
-			<div class="m-grid__item m-grid__item--fluid m-grid m-grid--hor m-login m-login--signin m-login--2 m-login-2--skin-3" id="m_login" style="background-image: url({{ asset('app/media/img/bg/bg-2.jpg') }});">
-				<div class="m-grid__item m-grid__item--fluid	m-login__wrapper">
+			<div class="m-grid__item m-grid__item--fluid m-grid m-grid--hor m-login m-login--signin m-login--2 m-login-2--skin-1" id="m_login" style="background-image: url({{ asset('app/media/img/bg/bg-5.jpg') }});">
+				<div class="m-grid__item m-grid__item--fluid m-login__wrapper">
 					<div class="m-login__container">
 						<div class="m-login__logo">
 							<a href="#">
@@ -52,8 +52,9 @@
                             @if ($status)
 							<form class="m-login__form m-form">
 								<div class="form-group m-form__group">
-                                    <div class="alert">
-                                        Xác thực tài khoản thành công. <br>Bạn sẽ được chuyển đến trang đăng nhập sau 5 giây, hoặc nhấn Đăng nhập ngay bên dưới.
+                                    <div class="alert alert-success">
+										<h5>Xác thực tài khoản thành công.</h5>
+										Bạn sẽ được chuyển đến trang đăng nhập sau 5 giây, hoặc nhấn Đăng nhập ngay bên dưới.
                                     </div>
                                 </div>
                                 <div class="m-login__form-action">
@@ -66,8 +67,8 @@
                             <form class="m-login__form m-form">
                             @csrf
                                 <div class="form-group m-form__group">
-                                    <div class="alert">
-                                        Lỗi xảy ra! <br>
+                                    <div class="alert alert-danger">
+                                        <h5>Lỗi xảy ra!</h5>
                                         Xác thực tài khoản không thành công. Vui lòng kiểm tra hoặc nhập lại email để nhận mã xác thực mới.
                                     </div>
 								</div>

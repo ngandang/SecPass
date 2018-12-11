@@ -19,7 +19,7 @@ window.onload = function()
 
 	document.getElementById('passGen').onclick = function()
 	{
-		window.location = "nayuki-password-generator.html"
+		window.location = "password-generator.html"
 	}
 
 	document.getElementById('goPage').onclick = function()

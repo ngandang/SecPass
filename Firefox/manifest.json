@@ -1,0 +1,50 @@
+{
+  // Required
+  "manifest_version": 2,
+  "name": "SECPASS Extension",
+  "version": "0.0.1",
+  // Recommended
+  "description": "Firefox Extension for SecPASS.",
+  // Optional
+  "author": "Ngan Dang, npc",
+  "browser_action": {
+      "default_title": "SecPASS",
+      "default_icon": "icon.png",
+      "default_popup": "main.html"
+  },
+  "background":{
+    "scripts": ["background.js"]
+  },
+  "content_scripts": [
+        {
+            "matches": [
+                "http://localhost/*"
+                // "https://*/*"
+            ],
+            "js": [
+                "jquery-3.3.1.js",
+                "openpgp.js",
+                "contentscript.js"
+            ],
+            "run_at": "document_end",
+            "all_frames": false
+        }
+    ],
+  // "app": {
+  // 	"background": {
+  // 		"scripts":["main.js"]
+  // 	}
+  // },
+  "permissions": [
+    "activeTab",
+    "nativeMessaging",
+    "clipboardWrite",
+    "tabs",
+    "storage",
+    "*://*/*"
+  ]
+  
+  // "externally_connectable": {
+  //   "matches": ["*://localhost/*/*"]
+  // }
+}

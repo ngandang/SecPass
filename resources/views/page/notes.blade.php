@@ -151,7 +151,6 @@
 
 @section('pageSnippets')
 <!-- BEGIN: Page Scripts -->
-
 <script>
 
     let privkey = ""
@@ -236,17 +235,15 @@
     // Get user passphrase 
     document.addEventListener('getUserPassphraseEvent', function (event) {
         passphrase= event.detail;
-        console.log(passphrase);
+        console.log("got it!");
     });
     // document.dispatchEvent(new CustomEvent('letgetUserPassphraseEvent', {detail: ""})); 
 
     // Get PGP keys automatically 
     document.addEventListener('getUserPGPEvent', function (event) {
-            pgp_key= event.detail;
-            
+            pgp_key= JSON.parse(event.detail);
             privkey = pgp_key.privateKeyArmored;
             pubkey = pgp_key.publicKeyArmored;
-            console.log(pgp_key);
     });
     // document.dispatchEvent(new CustomEvent('letgetUserPGPEvent', {detail: ""}));
 

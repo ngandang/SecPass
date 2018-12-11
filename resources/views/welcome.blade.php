@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="no-js" lang="zxx">
+<html class="no-js" lang="vi">
 
 <head>
     <meta charset="utf-8">
@@ -9,10 +9,10 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Title -->
-    <title>Home</title>
+    <title>SecPASS</title>
     <!-- Place favicon.ico in the root directory -->
-    <link rel="apple-touch-icon" href="{{ asset('welcome/images/apple-touch-icon.png') }}') }}">
-    <link rel="shortcut icon" type="image/ico" href="{{ asset('welcome/images/favicon.ico') }}" />
+    <link rel="apple-touch-icon" href="{{ asset('default/media/img/logo/favicon.ico') }}') }}">
+    <link rel="shortcut icon" type="image/ico" href="{{ asset('default/media/img/logo/favicon.ico') }}" />
     <!-- Plugin-CSS -->
     <link rel="stylesheet" href="{{ asset('welcome/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('welcome/css/owl.carousel.min.css') }}">
@@ -52,20 +52,20 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a href="#" class="navbar-brand logo">
-                    <h2>colid</h2>
+                    <h2>SecPASS</h2>
                 </a>
             </div>
             <!--Logo/-->
             <nav class="collapse navbar-collapse" id="primary-menu">
                 <ul class="nav navbar-nav navbar-right">
-                    <li class="active"><a href="#home-page">Home</a></li>
-                    <li><a href="#service-page">Service</a></li>
-                    <li><a href="#feature-page">Features</a></li>
-                    <li><a href="#price-page">Pricing</a></li>
+                    <li class="active"><a href="#home-page">Trang chủ</a></li>
+                    <li><a href="#service-page">Giới thiệu</a></li>
+                    <li><a href="#feature-page">Tính năng</a></li>
+                    <li><a href="#price-page">Bảng giá</a></li>
                     <li><a href="#team-page">Team</a></li>
                     <li><a href="#faq-page">FAQ</a></li>
                     <li><a href="#blog-page">Blog</a></li>
-                    <li><a href="#contact-page">Contact</a></li>
+                    <li><a href="#contact-page">Liên hệ</a></li>
                 </ul>
             </nav>
         </div>
@@ -112,9 +112,24 @@
         </div>
     </header>
     <!--Header-area/-->
+    <footer class=" relative anlge-bg">
+        <div class="footer-bottom">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12 text-center">
+                        <p style="color:#ebedf2">
+                            2018 &copy; 
+                            <a href="#" class="m-link">SecPASS</a>.
+                            Bảo lưu mọi quyền.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
 
 
-
+@section('unshow')
     <!--Feature-area-->
     <section class="gray-bg section-padding" id="service-page">
         <div class="container">
@@ -815,9 +830,7 @@
     </footer>
 
 
-
-
-
+@endsection
     <!--Vendor-JS-->
     <script src="{{ asset('welcome/js/vendor/jquery-1.12.4.min.js') }}"></script>
     <script src="{{ asset('welcome/js/vendor/bootstrap.min.js') }}"></script>

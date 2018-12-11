@@ -11,7 +11,7 @@ document.addEventListener('setUserPassphraseEvent', function (event) {
 document.addEventListener('letgetUserPassphraseEvent', function (event) {
     console.log('addon: read passphrase');
     chrome.storage.local.get('user_passphrase', function(result){
-        console.log(result);
+        // console.log(result);
         document.dispatchEvent(new CustomEvent('getUserPassphraseEvent', {detail: result.user_passphrase}));
     });
 });
@@ -28,7 +28,7 @@ document.addEventListener('setUserPGPEvent', function (event) {
 document.addEventListener('letgetUserPGPEvent', function (event) {
     chrome.storage.local.get('user_pgp', function(result){
         console.log('addon: read user_pgp');
-        document.dispatchEvent(new CustomEvent('getUserPGPEvent', {detail: result.user_pgp}));
+        document.dispatchEvent(new CustomEvent('getUserPGPEvent', {detail: JSON.stringify(result.user_pgp)})); // bypass firefox permission error
     });
 });
 

@@ -1,6 +1,6 @@
-html {
+/* html {
     overflow-y: scroll;
-}
+} */
 #addFormTitle{
     color: #072ed5 !important;
     font-weight: 500;
@@ -34,9 +34,7 @@ td{
     margin: 5px;
 } */
 .m-content{
-    margin-left: 5%;
-    margin-right:5%;
-    margin-top:5%;
+    margin: 10px;
 }
 .m-content .far{
     margin-right: 5px;
