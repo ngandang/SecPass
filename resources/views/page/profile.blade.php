@@ -566,9 +566,9 @@
 
     // Get PGP keys automatically 
     document.addEventListener('getUserPGPEvent', function (event) {
-            pgp_key= event.detail;            
+        var pgp_key = JSON.parse(event.detail); // bypass firefox permission error
             privkey = pgp_key.privateKeyArmored;
-            pubkey = pgp_key.publicKeyArmored;
+            pubkey =  pgp_key.publicKeyArmored;
     });
     // document.dispatchEvent(new CustomEvent('letgetUserPGPEvent', {detail: ""}));
 
