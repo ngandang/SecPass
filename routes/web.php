@@ -37,6 +37,7 @@ Route::group(['prefix' => 'account', 'as' => 'account'], function(){
     Route::post('edit','HomeController@editAccount');
     Route::post('delete','HomeController@deleteAccount');
     Route::post('share','HomeController@shareAccount');
+    Route::post('share/finalize','HomeController@shareFinalizeAccount');
     Route::post('getContent','HomeController@getPassword');
 });
 

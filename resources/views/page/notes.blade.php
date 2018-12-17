@@ -103,8 +103,13 @@
                                 <div id="editform-box" class="col-md-12">
                                     <input type="hidden" name="id" id="idEdit">
                                     <div class="form-group">
-                                        <label for="note_content" class="text-info">Nội dung:</label><br>
-                                        <textarea type="text" name="note_content" class="form-control m-scrollable" data-scrollbar-shown="true" data-scrollable="true" data-max-height="200" placeholder="Nhấn để giải mã nội dung"></textarea>
+                                        <label for="note_content" class="text-info">Nội dung:</label>
+                                    </div>
+                                    <div class="form-group note-content">
+                                        <button id="getContent" type="button" class="btn btn-metal" data-toggle="m-tooltip" title="Lấy và giải mã nội dung">
+                                                <i class="fa fa-lock fa-fw fa-lg"></i>
+                                            </button>
+                                        <textarea type="text" name="note_content" class="form-control m-scrollable" data-scrollbar-shown="true" data-scrollable="true" data-max-height="200" placeholder="Đã được bảo mật"></textarea>
                                     </div>
                                     <div class="alert m-alert m-alert--default" role="alert">
                                         <i>Cập nhật cuối: </i><span id="last_updated"></span>												

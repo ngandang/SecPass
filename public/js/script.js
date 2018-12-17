@@ -12,10 +12,10 @@ var SessionTimeout = function () {
             ajaxType: 'GET',
             keepAliveButton: 'Giữ đăng nhập',
             logoutButton: 'Đăng xuất',
-            redirUrl: '#',
+            redirUrl: '',
             logoutUrl: 'logout', //placeholder thôi
-            warnAfter: 300000, //cảnh báo sau 2 phút inactive
-            redirAfter: 315000, //redirect sau 15 giây
+            warnAfter: 300000, //cảnh báo sau 5 phút inactive
+            redirAfter: 330000, //redirect sau 15 giây
             countdownMessage: 'Chuyển hướng sau {timer} giây.',
             countdownBar: true
         });
@@ -39,19 +39,17 @@ var DataDismiss = function () {
     });
 };
 
-var MessengerToggle = function () {
+var QuickbarToggle = function () {
     $('#messenger_toggle').on('click', function(){
         $('#m_quick_sidebar_toggle').click();
         $('#m_quick_sidebar_tabs li a')[0].click();
     });
-}
-var LogsToggle = function () {
+
     $('#logs_toggle').on('click', function(){
         $('#m_quick_sidebar_toggle').click();
         $('#m_quick_sidebar_tabs li a')[1].click();
     });
-}
-var FAQToggle = function () {
+
     $('#faq_toggle').on('click', function(){
         $('#m_quick_sidebar_toggle').click();
         $('#m_quick_sidebar_tabs li a')[2].click();
@@ -73,6 +71,22 @@ var LogoutButton = function () {
     });
 }
 
+var ForContent = function () {    
+    $('.m-portlet').click(function (e) {
+        var showEditForm = $(this).find(".account-edit");
+        showEditForm[0].click();
+    });
+    
+    $('.m-portlet__nav-link, .m-nav__item').click(function(e) {
+        $(this).closest('.m-portlet').unbind('click');
+    });
+
+    // Lose modal focus to show swal
+    $('#addForm, #editForm, #shareForm').on('shown.bs.modal', function() {
+        $(document).off('focusin.modal');
+    });
+}
+
 $(document).ready(function() {    
     SessionTimeout.init();
     $.ajaxSetup({
@@ -83,9 +97,8 @@ $(document).ready(function() {
     
     DataDismiss();
     // Asidebar toggle
-    MessengerToggle();
-    LogsToggle();
-    FAQToggle();
+    QuickbarToggle();
+    ForContent();
     LogoutButton();
 });
 

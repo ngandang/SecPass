@@ -391,6 +391,9 @@
                                     <div class="col-10 ml-auto">
                                         <h3 class="m-form__section">
                                             Chữ ký điện tử được cấp
+                                            <span class="m-badge m-badge--danger m-badge--wide m-badge--rounded">
+                                                Đang phát triển
+                                            </span>
                                         </h3>
                                     </div>
                                 </div>

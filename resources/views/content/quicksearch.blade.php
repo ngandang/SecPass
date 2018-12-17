@@ -1,7 +1,7 @@
 <div class="m-list-search m-list-search--skin-light">
 	<div class="m-list-search__results">
 		<span class="m-list-search__result-message {{ (count($accounts) || count($notes) || count($groups)) ? 'm--hide': '' }}">
-			Không tìm thấy dữ liệu khớp từ khoá.
+			Không tìm thấy dữ liệu khớp với từ khoá.
 		</span>
 		@if(count($accounts))
 		<span class="m-list-search__result-category m-list-search__result-category--first">
