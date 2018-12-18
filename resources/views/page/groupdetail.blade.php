@@ -28,7 +28,7 @@
         </div>
 
         <div class="btn-edit-group">
-            <a onclick="editGroup('{{$group->id}}','{{$group->name}}')" class="btn btn-accent m-btn m-btn--custom m-btn--icon m-btn--pill m-btn--air" href="#editForm" data-toggle="modal" data-backdrop="static" data-keyboard="false">
+            <a onclick="editGroup('{{$group->id}}','{{$group->name}}')" class="btn btn-accent m-btn m-btn--custom m-btn--icon m-btn--pill m-btn--air" href="#editGroupForm" data-toggle="modal" data-backdrop="static" data-keyboard="false">
                 <span>
                     <i class="la la-plus"></i>
                     <span>
@@ -125,12 +125,7 @@
                             <div class="form-group">
                                 <label for="list" class="text-info">Danh sách người dùng</label>
                                 <ul id="users" class="col-lg-8">
-                                    @foreach($groupUsers as $user)
-                                    <li>
-                                        <span>{{$user->email}}</span>
-                                        <button class="btn-del-email">Xóa</button>
-                                    </li>
-                                    @endforeach
+                                    
                                 </ul>
                             </div>
                         
@@ -357,8 +352,8 @@
 <script>
     function editGroup(id, name, link)
     {
-        $('#editForm input[name=id]').val(id);
-        $('#editForm input[name=name]').val(name);
+        $('#editGroupForm input[name=id]').val(id);
+        $('#editGroupForm input[name=name]').val(name);
         
     }
     function del(id, idGroup)
@@ -374,7 +369,7 @@
             e.preventDefault();
 
             email =  {
-                'email' : $('#editForm input[name=email]').val()
+                'email' : $('#editGroupForm input[name=email]').val()
             };
             $.ajax({
                 url: '/group/checkUser',
@@ -404,6 +399,8 @@
                 }
             });
         });
+        
+
         $('#editGroupSubmit').click(function(e){
             e.preventDefault();
             var btn = $(this);

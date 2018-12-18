@@ -71,7 +71,7 @@ class HomeController extends Controller
     // }
     public function accounts()
     {
-        $accounts = Auth::user()->account()->get();      
+        $accounts = Auth::user()->account()->get();
         return view('page.accounts', compact('accounts'));
     }
 
@@ -525,24 +525,29 @@ class HomeController extends Controller
         $group_id = $request->id;
         $group = Group::find($group_id);
         $group->name = $request->name;
-        
         $group->save();
 
-        $data = json_decode(stripslashes($_POST['li_variable']));
+        $groups_users = GroupUser::where('group_id', $group_id)->get();
+        $user_id = $groups_users->pluck('user_id');
+        $users = User::whereIn('id',$user_id)->get();;
 
-        foreach($data as $d){
-            $user = User::where('email',$d)->first();
-            $group_user = new GroupUser;
-            $group_user->group_id = $group->id;
-            $group_user->user_id = $user->id;
-            $group_user->save();
+        $emails = json_decode(stripslashes($_POST['li_variable']));
+
+        foreach($emails as $email){
+            $user = User::where('email',$email)->first();
+            if(!($user_id->where("user_id", $user->id)->first())) {
+                $group_user = new GroupUser;
+                $group_user->group_id = $group->id;
+                $group_user->user_id = $user->id;
+                $group_user->save();
+            }
         }
-        $groups = Auth::user()->group()->get();
+
         return response()->json([
             'success' => true,
             // TODO: lang this message
-            'message' => 'Chỉnh sửa mới thành công.',
-            'view' => view('content.content-group', compact('groups'))->render()
+            'message' => 'Chỉnh sửa mới thành công',
+            'view' => view('page.groupdetail', compact('users', 'groups_users','group'))
         ]);
 
     }
@@ -582,18 +587,34 @@ class HomeController extends Controller
         return response()->json([
             'success' => true,
             // TODO: lang this message
-            'message' => 'Xóa người dùng thành công.',
+            'message' => 'Xóa người dùng thành công',
             'view' => view('content.content-group-user', compact('users', 'groups_users','group'))->render()
         ]);
 
     }
+    
     public function changeRole(Request $request)
     {
         $user_id = $request->idUser;
         $group_id = $request->idGroup;
-        $user = GroupUser::where('group_id',$group_id)
-                                ->where('user_id', $user_id)->first();
-        $user->is_admin = $request->role;
+        $group = GroupUser::where('group_id',$group_id)->get();
+        $user = $group->where('user_id', $user_id)->first();
+        
+        if($request->role == 1) {
+            $user->is_admin = 1;
+        }
+        else {
+            if($request->role == 0) {
+                if(count($group->where('is_admin',true)) == 1) {
+                    return response()->json([
+                        'success' => false,
+                        // TODO: lang this message
+                        'message' => 'Vui lòng chọn quản trị viên thay thế'
+                    ],'500');
+                }
+                $user->is_admin = 0;
+            }
+        }
         // $group_user->group_id = $group->id;
         // $group_user->user_id = $user->id;
         $user->save();
@@ -604,12 +625,13 @@ class HomeController extends Controller
                 ->join('users', 'groups_users.user_id', '=', 'users.id')
                 ->select('groups_users.*','users.email','users.name')
                 ->get();
+        $admin = Auth::user()->GroupUser()->where('group_id',$group->id)->first()->is_admin;
 
         return response()->json([
             'success' => true,
             // TODO: lang this message
-            'message' => 'Thay đổi vai trò người dùng thành công.',
-            'view' => view('content.content-group-user', compact('group','groupUsers'))->render()
+            'message' => 'Thay đổi vai trò người dùng thành công',
+            'view' => view('content.content-group-user', compact('group','groupUsers','admin'))->render()
         ]);
     }
 
