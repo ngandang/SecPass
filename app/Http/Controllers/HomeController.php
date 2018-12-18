@@ -357,9 +357,9 @@ class HomeController extends Controller
         $groups = Auth::user()->group()->get();
         return view('page.groups', compact('groups'));
     }
-    public function groupDetail(Request $request)
+    public function groupDetail($group_id)
     {
-        $group_id = $request->get('id');
+        // $group_id = $request->get('id');
         $group = Group::find($group_id);
         $groups_users = GroupUser::where('group_id', $group_id)->get();
         
@@ -439,9 +439,25 @@ class HomeController extends Controller
         $group_id = $request->id;
         $group = Group::find($group_id);
         $group->name = $request->name;
-        $group->created_by = $user_admin->name;
-        $group->modified_by = $user_admin->name;
+        
         $group->save();
+
+        $data = json_decode(stripslashes($_POST['li_variable']));
+
+        foreach($data as $d){
+            $user = User::where('email',$d)->first();
+            $group_user = new GroupUser;
+            $group_user->group_id = $group->id;
+            $group_user->user_id = $user->id;
+            $group_user->save();
+        }
+        $groups = Auth::user()->group()->get();
+        return response()->json([
+            'success' => true,
+            // TODO: lang this message
+            'message' => 'Chỉnh sửa mới thành công.',
+            'view' => view('content.content-group', compact('groups'))->render()
+        ]);
 
     }
 
@@ -463,7 +479,52 @@ class HomeController extends Controller
             'view' => view('content.content-group', compact('groups'))->render()
         ]);
     }
-    
+    public function deleteUser(Request $request)
+    {
+        $user_id = $request->idDelete;
+        $group_id = $request->idGroup;
+        $group_user = GroupUser::where('group_id',$group_id)
+                                ->where('user_id', $user_id)->first();
+        $group_user->delete();
+
+
+        $group = Group::find($group_id);
+        $groups_users = GroupUser::where('group_id', $group_id)->get();
+        $user_id = $groups_users->pluck('user_id');
+        $users = User::whereIn('id',$user_id)->get();
+
+        return response()->json([
+            'success' => true,
+            // TODO: lang this message
+            'message' => 'Xóa người dùng thành công.',
+            'view' => view('content.content-group-user', compact('users', 'groups_users','group'))->render()
+        ]);
+
+    }
+    public function changeRole(Request $request)
+    {
+        $user_id = $request->idUser;
+        $group_id = $request->idGroup;
+        $group_user = GroupUser::where('group_id',$group_id)
+                                ->where('user_id', $user_id)->first();
+        $group_user->is_admin = $request->role;
+        // $group_user->group_id = $group->id;
+        // $group_user->user_id = $user->id;
+        $group_user->save();
+
+
+        $group = Group::find($group_id);
+        $groups_users = GroupUser::where('group_id', $group_id)->get();
+        $user_id = $groups_users->pluck('user_id');
+        $users = User::whereIn('id',$user_id)->get();
+
+        return response()->json([
+            'success' => true,
+            // TODO: lang this message
+            'message' => 'Thay đổi vai trò người dùng thành công.',
+            'view' => view('content.content-group-user', compact('users', 'groups_users','group'))->render()
+        ]);
+    }
 
     public function profile()
     { 

@@ -19,7 +19,7 @@
                 <div class="m-portlet__head-tools">
                     <ul class="m-portlet__nav">
                         <li class="m-portlet__nav-item" data-container="body" data-toggle="m-popover" data-placement="top" data-content="Mở tab mới đến trang này" data-original-title="" title="">
-                            <a href="{{route('detail', ['id' => $group->id])}}" class="m-portlet__nav-link m-portlet__nav-link--icon">
+                            <a href="group/{{$group->id}}" class="m-portlet__nav-link m-portlet__nav-link--icon">
                                 <i class="la la-external-link"></i>
                             </a>
                         </li>

@@ -72,13 +72,21 @@ Route::group(['prefix' => 'group', 'as' => 'group'], function(){
     // Route::get('{tab}', ['uses' =>'HomeController@profile']);
     Route::post('checkUser','HomeController@checkUser');
     Route::post('addGroup','HomeController@addGroup');
+    Route::post('editGroup','HomeController@editGroup');
     Route::post('delete','HomeController@deleteGroup');
-    // Route::get('/{group_id}','HomeController@groupDetail');
+    Route::post('deleteUser', 'HomeController@deleteUser');
+    Route::post('changeRole','HomeController@changeRole');
+    Route::get('{group_id}','HomeController@groupDetail');
     
 });
-Route::get('detail', [
-    'as' => 'detail', 'uses' => 'HomeController@groupDetail'
-]);
+
+// Route::post('deleteUser', [
+//     'as' => 'deleteUser', 'uses' => 'HomeController@deleteUser'
+// ]);
+
+// Route::get('detail', [
+//     'as' => 'detail', 'uses' => 'HomeController@groupDetail'
+// ]);
 
 // Route::post('detail','HomeController@groupDetail');
 

@@ -97,6 +97,7 @@
         </div>
     </div>
 </form>
+
 <!--BEGIN: Delete form -->
 <form id="delete-form" class="form-horizontal" action="" enctype="multipart/form-data" method="POST">
     {{ csrf_field() }}
@@ -129,11 +130,11 @@
     function del(id){
         $('#deleteForm input[name=id]').val(id);
     }
-    function delUser()
-    {
-        $(this).closest('li').remove();
-        // $(this).remove();
-    }
+    // function delUser()
+    // {
+    //     // $(this).closest('li').remove();
+    //     $(this).remove(li);
+    // }
     
     $(document).ready(function(){
         $('#addUser').click(function(e){
@@ -153,15 +154,17 @@
                     var entry = $('<li>');
                     var span = $('<span>');
                     span.text(email);
-                    var button = $('<button onclick="delUser()">');
+                    var button = $('<button id="delUser">');
                     button.text('Xóa');
-                    button.addClass("btn-del-email");
+                    button.addClass(" btn btn-del-email");
+                    // button.addId("delUser")
 
                     list.append(entry);
                     entry.append(span);
                     entry.append(button);
                     
                     console.log(response.message);
+                    
                 },
                 error: function(response, status, xhr, $form) {
                     // btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false); // remove 
@@ -170,6 +173,15 @@
                 }
             });
         });
+        $('#delUser').click(function()
+        {
+            $('#users').removeAttr('li');
+            // $(this).prev('li').remove();
+            // $(this).remove();    
+            // var btn = $(this);
+            // $(this).parent().remove(li);
+        });
+
         $('#addSubmit').click(function(e){
             e.preventDefault();
             var btn = $(this);
