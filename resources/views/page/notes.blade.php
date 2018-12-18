@@ -92,7 +92,7 @@
                         <div class="modal-header">
                             <div class="text-center modal-title" id="editFormTitle">
                                 <!-- <label for="title" class="text-info">Tiêu đề:</label><br> -->
-                                <input type="text" name="title" class="form-control note-title">
+                                <input type="text" name="title" class="form-control note-title" style="font-size:1em">
                             </div>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
@@ -102,13 +102,11 @@
                             <div id="editform-row" class="row justify-content-center align-items-center">
                                 <div id="editform-box" class="col-md-12">
                                     <input type="hidden" name="id" id="idEdit">
-                                    <div class="form-group">
+                                    <div class="form-group get-content">
                                         <label for="note_content" class="text-info">Nội dung:</label>
-                                    </div>
-                                    <div class="form-group note-content">
                                         <button id="getContent" type="button" class="btn btn-metal" data-toggle="m-tooltip" title="Lấy và giải mã nội dung">
                                                 <i class="fa fa-lock fa-fw fa-lg"></i>
-                                            </button>
+                                        </button>
                                         <textarea type="text" name="note_content" class="form-control m-scrollable" data-scrollbar-shown="true" data-scrollable="true" data-max-height="200" placeholder="Đã được bảo mật"></textarea>
                                     </div>
                                     <div class="alert m-alert m-alert--default" role="alert">
@@ -152,6 +150,39 @@
     </div>
 </form>
 <!-- END: Delete Form -->
+
+<!--BEGIN: Share form -->
+<form id="share-form" class="form-horizontal" action="" enctype="multipart/form-data" method="post">
+    {{ csrf_field() }}
+    <div class="modal fade" id="shareForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <input type="hidden" name="id">
+                <div class="modal-header">
+                    <h5 class="text-center modal-title" id="addFormTitle">Chia sẻ ghi chú bảo mật</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="email" class="text-info">Chia sẻ với người dùng hoặc nhóm</label><br>
+                        <input type="text" name="email" placeholder="Nhập tên hoặc email" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="comment" class="text-info">Tin nhắn</label><br>
+                        <textarea rows="5" name="comment" placeholder="Gửi lời nhắn đến người nhận" class="form-control"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary pull-left" data-dismiss="modal">Huỷ</button>
+                    <button type="submit" id="shareSubmit" class="btn btn-primary" >Chia sẻ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<!-- END: Share form -->
 @endsection
 
 @section('pageSnippets')
@@ -217,7 +248,36 @@
             console.log('end decrypt')
             callback(decrypted)
         })
+    }
+    
+    // const encryptFunction = async() => {
+    async function encryptFunction(pubkey, callback) {
+        console.log('begin encrypt')
 
+        const privKeyObj = (await openpgp.key.readArmored(privkey)).keys[0];
+        if (passphrase) {
+            console.log("have passphrase");
+            await privKeyObj.decrypt(passphrase);
+        }
+        else {
+            console.log("no passphrase");
+            let result = await askForPass();
+            await privKeyObj.decrypt(result);
+        }
+        
+        const options = {
+            message: openpgp.message.fromText(messageToEncrypt),       // input as Message object
+            publicKeys: (await openpgp.key.readArmored(pubkey)).keys, // for encryption
+            privateKeys: [privKeyObj]                                 // for signing (optional)
+        }
+        
+        openpgp.encrypt(options).then(ciphertext => {
+            encrypted = ciphertext.data // '-----BEGIN PGP MESSAGE ... END PGP MESSAGE-----'
+            console.log(encrypted)        
+            console.log('end encrypt')
+            // return encrypted
+            callback(encrypted)
+        })
     }
     
     function askForPass(){
@@ -321,7 +381,8 @@
         $('.m-portlet__nav-link').click(function(e) {
             e.stopPropagation();
         });
-        $('#editForm textarea[name=note_content]').click(function () {
+
+        $('#editForm #getContent').click(function () {
             var data = {
                 'id': $('#editForm input[name=id]').val(),
             };
@@ -410,12 +471,13 @@
             btn.attr('disabled', true);
 
             // Encrypt note content with OpenPGPjs
-            form.find('input[name=note_content]').prop('disabled', true);
+            form.find('textarea[name=note_content]').prop('disabled', true);
 
-            messageToEncrypt = form.find("input[name=note_content]").val();
+            messageToEncrypt = form.find("textarea[name=note_content]").val();
             encryptFunction(function (result) {
-                var $temp = $("<input name='cipher'>");
-                form.append($temp);        
+                var $temp = $("<textarea name='cipher'>");
+                form.append($temp);
+                form.append('</textarea>');
                 $temp.val(result);
                 form.ajaxSubmit({
                     url: 'securenote/edit',
@@ -436,12 +498,12 @@
                     },
                     error: function(response, status, xhr, $form) {
                         btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false); // remove 
-                        swal("Có lỗi xảy ra", "error");
+                        swal("","Có lỗi xảy ra", "error");
                         console.log(response.responseJSON.message);
                     }
                 });
                 $temp.remove();
-                form.find('input[name=note_content]').prop('disabled', false);
+                form.find('textarea[name=note_content]').prop('disabled', false);
             });
         });
 
@@ -468,6 +530,78 @@
                 },
                 error: function(response, status, xhr, $form) {
                     swal("", response.serialize(), "error");
+                }
+            });
+        });
+
+        $('#shareSubmit').click(function(e){
+            e.preventDefault();
+            var btn = $(this);
+            var form = $(this).closest('form');
+            
+            btn.addClass('m-loader m-loader--right m-loader--light').attr('disabled', true);
+
+            form.ajaxSubmit({
+                url: 'securenote/share',
+                type: 'POST',
+                success: function(response, status, xhr, $form) {
+                    if (response.sharedkey && response.content) {
+                        console.info(response.message);
+                        
+                        cipherToDecrypt = response.content;
+                        decryptFunction(function (result) {
+                            messageToEncrypt = result;
+                            const sharedkey = response.sharedkey;
+                            encryptFunction(sharedkey, function (result){
+                                data =  {
+                                    'id': response.id,
+                                    'content': result,
+                                };
+                                $.ajax({
+                                    url: 'securenote/share/finalize',
+                                    type: 'POST',
+                                    data: data,
+                                    success: function(response, status, xhr, $form) {
+                                        btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false); // remove 
+                                        swal({
+                                            position: 'center',
+                                            type: 'success',
+                                            title: response.message,
+                                            showConfirmButton: false,
+                                            timer: 1500
+                                        }).then(function(result){$('#shareForm').modal('hide');});
+
+                                        form.clearForm();
+                                        form.validate().resetForm();
+                                    },
+                                    error: function(response, status, xhr, $form) {
+                                        btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false); // remove 
+                                        swal("Có lỗi xảy ra", "", status);
+                                        console.log(response);
+                                    }
+                                });
+                            });
+
+                        });                     
+                    }
+                    else {
+                        btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false); // remove 
+                        swal({
+                            position: 'center',
+                            type: 'success',
+                            title: response.message,
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(function(result){$('#shareForm').modal('hide');});
+
+                        form.clearForm();
+                        form.validate().resetForm();
+                    }
+                },
+                error: function(response, status, xhr, $form) {
+                    btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false); // remove 
+                    swal("Có lỗi xảy ra", "", status);
+                    console.log(response);
                 }
             });
         });

@@ -189,7 +189,7 @@
 <!-- END: Delete form -->
 
 <!--BEGIN: Share form -->
-<form id="share-form" class="form-horizontal" action="../account/share" enctype="multipart/form-data" method="get">
+<form id="share-form" class="form-horizontal" action="" enctype="multipart/form-data" method="post">
     {{ csrf_field() }}
     <div class="modal fade" id="shareForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -208,7 +208,7 @@
                     </div>
                     <div class="form-group">
                         <label for="comment" class="text-info">Tin nhắn</label><br>
-                        <textarea name="comment" placeholder="Gửi lời nhắn đến người nhận" class="form-control"></textarea>
+                        <textarea rows="5" name="comment" placeholder="Gửi lời nhắn đến người nhận" class="form-control"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">

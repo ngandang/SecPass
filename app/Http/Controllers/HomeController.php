@@ -157,11 +157,12 @@ class HomeController extends Controller
             $newSecret = $secret->replicate();
             $newSecret->user_id = $user->id;
             $newSecret->account_id = $newAccount->id;
-            // $newSecret->data = null;
+            $newSecret->data = "";
             $newSecret->save();
 
             $share = new Share;
             $share->asset_id = $newAccount->id;
+            $share->user_id = $user->id;
             $share->owner_id = Auth::user()->id;
             $share->comment = $request->comment;
             $share->save();
@@ -179,23 +180,68 @@ class HomeController extends Controller
             ]);
         }
         else {
-            // khong co thi gui mail
+            // khong co thi gui mail marketing
             return response()->json([
                 'success' => true,
                 // TODO: lang this message
-                'message' => 'Dữ liệu đã được gửi tới email '.$request->email // Người dùng không tồn tại
+                'message' => 'Người dùng không tồn tại'
+            ]);
+        }
+    }
+        
+    public function shareNote(Request $request){
+        $user = User::where('email',$request->email)->first();
+        $note_id = $request->id;
+        $note = Note::find($note_id);
+        $secret = Secret::where('note_id',$note->id)->first();
+        // co thi tra ve publickey shared user
+        if($user) {
+            $newnote = $note->replicate();
+            $newnote->save();
+
+            $newSecret = $secret->replicate();
+            $newSecret->user_id = $user->id;
+            $newSecret->note_id = $newnote->id;
+            $newSecret->data = "";
+            $newSecret->save();
+
+            $share = new Share;
+            $share->asset_id = $newnote->id;
+            $share->user_id = $user->id;
+            $share->owner_id = Auth::user()->id;
+            $share->comment = $request->comment;
+            $share->save();
+
+            $sharedkey = PGPkey::where('user_id',$user->id)
+                                ->where('type','6')
+                                ->first();
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Truy xuất khoá người nhận thành công', // Người dùng tồn tại
+                'sharedkey' => $sharedkey->armored_key,
+                'id' => $newSecret->id,
+                'content' => $secret->data
+            ]);
+        }
+        else {
+            // khong co thi gui mail marketing
+            return response()->json([
+                'success' => true,
+                // TODO: lang this message
+                'message' => 'Người dùng không tồn tại'
             ]);
         }
     }
 
-    public function shareFinalizeAccount(Request $request){
+    public function shareFinalize(Request $request){
         $secret = Secret::find($request->id);
         $secret->data = $request->content;
         $secret->save();
         
         return response()->json([
             'success' => true,
-            'message' => "Chia sẻ tài khoản thành công"
+            'message' => "Chia sẻ thành công"
         ]);
     }
 
@@ -255,11 +301,11 @@ class HomeController extends Controller
         ]);
     }
 
-    public function editNote( Request $req)
+    public function editNote( Request $request)
     {
-        $note_id = $req->id;
+        $note_id = $request->id;
         $note = Note::find($note_id);
-        $note->title = $req->title;
+        $note->title = $request->title;
         $note->save();
 
         if ($request->cipher) {
@@ -292,12 +338,6 @@ class HomeController extends Controller
             'message' => 'Xóa ghi chú bảo mật thành công',
             'view' => view('content.content-notes', compact('notes'))->render()
         ]);
-    }
-
-    public function shareNote(Request $request){
-        $idShare = $request->idShare;
-        $acc = Account::find($idShare);
-        //TODO: share note
     }
 
     public function drive()

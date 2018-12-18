@@ -141,14 +141,14 @@ td{
     top: 20px;
 }
 
-.note-content
+.get-content
 {
     position: relative;
 }
 
 #getContent{
     position: absolute;
-    top:10px;
-    right: 15px;
+    top: -15px;
+    right: 0px;
     z-index: 1;
 }

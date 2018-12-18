@@ -4,7 +4,7 @@
         @include('content.content-accounts')
     @endif
     @if(count($notes))
-    <h4>Ghi chú bảo mật</h4>
+    <h4 class="m--font-brand">Ghi chú bảo mật</h4>
         @include('content.content-notes')
     @endif
 @else
