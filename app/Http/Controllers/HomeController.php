@@ -535,8 +535,8 @@ class HomeController extends Controller
         $emails = json_decode(stripslashes($_POST['li_variable']));
 
         foreach($emails as $email){
-            $user = User::where('email',$email)->first();
-            if(!($user_id->where("user_id", $user->id)->first())) {
+            $user = User::where('email', $email)->first();
+            if(!($groups_users->where('user_id',$user->id)->first())) {
                 $group_user = new GroupUser;
                 $group_user->group_id = $group->id;
                 $group_user->user_id = $user->id;
@@ -544,11 +544,18 @@ class HomeController extends Controller
             }
         }
 
+        $groupUsers = DB::table('groups_users')
+                ->where('group_id', $group_id)        
+                ->join('users', 'groups_users.user_id', '=', 'users.id')
+                ->select('groups_users.*','users.email','users.name')
+                ->get();
+        $admin = Auth::user()->GroupUser()->where('group_id',$group->id)->first()->is_admin;
+
         return response()->json([
             'success' => true,
             // TODO: lang this message
-            'message' => 'Chỉnh sửa mới thành công',
-            'view' => view('page.groupdetail', compact('users', 'groups_users','group'))
+            'message' => 'Chỉnh sửa nhóm thành công',
+            'view' => view('content.content-group-user', compact('group','groupUsers','admin'))->render()
         ]);
 
     }
@@ -567,7 +574,7 @@ class HomeController extends Controller
         return response()->json([
             'success' => true,
             // TODO: lang this message
-            'message' => 'Xóa tài khoản thành công',
+            'message' => 'Xóa nhóm thành công',
             'view' => view('content.content-group', compact('groups'))->render()
         ]);
     }
@@ -579,21 +586,23 @@ class HomeController extends Controller
                                 ->where('user_id', $user_id)->first();
         $group_user->delete();
 
-
         $group = Group::find($group_id);
-        $groups_users = GroupUser::where('group_id', $group_id)->get();
-        $user_id = $groups_users->pluck('user_id');
-        $users = User::whereIn('id',$user_id)->get();
+        $groupUsers = DB::table('groups_users')
+                ->where('group_id', $group_id)        
+                ->join('users', 'groups_users.user_id', '=', 'users.id')
+                ->select('groups_users.*','users.email','users.name')
+                ->get();
+        $admin = Auth::user()->GroupUser()->where('group_id',$group->id)->first()->is_admin;
 
         return response()->json([
             'success' => true,
             // TODO: lang this message
             'message' => 'Xóa người dùng thành công',
-            'view' => view('content.content-group-user', compact('users', 'groups_users','group'))->render()
+            'view' => view('content.content-group-user', compact('group','groupUsers','admin'))->render()
         ]);
 
     }
-    
+
     public function changeRole(Request $request)
     {
         $user_id = $request->idUser;

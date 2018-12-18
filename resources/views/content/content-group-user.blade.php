@@ -1,6 +1,6 @@
 
 @if(count($groupUsers))
-<form class="m-form m-form--fit m-form--label-align-right">
+<!-- <form class="m-form m-form--fit m-form--label-align-right"> -->
     <div class="m-portlet__body">
         <div class="group-section">
             <div class="m-section__content">
@@ -39,7 +39,7 @@
                             </td>
                             <td> {{$user->created_at}}</td>
                             <td> 
-                                <a onclick="del('{{$user->user_id}}','{{$group->id}}')" href = "#deleteForm" data-toggle="modal" data-backdrop="static" data-keyboard="false" class="btn">
+                                <a onclick="del('{{$user->user_id}}','{{$group->id}}')" href = "#deleteUserForm" data-toggle="modal" data-backdrop="static" data-keyboard="false" class="btn">
                                     <i class="fa fa-trash-o" ></i>
                                 </a>
                             </td>
@@ -52,7 +52,7 @@
             </div>
         </div>
     </div>
-</form>
+<!-- </form> -->
 
 @else
     <div class="text-center">
