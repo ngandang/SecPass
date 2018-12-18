@@ -47,13 +47,13 @@
             <div class="m-portlet__head-tools">
                 <ul class="nav nav-tabs m-tabs m-tabs-line   m-tabs-line--left m-tabs-line--primary" role="tablist">
                     <li class="nav-item m-tabs__item">
-                        <a class="nav-link m-tabs__link {{ (Request::segment(1) == 'account') ? 'active' : '' }}" data-toggle="tab" href="#group-account" role="tab">
+                        <a class="nav-link m-tabs__link active" data-toggle="tab" href="#group-account" role="tab">
                             Danh sách tài khoản
                             
                         </a>
                     </li>
                     <li class="nav-item m-tabs__item">
-                        <a class="nav-link m-tabs__link {{ (Request::segment(1) == 'user') ? 'active' : '' }}" data-toggle="tab" href="#group-user" role="tab">
+                        <a class="nav-link m-tabs__link" data-toggle="tab" href="#group-user" role="tab">
                             Danh sách thành viên
                         </a>
                     </li>
@@ -62,7 +62,7 @@
         </div>
         
         <div class="tab-content">
-            <div class="tab-pane {{ (Request::segment(1) == 'account') ? 'active' : '' }}" id="group-account">
+            <div class="tab-pane active" id="group-account">
                 <div class="header">
                     <button type="button" class="btn btn-primary" href="#addForm" data-toggle="modal" data-backdrop="static" data-keyboard="false">
                         Thêm tài khoản
@@ -77,50 +77,15 @@
                 </form>
                 
             </div>
-            <div class="tab-pane {{ (Request::segment(1) == 'user') ? 'active' : '' }}" id="group-user">
+            <div class="tab-pane" id="group-user">
                 <div class="header">
                     <button type="button" id="updateUser" class="btn btn-primary">Thêm người dùng</button>
                 </div>
-                <form class="m-form m-form--fit m-form--label-align-right">
-                    <div class="m-portlet__body">   
-                        <div class="group-section">
-                            <div class="m-section__content">
-                                <table class="table m-table m-table--head-bg-brand">
-                                    <thead>
-                                        <tr style="text-align:center">
-                                            <th> Tên người dùng </th>
-                                            <th> Địa chỉ email </th>
-                                            <th> Vai trò </th>
-                                            <th> Ngày tham gia </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    @foreach($users as $user)
-                                        
-                                        <tr style="text-align:center">
-                                            <td> {{$user->name}} </td>
-                                            <td> {{$user->email}}</td>
-                                            @foreach($groups_users as $temp)
-                                            @if($user->id == $temp->user_id)
-                                            <td> 
-                                                @if($temp->is_admin == true)
-                                                    Quản trị viên
-                                                @else
-                                                    Thành viên
-                                                @endif
-                                            </td>
-                                            <td> {{$temp->updated_at}}</td>
-                                            @endif
-                                            @endforeach
-                                        </tr>
-                                       
-                                    @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </form>        
+                <div class="g-content">
+                    @include('content.content-group-user')
+                </div>
+                
+
             </div>
         </div>
     </div>   
@@ -132,7 +97,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="text-center modal-title" id="addFormTitle">Tạo nhóm mới</h5>
+                    <h5 class="text-center modal-title" id="addFormTitle">Chỉnh sửa nhóm</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -298,40 +263,13 @@
     </div>
 </form>
 <!-- END: Edit form -->
-
-<!--BEGIN: Delete form -->
-<form id="delete-form" class="form-horizontal" action="" enctype="multipart/form-data" method="POST">
+<!--BEGIN: Add user form -->
+<form id="add-user-form" class="form-horizontal" action="../account/share" enctype="multipart/form-data" method="get">
     {{ csrf_field() }}
-    <div class="modal fade" id="deleteForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal fade" id="addUserForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <input type="hidden" name="id" id="idDelete">
-                <div class="modal-header">
-                    <h5 class="text-center modal-title" id="addFormTitle">Xóa tài khoản</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    Bạn có chắc chắn xóa tài khoản này không???
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary pull-left" data-dismiss="modal">Huỷ</button>
-                    <button type="submit" id="delSubmit" class="btn btn-primary" >Xóa</button>
-                </div> 
-            </div>
-        </div>
-    </div>
-</form>
-<!-- END: Delete form -->
-
-<!--BEGIN: Share form -->
-<form id="share-form" class="form-horizontal" action="../account/share" enctype="multipart/form-data" method="get">
-    {{ csrf_field() }}
-    <div class="modal fade" id="shareForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <input type="hidden" name="idShare" id="idShare">
+                <input type="hidden" name="idAdd" id="idAdd">
                 <div class="modal-header">
                     <h5 class="text-center modal-title" id="addFormTitle">Chia sẻ tài khoản</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -352,7 +290,66 @@
         </div>
     </div>
 </form>
-<!-- END: Share form -->
+<!-- END: Add user form -->
+
+<!--BEGIN: Select form -->
+<form id="select-form" class="form-horizontal" action="" enctype="multipart/form-data" method="POST">
+    {{ csrf_field() }}
+    <div class="modal fade" id="selectForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <input type="hidden" name="idUser" id="idUser">
+                <input type="hidden" name="idGroup" id="idGroup">
+                <div class="modal-header">
+                    <h5 class="text-center modal-title" id="addFormTitle">Thay đổi vai trò</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Bạn có chắc chắn thay đổi vai trò người dùng thành
+                    <a href="javascript:;" class="role-user m-link"></a>
+                     
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary pull-left" data-dismiss="modal">Huỷ</button>
+                    <button type="submit" id="selectSubmit" class="btn btn-primary" >Thay đổi</button>
+                </div> 
+            </div>
+        </div>
+    </div>
+</form>
+<!-- END: Select form -->
+
+
+<!--BEGIN: Delete user form -->
+<form id="delete-form" class="form-horizontal" action="" enctype="multipart/form-data" method="POST">
+    {{ csrf_field() }}
+    <div class="modal fade" id="deleteForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <input type="hidden" name="idDelete" id="idDelete">
+                <input type="hidden" name="idGroup" id="idGroup">
+                <div class="modal-header">
+                    <h5 class="text-center modal-title" id="addFormTitle">Xóa tài khoản</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Bạn có chắc chắn xóa tài khoản này không???
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary pull-left" data-dismiss="modal">Huỷ</button>
+                    <button type="submit" id="delSubmit" class="btn btn-primary" >Xóa</button>
+                </div> 
+            </div>
+        </div>
+    </div>
+</form>
+<!-- END: Delete form -->
+
+
 
 
 @endsection
@@ -365,7 +362,25 @@
         $('#editForm input[name=name]').val(name);
         
     }
+    function del(id, idGroup)
+    {
+        $('#deleteForm input[name=idDelete]').val(id);
+        $('#deleteForm input[name=idGroup]').val(idGroup);
+    }
+    
+    function selection(idUser, idGroup, isAdmin)
+    {
+        $('#selectForm input[name=idUser]').val(idUser);
+        $('#selectForm input[name=idGroup]').val(idGroup);
+        // var role = $(this).val();
+        var user_role = 'Thành viên';
+        if(isAdmin == 0)
+            user_role ='Quản trị viên'
+        $('.role-user').html(user_role);
+        $('#selectForm').modal('show');
+    }
     $(document).ready(function(){
+
         $('#addUser').click(function(e){
             e.preventDefault();
 
@@ -373,7 +388,7 @@
                 'email' : $('#editForm input[name=email]').val()
             };
             $.ajax({
-                url: 'group/checkUser',
+                url: '/group/checkUser',
                 type: 'POST',
                 data: email,
                 success: function(response, status, xhr, $form) {
@@ -414,7 +429,7 @@
             var jsonString = JSON.stringify(myArray);
 
             form.ajaxSubmit({
-                url: 'group/editGroup',
+                url: '/group/editGroup',
                 type: 'POST',
                 data: {li_variable: jsonString},
                 success: function(response, status, xhr, $form) {
@@ -436,7 +451,90 @@
                 }
             })
         });
+        
+        
+        
+        $('#delSubmit').click(function(e){
+            e.preventDefault();
+            var btn = $(this);
+            var form = $(this).closest('form');
+            
+            btn.addClass('m-loader m-loader--right m-loader--light').attr('disabled', true);
 
+            form.ajaxSubmit({
+                url: '/group/deleteUser',
+                type: 'POST',
+                success: function(response, status, xhr, $form) {
+                    btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false); // remove 
+                    swal({
+                        position: 'center',
+                        type: 'success',
+                        title: response.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(function(result){$('#deleteForm').modal('hide');});
+
+                    $('.g-content').html(response.view);
+                    form.clearForm();
+	                form.validate().resetForm();
+                },
+                error: function(response, status, xhr, $form) {
+                    btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false); // remove 
+                    swal("Có lỗi xảy ra", "", status);
+                    console.log(response);
+                }
+            });
+        });
+
+        // $('#select').change(function(){
+        //     var role = $(this).val();
+        //     $('.role-user').html(role);
+        //     $('#selectForm').modal('show');
+            
+        // });
+
+        $('#selectSubmit').click(function(e){
+            e.preventDefault();
+            var btn = $(this);
+            var form = $(this).closest('form');
+            $('#selectForm').modal('hide');
+            var user_role = $( "a.role-user" ).text();
+            var role = 1;
+            if(user_role == "Thành viên")
+                role = 0;
+            data = {
+                'role': role,
+                // 'idUser': $('#deleteForm input[name=idUser]').val();
+                // 'idGroup' :$('#deleteForm input[name=idGroup]').val();
+            }
+
+            btn.addClass('m-loader m-loader--right m-loader--light').attr('disabled', true);
+
+            form.ajaxSubmit({
+                url: '/group/changeRole',
+                type: 'POST',
+                data: data,
+                success: function(response, status, xhr, $form) {
+                    btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false); // remove 
+                    swal({
+                        position: 'center',
+                        type: 'success',
+                        title: response.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(function(result){$('#deleteForm').modal('hide');});
+
+                    $('.g-content').html(response.view);
+                    form.clearForm();
+	                form.validate().resetForm();
+                },
+                error: function(response, status, xhr, $form) {
+                    btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false); // remove 
+                    swal("Có lỗi xảy ra", "", status);
+                    console.log(response);
+                }
+            });
+        });
     });
 </script>
 @endSection

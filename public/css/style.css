@@ -140,6 +140,10 @@ td{
     left: 143px;
     top: 20px;
 }
+#group-user i{
+    font-size: 20px;
+    margin:5px;
+}
 
 .get-content
 {
