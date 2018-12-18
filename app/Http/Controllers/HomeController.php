@@ -452,8 +452,9 @@ class HomeController extends Controller
                 ->join('users', 'groups_users.user_id', '=', 'users.id')
                 ->select('groups_users.*','users.email','users.name')
                 ->get();
-   
-        return view('page.groupdetail', compact('group','groupUsers'));
+        $admin = Auth::user()->GroupUser()->where('group_id',$group->id)->first()->is_admin;
+        
+        return view('page.groupdetail', compact('group','groupUsers','admin'));
     }
     public function checkUser(Request $request)
     {
