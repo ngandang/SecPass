@@ -45,11 +45,7 @@
 <div class="m-content">
     @include('content.content-group')
 </div>
-<!-- END:  -->
-@endsection
-
-@section('pageSnippets')
-<!-- BEGIN: Page Scripts -->
+<!-- END: Content -->
 <!-- BEGIN: Add form -->
 <form id="add-form" class="form-horizontal" action="" enctype="multipart/form-data" method="post">
     {{ csrf_field() }}
@@ -72,7 +68,10 @@
                             <div class="form-group row">
                                 <div class="col-md-9">
                                     <label for="email" class="text-info">Thêm email người dùng</label>
-                                    <input type="text" name="email" id="email" class="form-control" required>
+                                    <input type="text" name="email" id="email" class="form-control">
+                                    <span class="m-form__help text-muted">
+                                        Bạn được mặc định là trưởng nhóm.
+                                    </span>
                                 </div>
                                 <div class="col-md-2">
                                     <label class="text-info">&nbsp</label>
@@ -123,8 +122,11 @@
     </div>
 </form>
 <!-- END: Delete form -->
+@endsection
 
-
+@section('pageSnippets')
+<!-- BEGIN: Page Scripts -->
+<script src="{{ asset('js/validation_vi.js') }}" type="text/javascript"></script>
 <script>
 
     function del(id){
@@ -139,7 +141,8 @@
     $(document).ready(function(){
         $('#addUser').click(function(e){
             e.preventDefault();
-
+            var form = $(this).closest('form');
+            form.find("input[name=email]").css('border-color','');
             email =  {
                 'email' : $('#addForm input[name=email]').val()
             };
@@ -186,15 +189,23 @@
             e.preventDefault();
             var btn = $(this);
             var form = $(this).closest('form');
-            
+
+            if (!form.valid()) {
+                return;
+            }
+
             myArray = new Array();
             cnt = 0;
             $("#users li span").each(function(){
                 myArray[cnt] = $(this).text();
             cnt++;
             });
+            if (!myArray[0]){
+                form.find("input[name=email]").css('border-color','#dc3545');
+                return;
+            }
             var jsonString = JSON.stringify(myArray);
-
+            
             form.ajaxSubmit({
                 url: 'group/addGroup',
                 type: 'POST',

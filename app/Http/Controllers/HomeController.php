@@ -446,15 +446,14 @@ class HomeController extends Controller
     }
     public function groupDetail($group_id)
     {
-        // $group_id = $request->get('id');
         $group = Group::find($group_id);
-        $groups_users = GroupUser::where('group_id', $group_id)->get();
-        
-        $user_id = $groups_users->pluck('user_id');
-       
-        $users = User::whereIn('id',$user_id)->get();
-        return view('page.groupdetail', compact('users', 'groups_users','group'));
-        // return view('page.groupdetail');
+        $groupUsers = DB::table('groups_users')
+                ->where('group_id', $group_id)        
+                ->join('users', 'groups_users.user_id', '=', 'users.id')
+                ->select('groups_users.*','users.email','users.name')
+                ->get();
+   
+        return view('page.groupdetail', compact('group','groupUsers'));
     }
     public function checkUser(Request $request)
     {
@@ -482,8 +481,8 @@ class HomeController extends Controller
         $user_admin = Auth::user();
         $group = new Group;
         $group->name = $request->name;
-        $group->created_by = $user_admin->name;
-        $group->modified_by = $user_admin->name;
+        $group->created_by = $user_admin->id;
+        $group->modified_by = $user_admin->id;
         $group->save();
 
         $group_user = new GroupUser;
@@ -592,24 +591,25 @@ class HomeController extends Controller
     {
         $user_id = $request->idUser;
         $group_id = $request->idGroup;
-        $group_user = GroupUser::where('group_id',$group_id)
+        $user = GroupUser::where('group_id',$group_id)
                                 ->where('user_id', $user_id)->first();
-        $group_user->is_admin = $request->role;
+        $user->is_admin = $request->role;
         // $group_user->group_id = $group->id;
         // $group_user->user_id = $user->id;
-        $group_user->save();
-
+        $user->save();
 
         $group = Group::find($group_id);
-        $groups_users = GroupUser::where('group_id', $group_id)->get();
-        $user_id = $groups_users->pluck('user_id');
-        $users = User::whereIn('id',$user_id)->get();
+        $groupUsers = DB::table('groups_users')
+                ->where('group_id', $group_id)        
+                ->join('users', 'groups_users.user_id', '=', 'users.id')
+                ->select('groups_users.*','users.email','users.name')
+                ->get();
 
         return response()->json([
             'success' => true,
             // TODO: lang this message
             'message' => 'Thay đổi vai trò người dùng thành công.',
-            'view' => view('content.content-group-user', compact('users', 'groups_users','group'))->render()
+            'view' => view('content.content-group-user', compact('group','groupUsers'))->render()
         ]);
     }
 

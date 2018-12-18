@@ -40,9 +40,9 @@
     </div>
 </div>
 
-<div class="groupcontent">
-    <input type="hidden" name="id">
-    <div class="m-portlet m-portlet--full-height m-portlet--tabs  ">
+<div class="groupcontent">    
+    <input name="group_id" type="hidden" value="{{$group->id}}">
+    <div class="m-portlet m-portlet--full-height m-portlet--tabs">
         <div class="m-portlet__head">
             <div class="m-portlet__head-tools">
                 <ul class="nav nav-tabs m-tabs m-tabs-line   m-tabs-line--left m-tabs-line--primary" role="tablist">
@@ -91,9 +91,9 @@
     </div>   
 </div> 
 
-<form id="edit-form" class="form-horizontal" action="" enctype="multipart/form-data" method="post">
+<form id="edit-group-form" class="form-horizontal" action="" enctype="multipart/form-data" method="post">
     {{ csrf_field() }}
-    <div class="modal fade" id="editForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal fade" id="editGroupForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -106,7 +106,7 @@
                     <div id="addform-row" class="row justify-content-center align-items-center">
                         <div id="addform-box" class="col-md-12">
                             <div class="form-group">
-                                <input type="hidden" name="id" id="id"> 
+                                <input type="hidden" name="id"> 
                                 <label for="name" class="text-info">Tên nhóm</label>
                                 <input type="text" name="name" class="form-control" required>
                             </div>
@@ -125,7 +125,7 @@
                             <div class="form-group">
                                 <label for="list" class="text-info">Danh sách người dùng</label>
                                 <ul id="users" class="col-lg-8">
-                                    @foreach($users as $user)
+                                    @foreach($groupUsers as $user)
                                     <li>
                                         <span>{{$user->email}}</span>
                                         <button class="btn-del-email">Xóa</button>
@@ -139,7 +139,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary pull-left" data-dismiss="modal">Huỷ</button>
-                    <button type="submit" class="btn btn-primary pull-right" id="editSubmit">Lưu</button>
+                    <button type="submit" class="btn btn-primary pull-right" id="editGroupSubmit">Lưu</button>
                 </div>
             </div>
         </div>
@@ -263,8 +263,9 @@
     </div>
 </form>
 <!-- END: Edit form -->
+
 <!--BEGIN: Add user form -->
-<form id="add-user-form" class="form-horizontal" action="../account/share" enctype="multipart/form-data" method="get">
+<form id="add-user-form" class="form-horizontal" action="" enctype="multipart/form-data" method="get">
     {{ csrf_field() }}
     <div class="modal fade" id="addUserForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -292,14 +293,14 @@
 </form>
 <!-- END: Add user form -->
 
-<!--BEGIN: Select form -->
-<form id="select-form" class="form-horizontal" action="" enctype="multipart/form-data" method="POST">
+<!--BEGIN: Role form -->
+<form id="role-form" class="form-horizontal" action="" enctype="multipart/form-data" method="POST">
     {{ csrf_field() }}
-    <div class="modal fade" id="selectForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal fade" id="roleForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <input type="hidden" name="idUser" id="idUser">
-                <input type="hidden" name="idGroup" id="idGroup">
+                <input type="hidden" name="idUser">
+                <input type="hidden" name="idGroup">
                 <div class="modal-header">
                     <h5 class="text-center modal-title" id="addFormTitle">Thay đổi vai trò</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -308,28 +309,26 @@
                 </div>
                 <div class="modal-body">
                     Bạn có chắc chắn thay đổi vai trò người dùng thành
-                    <a href="javascript:;" class="role-user m-link"></a>
-                     
-                </div>
+                    <a href="javascript:;" class="role-user m-link"></a> ?
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary pull-left" data-dismiss="modal">Huỷ</button>
-                    <button type="submit" id="selectSubmit" class="btn btn-primary" >Thay đổi</button>
+                    <button type="submit" id="roleSubmit" class="btn btn-primary" >Thay đổi</button>
                 </div> 
             </div>
         </div>
     </div>
 </form>
-<!-- END: Select form -->
+<!-- END: Role form -->
 
 
 <!--BEGIN: Delete user form -->
-<form id="delete-form" class="form-horizontal" action="" enctype="multipart/form-data" method="POST">
+<form id="delete-user-form" class="form-horizontal" action="" enctype="multipart/form-data" method="POST">
     {{ csrf_field() }}
     <div class="modal fade" id="deleteForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <input type="hidden" name="idDelete" id="idDelete">
-                <input type="hidden" name="idGroup" id="idGroup">
+                <input type="hidden" name="idDelete">
+                <input type="hidden" name="idGroup">
                 <div class="modal-header">
                     <h5 class="text-center modal-title" id="addFormTitle">Xóa tài khoản</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -337,11 +336,11 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    Bạn có chắc chắn xóa tài khoản này không???
+                    Bạn có chắc chắn xóa tài khoản này không ?
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary pull-left" data-dismiss="modal">Huỷ</button>
-                    <button type="submit" id="delSubmit" class="btn btn-primary" >Xóa</button>
+                    <button type="submit" id="delUserSubmit" class="btn btn-primary" >Xóa</button>
                 </div> 
             </div>
         </div>
@@ -368,17 +367,7 @@
         $('#deleteForm input[name=idGroup]').val(idGroup);
     }
     
-    function selection(idUser, idGroup, isAdmin)
-    {
-        $('#selectForm input[name=idUser]').val(idUser);
-        $('#selectForm input[name=idGroup]').val(idGroup);
-        // var role = $(this).val();
-        var user_role = 'Thành viên';
-        if(isAdmin == 0)
-            user_role ='Quản trị viên'
-        $('.role-user').html(user_role);
-        $('#selectForm').modal('show');
-    }
+
     $(document).ready(function(){
 
         $('#addUser').click(function(e){
@@ -415,7 +404,7 @@
                 }
             });
         });
-        $('#editSubmit').click(function(e){
+        $('#editGroupSubmit').click(function(e){
             e.preventDefault();
             var btn = $(this);
             var form = $(this).closest('form');
@@ -454,7 +443,7 @@
         
         
         
-        $('#delSubmit').click(function(e){
+        $('#delUserSubmit').click(function(e){
             e.preventDefault();
             var btn = $(this);
             var form = $(this).closest('form');
@@ -485,27 +474,42 @@
                 }
             });
         });
+        
+        $(document).on("change", ".select-role", function (e){
+            e.preventDefault();
+            var tr = $(this).closest('tr');
+            tr.addClass('selected');
+            $('#roleForm input[name=idUser]').val(tr.find("input[name=user_id]").val());
+            $('#roleForm input[name=idGroup]').val($('input[name=group_id]').val());
+            var role = $(this).val();
+            $('.role-user').html(role);
+            $('#roleForm').modal('show');
+        })
 
-        // $('#select').change(function(){
-        //     var role = $(this).val();
-        //     $('.role-user').html(role);
-        //     $('#selectForm').modal('show');
-            
-        // });
+        $("#roleForm").on("hidden.bs.modal", function (e) {
+            e.preventDefault();
+            var tr = $("tr.selected");
+            var is_admin = tr.find("input[name=is_admin]").val();
+            if(is_admin==1){
+                tr.find('.select-role').val("Quản trị viên");
+            }
+            else {
+                tr.find('.select-role').val("Thành viên");
+            }
+            tr.removeClass("selected");
 
-        $('#selectSubmit').click(function(e){
+        });
+
+        $('#roleSubmit').click(function(e){
             e.preventDefault();
             var btn = $(this);
             var form = $(this).closest('form');
-            $('#selectForm').modal('hide');
-            var user_role = $( "a.role-user" ).text();
+            var user_role = form.find(".role-user").text();
             var role = 1;
             if(user_role == "Thành viên")
                 role = 0;
             data = {
                 'role': role,
-                // 'idUser': $('#deleteForm input[name=idUser]').val();
-                // 'idGroup' :$('#deleteForm input[name=idGroup]').val();
             }
 
             btn.addClass('m-loader m-loader--right m-loader--light').attr('disabled', true);
@@ -522,11 +526,11 @@
                         title: response.message,
                         showConfirmButton: false,
                         timer: 1500
-                    }).then(function(result){$('#deleteForm').modal('hide');});
+                    }).then(function(result){$('#roleForm').modal('hide');});
 
                     $('.g-content').html(response.view);
                     form.clearForm();
-	                form.validate().resetForm();
+	                // form.validate().resetForm();
                 },
                 error: function(response, status, xhr, $form) {
                     btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false); // remove 

@@ -1,6 +1,6 @@
-@if(count($users))
+@if(count($groupUsers))
 <form class="m-form m-form--fit m-form--label-align-right">
-    <div class="m-portlet__body">   
+    <div class="m-portlet__body">
         <div class="group-section">
             <div class="m-section__content">
                 <table class="table m-table m-table--head-bg-brand">
@@ -14,31 +14,27 @@
                         </tr>
                     </thead>
                     <tbody>
-                    @foreach($users as $user)
+                    @foreach($groupUsers as $user)
                         
                         <tr style="text-align:center">
+                            <input name="user_id" type="hidden" value="{{$user->user_id}}">
+                            <input name="is_admin" type="hidden" value="{{$user->is_admin}}">
                             <td> {{$user->name}} </td>
                             <td> {{$user->email}}</td>
-                            @foreach($groups_users as $temp)
-                            @if($user->id == $temp->user_id)
                             <td> 
-                                <select onchange="selection('{{$user->id}}','{{$group->id}}','{{$temp->is_admin}}')"  class="form-control m-input selection" id="select">
-                                    
-                                    <option {{ $temp->is_admin == true ? 'selected="selected"' : '' }}>
+                                <select class="form-control m-input select-role">
+                                    <option {{ $user->is_admin == true ? 'selected' : '' }}>
                                         Quản trị viên
                                     </option>
                                     
-                                    <option {{ $temp->is_admin == false ? 'selected="selected"' : '' }}>
-                                    Thành viên
-                                    </option>
-                                    
+                                    <option {{ $user->is_admin == false ? 'selected' : '' }}>
+                                        Thành viên
+                                    </option>                                    
                                 </select>
                             </td>
-                            <td> {{$temp->updated_at}}</td>
-                            @endif
-                            @endforeach
+                            <td> {{$user->created_at}}</td>
                             <td> 
-                                <a onclick="del('{{$user->id}}','{{$group->id}}')" href = "#deleteForm" data-toggle="modal" data-backdrop="static" data-keyboard="false" class="btn">
+                                <a onclick="del('{{$user->user_id}}','{{$group->id}}')" href = "#deleteForm" data-toggle="modal" data-backdrop="static" data-keyboard="false" class="btn">
                                     <i class="fa fa-trash-o" ></i>
                                 </a>
                             </td>

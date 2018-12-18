@@ -8,7 +8,7 @@ var SessionTimeout = function () {
         $.sessionTimeout({
             title: 'Thông báo chuyển hướng',
             message: "Hệ thống nhận thấy bạn không hoạt động trong 5 phút vừa qua. <br>Bạn sẽ được chuyển hướng về Trang chủ để bảo mật thông tin trên màn hình.",
-            keepAliveUrl: 'session-timeout/keepalive',
+            keepAliveUrl: '/session-timeout/keepalive',
             ajaxType: 'GET',
             keepAliveButton: 'Giữ đăng nhập',
             logoutButton: 'Đăng xuất',
@@ -74,7 +74,8 @@ var LogoutButton = function () {
 var ForContent = function () {    
     $('.m-portlet').click(function (e) {
         var showEditForm = $(this).find(".account-edit");
-        showEditForm[0].click();
+        if(showEditForm[0])
+            showEditForm[0].click();
     });
     
     $('.m-portlet__nav-link, .m-nav__item').click(function(e) {

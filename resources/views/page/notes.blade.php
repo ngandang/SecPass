@@ -187,6 +187,7 @@
 
 @section('pageSnippets')
 <!-- BEGIN: Page Scripts -->
+<script src="{{ asset('js/validation_vi.js') }}" type="text/javascript"></script>
 <script>
 
     let privkey = ""
