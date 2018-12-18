@@ -18,7 +18,7 @@
                     -
                 </li>
                 <li class="m-nav__item">
-                    <a href="" class="m-nav__link">
+                    <a href="{{ $group->id }}" class="m-nav__link">
                         <span class="m-nav__link-text">
                             {{$group->name}}
                         </span>
@@ -26,30 +26,18 @@
                 </li>
             </ul>
         </div>
-
-        <div class="btn-edit-group">
-            <a onclick="editGroup('{{$group->id}}','{{$group->name}}')" class="btn btn-accent m-btn m-btn--custom m-btn--icon m-btn--pill m-btn--air" href="#editForm" data-toggle="modal" data-backdrop="static" data-keyboard="false">
-                <span>
-                    <i class="la la-plus"></i>
-                    <span>
-                        Chỉnh sửa
-                    </span>
-                </span>
-            </a>
-        </div>
     </div>
 </div>
 
 <div class="groupcontent">    
-    <input name="group_id" type="hidden" value="{{$group->id}}">
+    <input name="group_id" type="hidden" value="{{ $group->id }}">
     <div class="m-portlet m-portlet--full-height m-portlet--tabs">
         <div class="m-portlet__head">
             <div class="m-portlet__head-tools">
                 <ul class="nav nav-tabs m-tabs m-tabs-line   m-tabs-line--left m-tabs-line--primary" role="tablist">
                     <li class="nav-item m-tabs__item">
                         <a class="nav-link m-tabs__link active" data-toggle="tab" href="#group-account" role="tab">
-                            Danh sách tài khoản
-                            
+                            Danh sách tài khoản                            
                         </a>
                     </li>
                     <li class="nav-item m-tabs__item">
@@ -79,7 +67,11 @@
             </div>
             <div class="tab-pane" id="group-user">
                 <div class="header">
-                    <button type="button" id="updateUser" class="btn btn-primary">Thêm người dùng</button>
+                    @if($admin)
+                    <a click="editGroup('{{$group->id}}','{{$group->name}}')" class="btn btn-primary" href="#editGroupForm" data-toggle="modal" data-backdrop="static" data-keyboard="false">
+                        Chỉnh sửa
+                    </a>
+                    @endif
                 </div>
                 <div class="g-content">
                     @include('content.content-group-user')
@@ -108,7 +100,7 @@
                             <div class="form-group">
                                 <input type="hidden" name="id"> 
                                 <label for="name" class="text-info">Tên nhóm</label>
-                                <input type="text" name="name" class="form-control" required>
+                                <input type="text" name="name" class="form-control" value="{{ $group->name }}" required>
                             </div>
                             <div class="form-group row">
                                 <div class="col-md-9">
@@ -534,7 +526,7 @@
                 },
                 error: function(response, status, xhr, $form) {
                     btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false); // remove 
-                    swal("Có lỗi xảy ra", "", status);
+                    swal(response.responseJSON.message,"", status);
                     console.log(response);
                 }
             });

@@ -452,8 +452,9 @@ class HomeController extends Controller
                 ->join('users', 'groups_users.user_id', '=', 'users.id')
                 ->select('groups_users.*','users.email','users.name')
                 ->get();
-   
-        return view('page.groupdetail', compact('group','groupUsers'));
+        $admin = Auth::user()->GroupUser()->where('group_id',$group->id)->first()->is_admin;
+        
+        return view('page.groupdetail', compact('group','groupUsers','admin'));
     }
     public function checkUser(Request $request)
     {
@@ -591,9 +592,24 @@ class HomeController extends Controller
     {
         $user_id = $request->idUser;
         $group_id = $request->idGroup;
-        $user = GroupUser::where('group_id',$group_id)
-                                ->where('user_id', $user_id)->first();
-        $user->is_admin = $request->role;
+        $group = GroupUser::where('group_id',$group_id)->get();
+        $user = $group->where('user_id', $user_id)->first();
+        
+        if($request->role == 1) {
+            $user->is_admin = 1;
+        }
+        else {
+            if($request->role == 0) {
+                if(count($group->where('is_admin',true)) == 1) {
+                    return response()->json([
+                        'success' => false,
+                        // TODO: lang this message
+                        'message' => 'Vui lòng chọn quản trị viên thay thế'
+                    ],'500');
+                }
+                $user->is_admin = 0;
+            }
+        }
         // $group_user->group_id = $group->id;
         // $group_user->user_id = $user->id;
         $user->save();
@@ -604,12 +620,13 @@ class HomeController extends Controller
                 ->join('users', 'groups_users.user_id', '=', 'users.id')
                 ->select('groups_users.*','users.email','users.name')
                 ->get();
+        $admin = Auth::user()->GroupUser()->where('group_id',$group->id)->first()->is_admin;
 
         return response()->json([
             'success' => true,
             // TODO: lang this message
-            'message' => 'Thay đổi vai trò người dùng thành công.',
-            'view' => view('content.content-group-user', compact('group','groupUsers'))->render()
+            'message' => 'Thay đổi vai trò người dùng thành công',
+            'view' => view('content.content-group-user', compact('group','groupUsers','admin'))->render()
         ]);
     }
 

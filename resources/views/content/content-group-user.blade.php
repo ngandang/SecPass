@@ -1,3 +1,4 @@
+
 @if(count($groupUsers))
 <form class="m-form m-form--fit m-form--label-align-right">
     <div class="m-portlet__body">
@@ -22,6 +23,7 @@
                             <td> {{$user->name}} </td>
                             <td> {{$user->email}}</td>
                             <td> 
+                            @if($admin)
                                 <select class="form-control m-input select-role">
                                     <option {{ $user->is_admin == true ? 'selected' : '' }}>
                                         Quản trị viên
@@ -31,6 +33,9 @@
                                         Thành viên
                                     </option>                                    
                                 </select>
+                            @else
+                                {{ $user->is_admin == true ? 'Quản trị viên' : 'Thành viên' }}
+                            @endif
                             </td>
                             <td> {{$user->created_at}}</td>
                             <td> 
