@@ -21,7 +21,7 @@ class Share extends Model
     
     public function User()
     {
-        return $this->belongsTo('App\User', 'owner_id','id');
+        return $this->belongsTo('App\User', 'user_id','id');
     }
 
     public function Account()

@@ -29,7 +29,9 @@
     </div>
 </div>
 <!-- BEGIN: Content -->
-
+<div class='m-content'>
+    @include('content.content-sharewithme')
+</div>
 <!-- END:  -->
 
 @endsection

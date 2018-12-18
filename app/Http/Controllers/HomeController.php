@@ -17,6 +17,8 @@ use App\PGPkey;
 use App\Secret;
 use App\Group;
 use App\GroupUser;
+use App\Share;
+
 use Hash;
 use App\Mail\SendMailable;
 
@@ -69,7 +71,7 @@ class HomeController extends Controller
     // }
     public function accounts()
     {
-        $accounts = Auth::user()->account()->get();         
+        $accounts = Auth::user()->account()->get();      
         return view('page.accounts', compact('accounts'));
     }
 
@@ -95,7 +97,7 @@ class HomeController extends Controller
         return response()->json([
             'success' => true,
             // TODO: lang this message
-            'message' => 'Thêm tài khoản thành công.',
+            'message' => 'Thêm tài khoản thành công',
             'view' => view('content.content-accounts', compact('accounts'))->render()
         ]);
     }
@@ -119,7 +121,7 @@ class HomeController extends Controller
         return response()->json([
             'success' => true,
             // TODO: lang this message
-            'message' => 'Chỉnh sửa tài khoản thành công.',
+            'message' => 'Chỉnh sửa tài khoản thành công',
             'view' => view('content.content-accounts', compact('accounts'))->render()
         ]);
     }
@@ -137,15 +139,64 @@ class HomeController extends Controller
         return response()->json([
             'success' => true,
             // TODO: lang this message
-            'message' => 'Xóa tài khoản thành công.',
+            'message' => 'Xóa tài khoản thành công',
             'view' => view('content.content-accounts', compact('accounts'))->render()
         ]);
     }
     
     public function shareAccount(Request $request){
-        $account_id = $request->idShare;
-        $acc = Account::find($account_id);
-        //TODO: share account
+        $user = User::where('email',$request->email)->first();
+        $account_id = $request->id;
+        $account = Account::find($account_id);
+        $secret = Secret::where('account_id',$account->id)->first();
+        // co thi tra ve publickey shared user
+        if($user) {
+            $newAccount = $account->replicate();
+            $newAccount->save();
+
+            $newSecret = $secret->replicate();
+            $newSecret->user_id = $user->id;
+            $newSecret->account_id = $newAccount->id;
+            // $newSecret->data = null;
+            $newSecret->save();
+
+            $share = new Share;
+            $share->asset_id = $newAccount->id;
+            $share->owner_id = Auth::user()->id;
+            $share->comment = $request->comment;
+            $share->save();
+
+            $sharedkey = PGPkey::where('user_id',$user->id)
+                                ->where('type','6')
+                                ->first();
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Truy xuất khoá người nhận thành công', // Người dùng tồn tại
+                'sharedkey' => $sharedkey->armored_key,
+                'id' => $newSecret->id,
+                'content' => $secret->data
+            ]);
+        }
+        else {
+            // khong co thi gui mail
+            return response()->json([
+                'success' => true,
+                // TODO: lang this message
+                'message' => 'Dữ liệu đã được gửi tới email '.$request->email // Người dùng không tồn tại
+            ]);
+        }
+    }
+
+    public function shareFinalizeAccount(Request $request){
+        $secret = Secret::find($request->id);
+        $secret->data = $request->content;
+        $secret->save();
+        
+        return response()->json([
+            'success' => true,
+            'message' => "Chia sẻ tài khoản thành công"
+        ]);
     }
 
     public function getPassword(Request $request)
@@ -199,7 +250,7 @@ class HomeController extends Controller
         return response()->json([
             'success' => true,
             // TODO: lang this message
-            'message' => 'Thêm ghi chú bảo mật thành công.',
+            'message' => 'Thêm ghi chú bảo mật thành công',
             'view' => view('content.content-notes', compact('notes'))->render()
         ]);
     }
@@ -221,7 +272,7 @@ class HomeController extends Controller
         return response()->json([
             'success' => true,
             // TODO: lang this message
-            'message' => 'Chỉnh sửa ghi chú bảo mật thành công.',
+            'message' => 'Chỉnh sửa ghi chú bảo mật thành công',
             'view' => view('content.content-notes', compact('notes'))->render()
         ]);
     }
@@ -238,7 +289,7 @@ class HomeController extends Controller
         return response()->json([
             'success' => true,
             // TODO: lang this message
-            'message' => 'Xóa ghi chú bảo mật thành công.',
+            'message' => 'Xóa ghi chú bảo mật thành công',
             'view' => view('content.content-notes', compact('notes'))->render()
         ]);
     }
@@ -291,7 +342,7 @@ class HomeController extends Controller
         return response()->json([
             'success' => true,
             // TODO: lang this message
-            'message' => 'Thêm ghi chú bảo mật thành công.',
+            'message' => 'Thêm ghi chú bảo mật thành công',
             'view' => view('content.content-drive', compact('files'))->render()
         ]);
         // $path=$request->)->store('store');
@@ -314,7 +365,7 @@ class HomeController extends Controller
         return response()->json([
             'success' => true,
             // TODO: lang this message
-            'message' => 'Xóa tài liệu thành công.',
+            'message' => 'Xóa tài liệu thành công',
             'view' => view('content.content-drive', compact('files'))->render()
         ]);
     }
@@ -337,18 +388,14 @@ class HomeController extends Controller
         return "Your email has been sent successfully";
     }
     
-    public function credential()
-    {
-        return view('page.credential');
-    }
-    
-    public function settings()
-    {
-        return view('page.settings', compact());
-    }
     public function sharewithme()
     {
-        return view('page.sharewithme');
+        $assets = Auth::user()->share()->get();
+        $asset_ids = $assets->pluck('asset_id');
+        $accounts = Account::whereIn('id', $asset_ids)->get();
+        $notes = Note::whereIn('id', $asset_ids)->get();
+
+        return view('page.sharewithme', compact('assets','accounts','notes'));
     }
 
 
@@ -378,7 +425,7 @@ class HomeController extends Controller
             return response()->json([
                 'success' => true,
                 // TODO: lang this message
-                'message' => 'Người dùng tồn tại.'
+                'message' => 'Người dùng tồn tại'
             ]);
         }
         
@@ -386,7 +433,7 @@ class HomeController extends Controller
             return response()->json([
                 'success' => false,
                 // TODO: lang this message
-                'message' => 'Người dùng không tồn tại.'
+                'message' => 'Người dùng không tồn tại'
             ],500);
         }
     }
@@ -429,7 +476,7 @@ class HomeController extends Controller
         return response()->json([
             'success' => true,
             // TODO: lang this message
-            'message' => 'Tạo nhóm mới thành công.',
+            'message' => 'Tạo nhóm mới thành công',
             'view' => view('content.content-group', compact('groups'))->render()
         ]);
     }
@@ -475,7 +522,7 @@ class HomeController extends Controller
         return response()->json([
             'success' => true,
             // TODO: lang this message
-            'message' => 'Xóa tài khoản thành công.',
+            'message' => 'Xóa tài khoản thành công',
             'view' => view('content.content-group', compact('groups'))->render()
         ]);
     }
@@ -569,13 +616,13 @@ class HomeController extends Controller
         catch(\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Lưu khoá không thành công.',
+                'message' => 'Lưu khoá không thành công',
             ],500);
         }
 
         return response()->json([
             'success' => true,
-            'message' => "Lưu khoá thành công.",
+            'message' => "Lưu khoá thành công",
         ]);
     }
 
@@ -591,7 +638,7 @@ class HomeController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => "Huỷ khoá thành công.",
+            'message' => "Huỷ khoá thành công",
         ]);
     }
 

@@ -70,7 +70,7 @@ class User extends Authenticatable
     
     public function Share()
     { 
-        return $this->hasMany('App\Share','owner_id','id');
+        return $this->hasMany('App\Share','user_id','id');
     }
     
     public function PGPkey()

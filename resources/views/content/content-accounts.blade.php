@@ -62,7 +62,7 @@
                                                     </a>
                                                 </li>
                                                 <li class="m-nav__item">
-                                                    <a onclick="share('{{$acc->id}}')" href="#shareForm" data-toggle="modal" data-backdrop="static" data-keyboard="false" class="m-nav__link">
+                                                    <a onclick="share('{{$acc->id}}')" href="#shareForm" data-toggle="modal" data-backdrop="static" data-keyboard="false" class="m-nav__link account-share">
                                                         <i class="m-nav__link-icon flaticon-share"></i>
                                                         <span class="m-nav__link-text">
                                                             Chia sẻ
@@ -71,7 +71,7 @@
                                                 </li>
                                                 <li class="m-nav__separator m-nav__separator--fit"></li>
                                                 <li class="m-nav__item">
-                                                    <a onclick="del('{{$acc->id}}')" href = "#deleteForm" data-toggle="modal" data-backdrop="static" data-keyboard="false" class="btn btn-outline-danger m-btn m-btn--pill m-btn--wide btn-sm">
+                                                    <a onclick="del('{{$acc->id}}')" href="#deleteForm" data-toggle="modal" data-backdrop="static" data-keyboard="false" class="btn btn-outline-danger m-btn m-btn--pill m-btn--wide btn-sm account-delete">
                                                         Xoá tài khoản
                                                     </a>
                                                 </li>
@@ -85,7 +85,7 @@
                 </div>
             </div>
             <div class="m-portlet__body">
-                <span class="account-id">{{ $acc->id }}</span>
+                <span style="display:none;">{{ $acc->id }}</span>
                 <div class="text-container">
                     <h5 class="text-overflow">{{$acc->name}}</h5>
                 </div>
