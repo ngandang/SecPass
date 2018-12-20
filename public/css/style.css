@@ -140,9 +140,9 @@ td{
     left: 143px;
     top: 20px;
 }
-#group-user i{
+.fa-trash-o{
     font-size: 20px;
-    margin:5px;
+    
 }
 
 .get-content
@@ -159,4 +159,8 @@ td{
 
 .hide {
     display: none;
+}
+.content-user{
+    background-color: #fff;
+    margin: 40px;
 }

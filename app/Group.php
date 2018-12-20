@@ -32,7 +32,7 @@ class Group extends Model
 
     public function GroupUser()
     {
-        return $this->hasMany('App\GroupUser', 'user_id','id');
+        return $this->hasMany('App\GroupUser', 'group_id','id');
     }
 
     public function User()
@@ -41,7 +41,7 @@ class Group extends Model
     }
     
     public function Secret(){
-        return $this->hasMany('App\Secret','groups_id','id');
+        return $this->hasMany('App\Secret','group_id','id');
     }
 
     public function Account()
