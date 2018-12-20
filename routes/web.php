@@ -111,6 +111,16 @@ Route::get('test_gpg', function () {
 
 });
 
+// Route::get('userManage','HomeController@getUser');
+// Route::group(['prefix' => 'userManage', 'as' => 'userManage'], function(){
+//     Route::post('editUser','HomeController@editUser');
+// });
+
+Route::group(['prefix' => 'admin', 'as' => 'admin'], function(){
+    Route::get('userManage','HomeController@getUser');
+    Route::post('editUser','HomeController@editUser');
+    Route::get('groupManage','HomeController@getGroup');
+});
 Route::get('email','HomeController@sendMail');
 
 Route::get('pgp','HomeController@pgp');
