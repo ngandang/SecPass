@@ -17,7 +17,7 @@ class Groups extends Migration
             $table->uuid('id');
             $table->primary('id');
             $table->string('name');
-            $table->boolean('deleted')->default(false);
+            // $table->boolean('deleted')->default(false);
             $table->string('created_by');
             $table->string('modified_by');
             $table->timestamps();

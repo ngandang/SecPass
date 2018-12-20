@@ -21,7 +21,7 @@ class Accounts extends Migration
             $table->datetime('expiry_date')->nullable();
             $table->string('uri')->nullable();
             $table->longtext('description')->nullable();
-            $table->boolean('deleted')->default(false);
+            // $table->boolean('deleted')->default(false);
             $table->timestamps();
         });
     }

@@ -184,7 +184,7 @@ class HomeController extends Controller
             return response()->json([
                 'success' => true,
                 // TODO: lang this message
-                'message' => 'Người dùng không tồn tại'
+                'message' => 'Người dùng chưa đăng ký'
             ]);
         }
     }
@@ -715,14 +715,7 @@ class HomeController extends Controller
     }
 
     public function quickSearch(Request $request)
-    { 
-        // $user = Auth::user();
-        // $result = DB::table('accounts')
-        //     ->whereRaw(
-        //         "MATCH (name, username) AGAINST (? IN NATURAL LANGUAGE MODE) LIMIT 10",
-        //         array($request->q)
-        //     )->get();
-
+    {
         $accounts = Account::search($request->q, null, true)->get();
         $notes = Note::search($request->q, null, true)->get();
         $groups = Group::search($request->q, null, true)->get();
@@ -734,23 +727,6 @@ class HomeController extends Controller
     {
         return view('page.pgp');
     }
-
-    // public function addPGP()
-    // {
-    //     // TODO: receiving Info and publicKey from addon.
-    //     $pgp_key = new PGPkey;
-    //     $pgp_key->user_id = Auth::user()->id;
-    //     $pgp_key->armored_key = "abc";
-    //     $pgp_key->uid = "Nguyen Phi Cuong (cuong@secpass.com)";
-    //     $pgp_key->key_id = "ABCDDBCA";
-    //     $pgp_key->fingerprint = "ABCDDBCAABCDDBCAABCDDBCAABCDDBCA";
-    //     $pgp_key->type = "what is this??";
-    //     $pgp_key->expires = NOW();
-    //     $pgp_key->key_created = NOW();
-    //     $pgp_key->save();
-        
-    //     return $pgp_key;
-    // }
 
     public function keepalive()
     {

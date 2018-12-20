@@ -20,7 +20,7 @@ class Share extends Migration
             $table->uuid('user_id');
             $table->uuid('owner_id');
             $table->longtext('comments')->nullable();
-            $table->boolean('deleted')->default(false);
+            // $table->boolean('deleted')->default(false);
             $table->timestamps(); 
         });
     }

@@ -22,7 +22,7 @@ class CreateUsersTable extends Migration
             $table->uuid('role_id')->default('');
             $table->string('verification_code')->nullable();
             $table->boolean('active')->default(false);
-            $table->boolean('deleted')->default(false);
+            // $table->boolean('deleted')->default(false);
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
             $table->rememberToken();

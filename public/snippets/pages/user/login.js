@@ -388,11 +388,41 @@ var SnippetLogin = function() {
             });
         });
     }
+    var AddonChecking = function () { 
+        var ok = false;
+        document.addEventListener('hi', function (event) {
+            if(event.detail === "kfbgobbmmfcdipebhoojjjkpcmcjefpg"){
+                ok = true;
+                console.log("Addon is installed.");            
+            }
+        });
+
+        console.log('checking addon');
+        document.dispatchEvent(new CustomEvent('hello', {detail: "kfbgobbmmfcdipebhoojjjkpcmcjefpg"})); //TODO: thay id addon
+        if (ok === false) {
+            console.log('Addon is not installed.');
+            swal({
+                type: 'warning',
+                title:
+                    'Không tìm thấy tiện ích SecPASS',
+                html:
+                    'Vui lòng <a class="m-link" href="/addon/download">cài đặt tiện ích</a> để đăng ký sử dụng.',
+                confirmButtonText: 'Kiểm tra lại',
+                showLoaderOnConfirm: true,
+                preConfirm: (retry) => {
+                    window.location = "";
+                },
+                confirmButtonClass: "btn btn-danger",
+            });
+        }
+        else delete ok;
+    }
 
     //== Public Functions
     return {
         // public functions
         init: function() {
+            AddonChecking();
             handleFormSwitch();
             handleSignInFormSubmit();
             handleRememberMe();

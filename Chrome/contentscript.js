@@ -1,6 +1,10 @@
+// Check if connected.
+document.addEventListener('hello', function (event) {
+    if(event.detail === "kfbgobbmmfcdipebhoojjjkpcmcjefpg")
+        document.dispatchEvent(new CustomEvent('hi', {detail: "kfbgobbmmfcdipebhoojjjkpcmcjefpg"}));
+});
 
 console.log('addon: getin');
-
 document.addEventListener('setUserPassphraseEvent', function (event) {
     chrome.storage.local.set({'user_passphrase': event.detail}, function(){
         console.log('addon: saved passphrase');

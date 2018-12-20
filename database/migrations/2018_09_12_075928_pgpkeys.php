@@ -25,7 +25,7 @@ class PGPkeys extends Migration
             $table->string('type');
             $table->datetime('expires')->nullable();
             $table->datetime('key_created');
-            $table->boolean('deleted')->default(false);
+            // $table->boolean('deleted')->default(false);
             $table->timestamps();
         });
     }
