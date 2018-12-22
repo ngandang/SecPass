@@ -1,26 +1,7 @@
-// chrome.runtime.onMessageExternal.addListener(
-//   function(request, sender, sendResponse) {
-//     if (sender.url == blocklistedWebsite)
-//       return;  // don't allow this web page access
-//     if (request.openUrlInEditor)
-//       openUrl(request.openUrlInEditor);
-//   });
-
-
-// chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
-//     alert("message received");
-// });
-
-// chrome.windows.create({
-//     type : 'popup',
-//     url : "http://localhost:8080/SecPass/public/login",
-//     type: "popup"
-// }, function(newTab) {
-
-// });
-
-chrome.browserAction.onClicked.addListener(function(activeTab){
-  var newURL = "http://localhost";
-  chrome.tabs.create({ url: newURL });
+chrome.storage.local.get('user_pgp', function(data){
+  if (!data.user_pgp){
+    console.info("Không có dữ liệu PGP của người dùng. Bạn cần đăng ký hoặc cài lại khoá để có thể sử dụng.");
+    chrome.browserAction.setTitle({title:"SecPASS - Không tìm thấy dữ liệu người dùng"});
+    chrome.browserAction.setIcon({path:"icon-red.png"});
+  }
 });
-

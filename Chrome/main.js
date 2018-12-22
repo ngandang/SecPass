@@ -15,7 +15,7 @@ window.onload = function()
 			var zip = new JSZip();
 
 			// Add an top-level, arbitrary text file with contents
-			zip.file("read.me", "Private key is still encrypted by your passphrase.\nSave it securely !!\n");
+			zip.file("readme.md", "Private key is still encrypted by your passphrase.\r\nSave it securely !!\n");
 			zip.file("public.txt", data.user_pgp.publicKeyArmored);
 			zip.file("private.asc", data.user_pgp.privateKeyArmored);
 
@@ -26,6 +26,12 @@ window.onload = function()
 				saveAs(content, "recovery.zip");
 			});
 		});
+	}
+	
+	document.getElementById('restore').onclick = function()
+	{
+		var newURL = "http://localhost/credential";
+		browser.tabs.create({ url: newURL });
 	}
 
 	document.getElementById('get').onclick = function()
@@ -46,4 +52,5 @@ window.onload = function()
 			chrome.tabs.create({ url: newURL });
 		
 	}
+
 }

@@ -106,9 +106,11 @@ var AddonChecking = function () {
             title:
                 'Không tìm thấy tiện ích SecPASS',
             html:
-                'Vui lòng <a class="m-link" href="/addon/download">cài đặt tiện ích</a> để đăng ký sử dụng.',
+                'Bạn cần <a class="m-link" href="/addon/download">&nbsp;cài đặt tiện ích&nbsp;</a> để có thể sử dụng dịch vụ.',
             confirmButtonText: 'Kiểm tra lại',
             showLoaderOnConfirm: true,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
             preConfirm: (retry) => {
                 window.location = "";
             },

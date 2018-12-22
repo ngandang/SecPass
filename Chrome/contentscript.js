@@ -37,9 +37,9 @@ document.addEventListener('letgetUserPGPEvent', function (event) {
 });
 
 
-$("#logout").click(function(){
-    chrome.storage.local.remove('user_passphrase', function(){
+$("#logout").onclick = function(){
+    browser.storage.local.remove('user_passphrase', function(){
         console.log('addon: destroy passphrase');
         alert('SecPASS: Mật khẩu đã được xoá khỏi tiện ích.'); 
     });
-});
+};

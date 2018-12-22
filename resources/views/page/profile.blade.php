@@ -584,6 +584,7 @@
                     autocapitalize: 'off'
                 },
                 showCancelButton: true,
+                cancelButtonText: 'Huỷ',
                 confirmButtonText: 'Giải mã',
                 showLoaderOnConfirm: true,
                 preConfirm: (input) => resolve(input),

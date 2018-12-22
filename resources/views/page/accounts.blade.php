@@ -246,7 +246,10 @@
         else {
             console.log("no passphrase");
             let result = await askForPass();
-            await privKeyObj.decrypt(result);
+            await privKeyObj.decrypt(result).catch(function (error){
+                swal("Sai mật khẩu, hãy thực hiện lại.","", "warning"); // error.message,
+                throw error;
+            });
         }
         
         const options = {
@@ -264,7 +267,7 @@
         })
     }
 
-    async function decryptFunction(callback) {
+    async function decryptFunction(callback,error) {
         console.log('begin decrypt')
         const privKeyObj = (await openpgp.key.readArmored(privkey)).keys[0];
         if (passphrase) {
@@ -274,7 +277,10 @@
         else {
             console.log("no passphrase");
             let result = await askForPass();
-            await privKeyObj.decrypt(result);
+            await privKeyObj.decrypt(result).catch(function (error){
+                swal("Sai mật khẩu, hãy thực hiện lại.","", "warning"); // error.message,
+                throw error;
+            });
         }
         
         const options = {
@@ -285,10 +291,10 @@
         
         try{
             openpgp.decrypt(options).then(plaintext => {
-                console.log(plaintext.data)
-                decrypted = plaintext.data // 'Hello, World!'
-                console.log('end decrypt')
-                callback(decrypted)
+                console.log(plaintext.data);
+                decrypted = plaintext.data ;// 'Hello, World!'
+                console.log('end decrypt');
+                callback(decrypted);
             })
         }
         catch(e) {
@@ -312,6 +318,7 @@
                     autocapitalize: 'off'
                 },
                 showCancelButton: true,
+                cancelButtonText: 'Huỷ',
                 confirmButtonText: 'Giải mã',
                 showLoaderOnConfirm: true,
                 preConfirm: (input) => resolve(input),
@@ -544,39 +551,46 @@
             form.find('input[name=password]').prop('disabled', true);
 
             messageToEncrypt = form.find("input[name=password]").val();
+            try {
+                encryptFunction(pubkey, function (result) {
+                    var $temp = $("<textarea name='cipher'>");
+                    form.append($temp);      
+                    form.append('</textarea>');
+                    $temp.val(result);
 
-            encryptFunction(pubkey, function (result) {
-                var $temp = $("<textarea name='cipher'>");
-                form.append($temp);      
-                form.append('</textarea>');
-                $temp.val(result);
+                    form.ajaxSubmit({
+                        url: 'account/add',
+                        type: 'POST',
+                        success: function(response, status, xhr, $form) {
+                            btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false); // remove 
+                            swal({
+                                position: 'center',
+                                type: 'success',
+                                title: response.message,
+                                showConfirmButton: false,
+                                timer: 1500
+                            }).then(function(result){$('#addForm').modal('hide');});
 
-                form.ajaxSubmit({
-                    url: 'account/add',
-                    type: 'POST',
-                    success: function(response, status, xhr, $form) {
-                        btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false); // remove 
-                        swal({
-                            position: 'center',
-                            type: 'success',
-                            title: response.message,
-                            showConfirmButton: false,
-                            timer: 1500
-                        }).then(function(result){$('#addForm').modal('hide');});
-
-                        $('.m-content').html(response.view);                        
-                        form.clearForm();
-                        form.validate().resetForm();
-                    },
-                    error: function(response, status, xhr, $form) {
-                        btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false); // remove 
-                        console.log(response);
-                        swal("", response.message.serialize(), "error");
-                    }
+                            $('.m-content').html(response.view);                        
+                            form.clearForm();
+                            form.validate().resetForm();
+                        },
+                        error: function(response, status, xhr, $form) {
+                            btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false); // remove 
+                            console.log(response);
+                            swal("", response.message.serialize(), "error");
+                        }
+                    });
+                    $temp.remove();
+                    form.find('input[name=password]').prop('disabled', false);
+                }, function (error) {
+                        console.log("inner");
+                        console.log(error);
                 });
-                $temp.remove();
-                form.find('input[name=password]').prop('disabled', false);
-            });            
+            }
+            catch (e) {
+                console.log(e);
+            }
         });
 
         $('#editSubmit').click(function(e){

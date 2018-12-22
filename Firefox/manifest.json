@@ -18,12 +18,11 @@
   "content_scripts": [
         {
             "matches": [
-                "http://localhost/*"
-                // "https://*/*"
+                "http://localhost/*", // delete in production
+                "https://localhost/*" // change website
             ],
             "js": [
                 "jquery-3.3.1.js",
-                "openpgp.js",
                 "contentscript.js"
             ],
             "run_at": "document_end",
@@ -36,12 +35,8 @@
   // 	}
   // },
   "permissions": [
-    "activeTab",
-    "nativeMessaging",
-    "clipboardWrite",
     "tabs",
-    "storage",
-    "*://*/*"
+    "storage"
   ]
   
   // "externally_connectable": {

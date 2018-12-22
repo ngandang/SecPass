@@ -22,7 +22,6 @@ class Secrets extends Migration
             $table->uuid('note_id')->nullable();
             $table->longtext('data');
             $table->timestamps();
-
         });
     }
 
