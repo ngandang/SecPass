@@ -1,7 +1,7 @@
 
 @if(count($accounts))
 <div class="row">
-    @foreach($accounts->sortByDesc('updated_at') as $acc)
+    @foreach($accounts->sortBy('name') as $acc)
     <div class="col-lg-3">
         <!--begin::Portlet-->
         <div class="m-portlet m-portlet--brand m-portlet--head-solid-bg m-portlet--head-sm m-portlet--bordered">
@@ -36,6 +36,14 @@
                                                     <span class="m-nav__section-text">
                                                         Tác vụ nhanh
                                                     </span>
+                                                </li>                                                
+                                                <li class="m-nav__item hide">
+                                                    <a class="m-nav__link asset-move">
+                                                        <i class="m-nav__link-icon flaticon-app "></i>
+                                                        <span class="m-nav__link-text">
+                                                            <b>Chuyển vào kho lưu trữ</b>
+                                                        </span>
+                                                    </a>
                                                 </li>
                                                 <li class="m-nav__item">
                                                     <a href="javascript:;" class="m-nav__link account-copy-username">
@@ -54,7 +62,7 @@
                                                     </a>
                                                 </li>
                                                 <li class="m-nav__item">
-                                                    <a onclick="edit('{{$acc->id}}','{{$acc->name}}','{{$acc->username}}','{{$acc->uri}}','{{$acc->description}}','{{$acc->updated_at}}')" href="#editForm" data-toggle="modal" data-backdrop="static" data-keyboard="false" class="m-nav__link account-edit">
+                                                    <a href="#editAccountForm" data-toggle="modal" data-backdrop="static" data-keyboard="false" class="m-nav__link account-edit">
                                                         <i class="m-nav__link-icon flaticon-edit"></i>
                                                         <span class="m-nav__link-text">
                                                             Chỉnh sửa
@@ -62,7 +70,7 @@
                                                     </a>
                                                 </li>
                                                 <li class="m-nav__item">
-                                                    <a onclick="share('{{$acc->id}}')" href="#shareForm" data-toggle="modal" data-backdrop="static" data-keyboard="false" class="m-nav__link account-share">
+                                                    <a href="#shareAccountForm" data-toggle="modal" data-backdrop="static" data-keyboard="false" class="m-nav__link account-share">
                                                         <i class="m-nav__link-icon flaticon-share"></i>
                                                         <span class="m-nav__link-text">
                                                             Chia sẻ
@@ -71,7 +79,7 @@
                                                 </li>
                                                 <li class="m-nav__separator m-nav__separator--fit"></li>
                                                 <li class="m-nav__item">
-                                                    <a onclick="del('{{$acc->id}}')" href="#deleteForm" data-toggle="modal" data-backdrop="static" data-keyboard="false" class="btn btn-outline-danger m-btn m-btn--pill m-btn--wide btn-sm account-delete">
+                                                    <a href="#deleteAccountForm" data-toggle="modal" data-backdrop="static" data-keyboard="false" class="btn btn-outline-danger m-btn m-btn--pill m-btn--wide btn-sm account-delete">
                                                         Xoá tài khoản
                                                     </a>
                                                 </li>
@@ -85,7 +93,7 @@
                 </div>
             </div>
             <div class="m-portlet__body">
-                <span style="display:none;">{{ $acc->id }}</span>
+                <input name="id" type="hidden" value="{{ $acc->id }}"/>
                 <div class="text-container">
                     <h5 class="text-overflow">{{$acc->name}}</h5>
                 </div>

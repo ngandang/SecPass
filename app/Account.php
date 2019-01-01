@@ -35,7 +35,7 @@ class Account extends Model
 
     public function Secret()
     {
-        return $this->hasOne('App\Secret', 'account_id','id');
+        return $this->hasOne('App\Secret', 'asset_id','id');
     }
 
     public function Share()
@@ -45,11 +45,11 @@ class Account extends Model
     
     public function User()
     {
-        return $this->belongsToMany('App\User','secrets','account_id','user_id');
+        return $this->belongsToMany('App\User','secrets','asset_id','owner_id');
     }
     public function Group()
     {
-        return $this->belongsToMany('App\Group','secrets','account_id','group_id');
+        return $this->belongsToMany('App\Group','secrets','asset_id','owner_id');
     }
 
 }

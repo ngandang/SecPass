@@ -21,20 +21,21 @@ class Secret extends Model
     
     public function User()
     {
-        return $this->belongsTo('App\User', 'user_id','id');
+        return $this->belongsTo('App\User', 'owner_id','id');
     }
 
     public function Account()
     {
-        return $this->belongsTo('App\Account', 'account_id','id');
+        return $this->belongsTo('App\Account', 'asset_id','id');
     }
 
     public function Note()
     {
-        return $this->belongsTo('App\Note', 'note_id','id');
+        return $this->belongsTo('App\Note', 'asset_id','id');
     }
+    
     public function Group()
     {
-        return $this->belongsTo('App\Group','group_id','id');
+        return $this->belongsTo('App\Group','owner_id','id');
     }
 }

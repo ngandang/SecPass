@@ -18,6 +18,9 @@
 					<!-- BEGIN: Child page -->
 					@yield('content')
 					<!-- END: Child page -->
+					<div style="margin-top:50px;">
+						&nbsp;
+    			</div>
 				</div>
 			</div>
 			<!-- BEGIN: Footer -->
@@ -46,10 +49,11 @@
 		<!--END: Base Scripts -->   
 		<!--BEGIN: Page Vendors -->
 		<script src="{{ asset('js/openpgp.js') }}"></script>
+		<script src="{{ asset('js/validation_vi.js') }}"></script>
 		<script src="{{ asset('js/script.js') }}"></script>
 		
-		<script src="{{ asset('js/nayuki-password-generator.js') }}"></script>
-		<script src="{{ asset('vendors/custom/fullcalendar/fullcalendar.bundle.js') }}" type="text/javascript"></script>
+		<!-- <script src="{{ asset('js/nayuki-password-generator.js') }}"></script> -->
+		<!-- <script src="{{ asset('vendors/custom/fullcalendar/fullcalendar.bundle.js') }}" type="text/javascript"></script> -->
 		<!--END: Page Vendors -->  
 		<!--BEGIN: Page Snippets -->
 		@yield('pageSnippets')

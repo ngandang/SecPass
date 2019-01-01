@@ -74,7 +74,7 @@
                                     </span>
                                 </div>
                                 <div class="col-md-2">
-                                    <label class="text-info">&nbsp</label>
+                                    <label class="text-info">&nbsp;</label>
                                     <button id="addUser" type="button" class="btn btn-primary">
                                         Thêm
                                     </button>
@@ -97,31 +97,6 @@
     </div>
 </form>
 
-<!--BEGIN: Delete form -->
-<form id="delete-form" class="form-horizontal" action="" enctype="multipart/form-data" method="POST">
-    {{ csrf_field() }}
-    <div class="modal fade" id="deleteForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <input type="hidden" name="id" id="idDelete">
-                <div class="modal-header">
-                    <h5 class="text-center modal-title" id="addFormTitle">Xóa tài khoản</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    Bạn có chắc chắn xóa tài khoản này không???
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary pull-left" data-dismiss="modal">Huỷ</button>
-                    <button type="submit" id="delSubmit" class="btn btn-primary" >Xóa</button>
-                </div> 
-            </div>
-        </div>
-    </div>
-</form>
-<!-- END: Delete form -->
 @endsection
 
 @section('pageSnippets')
@@ -139,6 +114,23 @@
     // }
     
     $(document).ready(function(){
+
+        $(document).on('click','.m-portlet', function (e) {
+            var showGroup = $(this).find(".open-group");
+            if(showGroup[0])
+                showGroup[0].click();
+            else
+                showGroup.click();
+        });
+
+        $('#addForm input[name=email]').keypress(function(e) {            
+            
+            // e.stopPropagation();
+            if(e.which == 13){
+                e.preventDefault();
+                $("#addUser").click();
+            }
+        });
         $('#addUser').click(function(e){
             e.preventDefault();
             var form = $(this).closest('form');
@@ -151,23 +143,20 @@
                 type: 'POST',
                 data: email,
                 success: function(response, status, xhr, $form) {
-                    var email = document.getElementById('email').value;
+                    var email = $('#email').val();
                    
                     var list = $('#users');
                     var entry = $('<li>');
                     var span = $('<span>');
                     span.text(email);
-                    var button = $('<button id="delUser">');
-                    button.text('Xóa');
-                    button.addClass(" btn btn-del-email");
-                    // button.addId("delUser")
+                    var button = $('<a href="javascript:;" class="m-link del-email">&nbsp;&nbsp;Xoá</a>');
 
                     list.append(entry);
                     entry.append(span);
                     entry.append(button);
                     
                     console.log(response.message);
-                    
+                    $('#addForm input[name=email]').val("");
                 },
                 error: function(response, status, xhr, $form) {
                     // btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false); // remove 
@@ -176,7 +165,7 @@
                 }
             });
         });
-        $('#delUser').click(function()
+        $('.del-email').click(function()
         {
             $('#users').removeAttr('li');
             // $(this).prev('li').remove();
@@ -220,6 +209,7 @@
                     }).then(function(result){$('#addForm').modal('hide');});
 
                     $('.m-content').html(response.view);
+                    $("#users li").remove();
                     form.clearForm();
 	                form.validate().resetForm();
                 },
@@ -229,37 +219,6 @@
                 }
             })
         })
-        $('#delSubmit').click(function(e){
-            e.preventDefault();
-            var btn = $(this);
-            var form = $(this).closest('form');
-            
-            btn.addClass('m-loader m-loader--right m-loader--light').attr('disabled', true);
-
-            form.ajaxSubmit({
-                url: 'group/delete',
-                type: 'POST',
-                success: function(response, status, xhr, $form) {
-                    btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false); // remove 
-                    swal({
-                        position: 'center',
-                        type: 'success',
-                        title: response.message,
-                        showConfirmButton: false,
-                        timer: 1500
-                    }).then(function(result){$('#deleteForm').modal('hide');});
-
-                    $('.m-content').html(response.view);
-                    form.clearForm();
-	                form.validate().resetForm();
-                },
-                error: function(response, status, xhr, $form) {
-                    btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false); // remove 
-                    swal("Có lỗi xảy ra", "", status);
-                    console.log(response);
-                }
-            });
-        });
     });
 </script>
 

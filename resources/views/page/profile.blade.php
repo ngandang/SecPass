@@ -438,12 +438,13 @@
                     </div>
                     <div class="tab-pane {{ (Request::segment(1) == 'settings') ? 'active' : '' }}" id="m_user_settings_tab_3">
                         <form class="m-form m-form--fit m-form--label-align-right">
-                        <div class="m-portlet__body">
-                                <div class="form-group m-form__group m--margin-top-10 m--hide">
+                            <div class="m-portlet__body">
+                                <div class="form-group m-form__group m--margin-top-10">
                                     <div class="alert m-alert m-alert--default" role="alert">
-                                        <!-- TODO: Hiện alert nếu user cần thêm thông tin nào đó, ví dụ như số điện thoại, báo chưa xác thực -->
+                                        <p class="m-form text-muted">Đang phát triển...</p>
                                     </div>
                                 </div>
+                                <!--
                                 <div class="form-group m-form__group row">
                                     <div class="col-10 ml-auto">
                                         <h3 class="m-form__section">
@@ -546,7 +547,8 @@
                                             </label>
                                         </span>
                                     </div>
-                                </div>
+                                </div> -->
+
                             </div>
                         </form>
                     </div>
@@ -563,41 +565,16 @@
 <!-- BEGIN: Page Scripts -->
 @section('pageSnippets')
 <script>
-    let privkey = ""
-    let pubkey  = ""
-    let passphrase = ""
-
-    // Get PGP keys automatically 
-    document.addEventListener('getUserPGPEvent', function (event) {
-        var pgp_key = JSON.parse(event.detail); // bypass firefox permission error
-            privkey = pgp_key.privateKeyArmored;
-            pubkey =  pgp_key.publicKeyArmored;
-    });
-    // document.dispatchEvent(new CustomEvent('letgetUserPGPEvent', {detail: ""}));
-
-    function askForPass(){
-        return new Promise(function(resolve, reject) {
-            swal({
-                title: 'Nhập mật khẩu',
-                input: 'password',
-                inputAttributes: {
-                    autocapitalize: 'off'
-                },
-                showCancelButton: true,
-                cancelButtonText: 'Huỷ',
-                confirmButtonText: 'Giải mã',
-                showLoaderOnConfirm: true,
-                preConfirm: (input) => resolve(input),
-                allowOutsideClick: () => !swal.isLoading()
-            });
-        });
-    }
-
+    
     $(document).ready(function(){
         document.dispatchEvent(new CustomEvent('letgetUserPGPEvent', {detail: ""}));
         setTimeout(() => {
             $('textarea[name=privKey]').val(privkey);
-        }, 500);
+        }, 300);
+        setTimeout(() => {
+            if($('textarea[name=privKey]').val() === "")
+                $('textarea[name=privKey]').val("Không đọc được dữ liệu từ Tiện ích SecPASS...");
+        }, 1000);
 
         var readURL = function(input) {
             if (input.files && input.files[0]) {
@@ -617,6 +594,36 @@
         $('.upload-button').on('click', function() 
         {
             $('.file-upload').click();
+        });
+
+        $('#saveProfileSubmit').click(function(e){
+            e.preventDefault();
+            var btn = $(this);
+            var form = $(this).closest('form');
+            
+            btn.addClass('m-loader m-loader--right m-loader--light').attr('disabled', true);
+
+            form.ajaxSubmit({
+                url: 'profile/save',
+                type: 'POST',
+                success: function(response, status, xhr, $form) {
+                    btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false);
+                    swal({
+                        position: 'center',
+                        type: 'success',
+                        title: response.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    $('.m-content').html(response.view);
+                    form.validate().resetForm();
+                },
+                error: function(response, status, xhr, $form) {
+                    btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false);
+                    swal(response.responseJSON.message, response.responseJSON.detail, status);
+                    console.log(response);
+                }
+            });
         });
         
         $('#syncBtn').click(async function (e){

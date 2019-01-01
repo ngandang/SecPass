@@ -13,11 +13,11 @@
 							<span class="m-menu__link-text">
 								Bảng điều khiển
 							</span>
-							<span class="m-menu__link-badge">
+							<!-- <span class="m-menu__link-badge">
 								<span class="m-badge m-badge--danger">
 									3
 								</span>
-							</span>
+							</span> -->
 						</span>
 					</span>
 				</a>

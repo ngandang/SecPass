@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AuthenticationTokens extends Migration
+class CreateRecoveryTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,12 @@ class AuthenticationTokens extends Migration
      */
     public function up()
     {
-        Schema::create('authentication',function($table){
+        Schema::create('recovery', function (Blueprint $table) {
             $table->uuid('id');
             $table->primary('id');
-            $table->string('token');
-            $table->uuid('user_id');
-            $table->boolean('active') ->default(true);
-            $table->timestamps();
+            $table->uuid('pgp_id');
+            $table->string('secret');
+            $table->timestamps(); 
         });
     }
 
@@ -30,6 +29,6 @@ class AuthenticationTokens extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('authentication');
+        Schema::dropIfExists('recovery');
     }
 }

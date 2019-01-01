@@ -1,2 +1,1 @@
-<h1>Terms</h1>
-<p>This is content of Terms.</p>
+<p class="text-muted">Đang cập nhật.</p>

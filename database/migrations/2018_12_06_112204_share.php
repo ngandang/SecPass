@@ -18,9 +18,8 @@ class Share extends Migration
             $table->primary('id');
             $table->uuid('asset_id');
             $table->uuid('user_id');
-            $table->uuid('owner_id');
-            $table->longtext('comments')->nullable();
-            // $table->boolean('deleted')->default(false);
+            $table->uuid('shared_by');
+            $table->longtext('comment')->nullable();
             $table->timestamps(); 
         });
     }

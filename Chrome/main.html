@@ -1,48 +1,52 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<meta charset="utf-8" />
-	<title>SecPASS</title>
-	<style>
-		body {
-			max-width: 300px;
-		}
-		h1 {
-			text-align: center;
-			font-size: 160%;
-		}
+	<head>
+		<meta charset="utf-8" />
+		<title>SecPASS</title>
+		<style>
+			body {
+				max-width: 300px;
+				width: 300px;
+			}
+			h1 {
+				text-align: center;
+				font-size: 2em;
+			}
 
-		textarea {
-			margin: 5px;
-		}
+			textarea {
+				margin: 5px;
+			}
 
-		button {
-			width: 95%;
-			margin: 5px;
-		}
-	</style>
-	<script type="text/javascript" src="jszip.js"></script>
-	<script type="text/javascript" src="FileSaver.js"></script>
-	<script type="text/javascript" src="main.js"></script>
-</head>
-<body>
-	<h1>SecPASS</h1>
-
-	<div align="center">
-		<textarea id="result"></textarea>
-
-		<button id="get">Lấy dữ liệu PGP đã lưu</button>
-	
-		<button id="backup">Sao lưu PGP key vào thiết bị</button>
-
-		<button id="restore">Phục hồi PGP key</button>
-	
-		<button id="passGen">Tạo mật khẩu mạnh</button>
+			button {
+				width: 90%;
+				margin: 5px;
+				font-size:1.2em;
+			}
+		</style>
+		<script type="text/javascript" src="jszip.js"></script>
+		<script type="text/javascript" src="FileSaver.js"></script>
+		<script type="text/javascript" src="jquery-3.3.1.js"></script>
 		
-		<button id="goPage">Mở web SecPASS</button>
-	</div>
+		<script type="text/javascript" src="main.js"></script>
+	</head>
+	<body>
+		<h1>SecPASS</h1>
 
+		<div align="center">
+			<!-- <textarea id="result"></textarea> -->
+			<p id="userEmail"></p>
+			<!-- <button id="get">Lấy dữ liệu PGP đã lưu</button> -->
+		
+			<button id="passGen">Tạo mật khẩu mạnh</button>
+		
+			<button id="backup">Sao lưu PGP key vào thiết bị</button>
 
+			<button id="restore">Phục hồi PGP key</button>
+			
+			<button id="goPage">Mở web SecPASS</button>
+		</div>
 
-</body>
+		<hr>
+
+	</body>
 </html>

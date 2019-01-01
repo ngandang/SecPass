@@ -114,7 +114,7 @@ class RegisterController extends Controller
         try {
             // TODO: receiving Info and publicKey from addon.
             $pgp_key = new PGPkey;
-            $pgp_key->user_id = $request->user_id;
+            $pgp_key->owner_id = $request->user_id;
             $pgp_key->armored_key = $request->armored_key;
             $pgp_key->uid = $request->uid;
             $pgp_key->key_id = $request->key_id;
@@ -136,7 +136,7 @@ class RegisterController extends Controller
             
             $pgp_key->save();
 
-            $user = User::find($pgp_key->user_id);
+            $user = User::find($pgp_key->owner_id);
             Mail::to($user)->send(new VerifyUser($user));
             
             Profile::create([

@@ -93,7 +93,7 @@ return [
     'numeric'              => '[vi] The :attribute must be a number.',
     'present'              => '[vi] The :attribute field must be present.',
     'regex'                => 'Định dạng :attribute không hợp lệ.',
-    'required'             => '[vi] The :attribute field is required.',
+    'required'             => 'Trường :attribute bắt buộc phải có.',
     'required_if'          => '[vi] The :attribute field is required when :other is :value.',
     'required_unless'      => '[vi] The :attribute field is required unless :other is in :values.',
     'required_with'        => '[vi] The :attribute field is required when :values is present.',

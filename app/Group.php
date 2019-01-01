@@ -40,17 +40,24 @@ class Group extends Model
         return $this->belongsToMany('App\User','groups_users','group_id','user_id');
     }
     
-    public function Secret(){
-        return $this->hasMany('App\Secret','group_id','id');
+    public function PGPkey()
+    { 
+        return $this->hasMany('App\PGPkey','owner_id','id');
+    }
+    
+    
+    public function Secret()
+    {
+        return $this->hasMany('App\Secret','owner_id','id');
     }
 
     public function Account()
     {
-        return $this->belongsToMany('App\Account','secrets','group_id','account_id');
+        return $this->belongsToMany('App\Account','secrets','owner_id','asset_id');
     }
 
     public function Note()
     {
-        return $this->belongsToMany('App\Note','secrets','group_id','note_id');
+        return $this->belongsToMany('App\Note','secrets','owner_id','asset_id');
     }
 }

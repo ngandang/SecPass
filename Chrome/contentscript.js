@@ -15,17 +15,38 @@ document.addEventListener('setUserPassphraseEvent', function (event) {
 document.addEventListener('letgetUserPassphraseEvent', function (event) {
     console.log('addon: read passphrase');
     chrome.storage.local.get('user_passphrase', function(result){
-        // console.log(result);
         document.dispatchEvent(new CustomEvent('getUserPassphraseEvent', {detail: result.user_passphrase}));
     });
 });
 
+document.addEventListener('removeUserPassphraseEvent', function (event) {
+    chrome.storage.local.remove('user_passphrase', function(){
+        console.log('addon: destroy passphrase');
+        alert('SecPASS: Mật khẩu đã được xoá khỏi tiện ích.'); 
+    });
+});
+
+document.addEventListener('letgetUserEmailEvent', function (event) {
+    console.log('addon: read email');
+    chrome.storage.local.get('user_email', function(result){
+        document.dispatchEvent(new CustomEvent('getUserEmailEvent', {detail: result.user_email}));
+    });
+});
 
 document.addEventListener('setUserPGPEvent', function (event) {
-    chrome.storage.local.set({'user_pgp': event.detail}, function(){
-        console.log('addon: saved');
-        // console.log(event.detail);
-        alert('SecPASS: Đã nhận được cặp khoá của bạn.');
+    chrome.storage.local.get('user_pgp', async function(result){
+        console.log('addon: read user_pgp');
+        if (result.user_pgp)
+            if(!confirm('SecPASS: Tiện ích hiện đang chứa khoá người dùng. Dữ liệu này sẽ bị ghi đè nếu tiếp tục. Bạn có chắc chắn ?'))
+                return 1;
+
+        const publicKeyObj = (await openpgp.key.readArmored(event.detail.publicKeyArmored)).keys[0];
+        chrome.storage.local.set({'user_email': publicKeyObj.users[0].userId.email});
+        chrome.storage.local.set({'user_pgp': event.detail}, function(){
+            console.log('addon: saved');
+            // console.log(event.detail);
+            alert('SecPASS: Đã nhận được cặp khoá của bạn.');
+        });
     });
 });
 
@@ -36,10 +57,27 @@ document.addEventListener('letgetUserPGPEvent', function (event) {
     });
 });
 
+document.addEventListener('setGroupPGPEvent', function (event) {
+    var group_id = event.detail.group_id;
+    chrome.storage.local.get(group_id, function(result){
+        console.log('addon: read group_pgp');
+        if (result[0])
+            if(!confirm('SecPASS: Tiện ích hiện đang chứa khoá của nhóm này. Dữ liệu này sẽ bị ghi đè nếu tiếp tục. Bạn có chắc chắn ?'))
+                return 1;
 
-$("#logout").onclick = function(){
-    browser.storage.local.remove('user_passphrase', function(){
-        console.log('addon: destroy passphrase');
-        alert('SecPASS: Mật khẩu đã được xoá khỏi tiện ích.'); 
+        chrome.storage.local.set({group_id: event.detail.group_pgp}, function(){
+            console.log('addon: saved');
+            // console.log(event.detail);
+            alert('SecPASS: Đã nhận được cặp khoá của nhóm.');
+        });
     });
-};
+});
+
+document.addEventListener('letgetGroupPGPEvent', function (event) {
+    var group_id = event.detail;
+    chrome.storage.local.get(group_id, function(result){
+        console.log('addon: read group_pgp');
+        document.dispatchEvent(new CustomEvent('getGroupPGPEvent', {detail: JSON.stringify(result[0])})); // bypass firefox permission error
+    });
+});
+

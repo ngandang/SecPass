@@ -504,7 +504,7 @@
 													</li>
 													<li class="m-nav__separator m-nav__separator--fit"></li>
 													<li class="m-nav__item">
-														<a id="logout" href="/logout" class="btn m-btn--pill btn-secondary m-btn m-btn--custom m-btn--label-brand m-btn--bolder">
+														<a id="logout" href="javascript:;" class="btn m-btn--pill btn-secondary m-btn m-btn--custom m-btn--label-brand m-btn--bolder">
 															Đăng xuất
 														</a>
 													</li>

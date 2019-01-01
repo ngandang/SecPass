@@ -15,7 +15,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                    @foreach($groupUsers as $user)
+                    @foreach($groupUsers->sortBy('name') as $user)
                         
                         <tr style="text-align:center">
                             <input name="user_id" type="hidden" value="{{$user->user_id}}">

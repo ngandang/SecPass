@@ -17,6 +17,9 @@ var SnippetLogin = function() {
         alert.prependTo(form);
         alert.animateClass('fadeIn animated');
         alert.find('span').html(msg);
+    }
+    
+    var hideMsg = function(form){
         setTimeout(function () { 
             form.find('.alert').fadeOut('1000');
             // then(function (){
@@ -131,6 +134,16 @@ var SnippetLogin = function() {
             displaySignInForm();
         });
     }
+    
+    var handleEmailSignInForm = function() {
+        document.addEventListener('getUserEmailEvent', function (event) {
+            const email= event.detail;
+            $(".m-login__form input[name=email]").val(email);
+            document.removeEventListener('getUserEmailEvent',{});
+        });
+        document.dispatchEvent(new CustomEvent('letgetUserEmailEvent', {detail: ""}));
+        
+    }
 
     var handleSignInFormSubmit = function() {
         $('#m_login_signin_submit').click(function(e) {
@@ -154,41 +167,50 @@ var SnippetLogin = function() {
                 return;
             }
 
-            btn.addClass('m-loader m-loader--right m-loader--light').attr('disabled', true);
-            
-            form.ajaxSubmit({
-                url: '',
-                type: 'POST',
-                success: function(response, status, xhr, $form) {
-                    if(response.message) {
+            document.addEventListener('getUserEmailEvent', function (event) {
+                const email= event.detail;
+                if (form.find("input[name=email]").val() !== email)
+                {
+                    showMsg(form, 'danger', "Email được nhập không khớp với email đăng ký trên thiết bị");
+                    return;
+                }
+                
+                btn.addClass('m-loader m-loader--right m-loader--light').attr('disabled', true);
+                
+                form.ajaxSubmit({
+                    url: '',
+                    type: 'POST',
+                    success: function(response, status, xhr, $form) {
+                        if(response.message) {
+                            setTimeout(function() {
+                                btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false);
+                                showMsg(form, 'danger', response.message);
+                            }, 1000);
+                        }
+                        else {
+                            if($('input[name=remember]').prop('checked')) {
+                                // console.log('remember checked');                            
+                                var passphrase = form.find('input[name=password]').val();
+                                document.dispatchEvent(new CustomEvent('setUserPassphraseEvent', {detail: passphrase}));
+                            }
+
+                            window.location = response.intended;
+                        }
+                    },
+                    error: function(response, status, xhr, $form) {
+                        // similate 1s delay
                         setTimeout(function() {
                             btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false);
-                            showMsg(form, 'danger', response.message);
+                            $.each(response.responseJSON.errors, function(any, errors){
+                                $.each(errors, function(idx) {
+                                    showMsg(form, 'danger', errors[idx]);
+                                });
+                            });
                         }, 1000);
                     }
-                    else {
-                        if($('input[name=remember]').prop('checked')) {
-                            // console.log('remember checked');
-                            
-                            var passphrase = form.find('input[name=password]').val();
-                            document.dispatchEvent(new CustomEvent('setUserPassphraseEvent', {detail: passphrase}));
-                        }
-
-                        window.location = response.intended;
-                    }
-                },
-                error: function(response, status, xhr, $form) {
-                    // similate 1s delay
-                    setTimeout(function() {
-	                    btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false);
-                        $.each(response.responseJSON.errors, function(any, errors){
-                            $.each(errors, function(idx) {
-                                showMsg(form, 'danger', errors[idx]);
-                            });
-                        });
-                    }, 1000);
-                }
+                });
             });
+            document.dispatchEvent(new CustomEvent('letgetUserEmailEvent', {detail: ""}));
         });
     }
 
@@ -251,8 +273,7 @@ var SnippetLogin = function() {
                  // Declare for set PGP to addon
                 let user_pgp = {
                     'privateKeyArmored': key.privateKeyArmored,
-                    'publicKeyArmored': key.publicKeyArmored,
-                    'revocationCertificate': key.revocationCertificate
+                    'publicKeyArmored': key.publicKeyArmored
                 };
                 
                 const pubKeyObj = (await openpgp.key.readArmored(key.publicKeyArmored)).keys[0];
@@ -280,6 +301,7 @@ var SnippetLogin = function() {
                         console.log(pgp_key);
 
                         showMsg(form, 'success', response.message);
+                        hideMsg(form);
                         
                         // Send user_pgp to extension
                         document.dispatchEvent(new CustomEvent('setUserPGPEvent', {detail: user_pgp}));
@@ -302,6 +324,7 @@ var SnippetLogin = function() {
                                     signInForm.validate().resetForm();
 
                                     showMsg(signInForm, 'success', response.message);
+                                    hideMsg(signInForm);
                                 }, 1000);
                                 console.log(response);
                             },
@@ -375,7 +398,8 @@ var SnippetLogin = function() {
 	                    signInForm.clearForm();
 	                    signInForm.validate().resetForm();
 
-	                    showMsg(signInForm, 'success', response.message);
+                        showMsg(signInForm, 'success', response.message);
+                        hideMsg(signInForm);
                     }, 2000);
                 },
                 error: function(response, status, xhr, $form) {
@@ -401,14 +425,24 @@ var SnippetLogin = function() {
         document.dispatchEvent(new CustomEvent('hello', {detail: "kfbgobbmmfcdipebhoojjjkpcmcjefpg"})); //TODO: thay id addon
         if (ok === false) {
             console.log('Addon is not installed.');
+            var isChrome = /Google Inc/.test(navigator.vendor);
+            var isFirefox= /Firefox/.test(navigator.userAgent);
+            var url = "https://secpass.terabox.vn/addon/"
+            if(isChrome)
+                url = "chrome.zip";
+            if(isFirefox)
+                url = "firefox.zip";
+            
             swal({
                 type: 'warning',
                 title:
                     'Không tìm thấy tiện ích SecPASS',
                 html:
-                    'Vui lòng <a class="m-link" href="/addon/download">cài đặt tiện ích</a> để đăng ký sử dụng.',
+                    'Vui lòng <a class="m-link" href="'+ url +'" target="_blank">cài đặt tiện ích</a> để đăng ký sử dụng.',
                 confirmButtonText: 'Kiểm tra lại',
                 showLoaderOnConfirm: true,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
                 preConfirm: (retry) => {
                     window.location = "";
                 },
@@ -424,6 +458,7 @@ var SnippetLogin = function() {
         init: function() {
             AddonChecking();
             handleFormSwitch();
+            handleEmailSignInForm();
             handleSignInFormSubmit();
             handleRememberMe();
             handleTerms();
@@ -441,4 +476,5 @@ jQuery(document).ready(function() {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
+    
 });

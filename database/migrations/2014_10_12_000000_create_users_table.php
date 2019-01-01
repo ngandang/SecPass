@@ -19,12 +19,11 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
-            $table->uuid('role_id')->default('');
+            $table->uuid('role_id');
             $table->string('verification_code')->nullable();
             $table->boolean('active')->default(false);
-            // $table->boolean('deleted')->default(false);
-            $table->string('created_by')->nullable();
-            $table->string('updated_by')->nullable();
+            // $table->uuid('created_by')->nullable();
+            // $table->uuid('updated_by')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

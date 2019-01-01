@@ -109,19 +109,17 @@ td{
 .btn-del-email{
     float: right;
 }
-.groupcontent{
+.group-content{
     margin: 30px;
 }
 .group-section{
     margin: 30px;
 }
 
-#group-user{
+#group-user, #group-account, #group-note {
     position: relative;
 }
-#group-account{
-    position: relative;
-}
+
 .header{
     position: absolute;
     right: 69px;
@@ -158,8 +156,9 @@ td{
 }
 
 .hide {
-    display: none;
+    display: none !important;
 }
+
 .content-user{
     background-color: #fff;
     margin: 40px;

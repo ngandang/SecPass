@@ -1,8 +1,13 @@
 window.onload = function()
 {
-	function dw(data) {
-		document.getElementById("result").innerHTML=data;
-	}
+	// function dw(data) {
+	// 	document.getElementById("result").innerHTML=data;
+	// }
+
+	browser.storage.local.get('user_email', function(data){
+		console.log(data);
+		document.getElementById("userEmail").innerText = data.user_email;
+	});
 
 	document.getElementById('backup').onclick = function()
 	{
@@ -30,16 +35,15 @@ window.onload = function()
 
 	document.getElementById('restore').onclick = function()
 	{
-		var newURL = "http://localhost/credential";
-		browser.tabs.create({ url: newURL });
+		window.location = "pgp-recovery.html";
 	}
 
-	document.getElementById('get').onclick = function()
-	{
-		browser.storage.local.get('user_pgp', function(data){
-			dw(data.user_pgp.privateKeyArmored+"\r\n"+data.user_pgp.publicKeyArmored);
-		});
-	}
+	// document.getElementById('get').onclick = function()
+	// {
+	// 	browser.storage.local.get('user_pgp', function(data){
+	// 		dw(data.user_pgp.privateKeyArmored+"\r\n"+data.user_pgp.publicKeyArmored);
+	// 	});
+	// }
 
 	document.getElementById('passGen').onclick = function()
 	{
@@ -48,7 +52,7 @@ window.onload = function()
 
 	document.getElementById('goPage').onclick = function()
 	{
-		var newURL = "http://localhost/dashboard";
+		var newURL = "https://secpass.terabox.vn/dashboard";
 		browser.tabs.create({ url: newURL });
 		
 	}

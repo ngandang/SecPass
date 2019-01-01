@@ -1,11 +1,8 @@
 {
-  // Required
   "manifest_version": 2,
   "name": "SECPASS Extension",
   "version": "0.0.1",
-  // Recommended
   "description": "Chrome Extension for SecPASS.",
-  // Optional
   "author": "Ngan Dang, npc",
   "browser_action": {
       "default_title": "SecPASS",
@@ -13,15 +10,15 @@
       "default_popup": "main.html"
   },
   "background":{
-    "scripts": ["background.js"]
+    "scripts": [ "openpgp.js", "background.js"]
   },
   "content_scripts": [
         {
             "matches": [
-                "http://localhost/*", // delete in production
-                "https://localhost/*" // change website
+                "https://secpass.terabox.vn/*"
             ],
             "js": [
+                "openpgp.js",
                 "jquery-3.3.1.js",
                 "contentscript.js"
             ],
@@ -29,17 +26,8 @@
             "all_frames": false
         }
     ],
-  // "app": {
-  // 	"background": {
-  // 		"scripts":["main.js"]
-  // 	}
-  // },
   "permissions": [
     "tabs",
     "storage"
   ]
-  
-  // "externally_connectable": {
-  //   "matches": ["*://localhost/*/*"]
-  // }
 }

@@ -65,7 +65,7 @@ class User extends Authenticatable
 
     public function Secret()
     { 
-        return $this->hasMany('App\Secret','user_id','id');
+        return $this->hasMany('App\Secret','owner_id','id');
     }
     
     public function Share()
@@ -75,16 +75,16 @@ class User extends Authenticatable
     
     public function PGPkey()
     { 
-        return $this->hasMany('App\PGPkey','user_id','id');
+        return $this->hasMany('App\PGPkey','owner_id','id');
     }
     
     public function Account()
     {
-        return $this->belongsToMany('App\Account','secrets','user_id','account_id');
+        return $this->belongsToMany('App\Account','secrets','owner_id','asset_id');
     }
     
     public function Note()
     {
-        return $this->belongsToMany('App\Note','secrets','user_id','note_id');
+        return $this->belongsToMany('App\Note','secrets','owner_id','asset_id');
     }
 }

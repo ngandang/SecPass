@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+    <title>Khôi phục khoá PGP</title>
+
+		<!--==== Style code ====-->
+    <style>
+      body {
+        max-width: 300px;
+        width: 300px;
+      }
+      h1 {
+        text-align: center;
+        font-size: 2em;
+      }
+      textarea {
+        width: 100%;
+      }
+      label {
+        font-size: 1.2em;
+      }
+      .btn {
+        padding: 5px;
+        padding-left: 10px;
+        padding-right: 10px;
+        margin: 5px;
+      }
+      .center-block {
+        text-align: center;
+      }
+      .form-group {
+        display: block;
+        margin: 10px;
+      }
+
+      .custom-file {
+        padding: 0;
+      }
+
+      .custom-file-input {
+        position: relative;
+        opacity: 0;
+        z-index: 500;
+      }
+      .custom-file-control {
+        line-height: 1.5em;
+        position: absolute;
+        width: 80%;
+      }
+
+    
+    </style>
+
+    <script type="text/javascript" src="openpgp.js"></script>
+    <script type="text/javascript" src="jszip.js"></script>
+    <script type="text/javascript" src="FileSaver.js"></script>
+    
+	</head>
+	
+	<!--==== HTML body code ====-->
+	
+	<body>
+    <h1>Khôi phục khoá PGP</h1>
+    
+    <div class="center-block">
+      <div class="form-group">
+        <button class="custom-file" id="btnFile">
+          <span class="custom-file-control">Chọn tập tin ZIP</span>
+          <input type="file" id="inputFile" class="custom-file-input" />             
+        </button>
+      </div>
+      <div class="form-group">
+        <label for="priv-key">Khoá riêng tư</label>
+        <textarea name="priv-key" id="priv-key" cols="30" rows="10" disabled></textarea>
+      </div>
+      <div class="form-group">
+        <label for="pub-key">Khoá công khai</label>
+        <textarea name="pub-key" id="pub-key" cols="30" rows="10" disabled></textarea>
+      </div>
+      <div class="form-group">
+        <button id="btnCancel" class="btn">&nbsp;Huỷ&nbsp;</button>
+        <button id="btnSubmit" class="btn" disabled><b>&nbsp;Lưu&nbsp;</b></button>
+      </div>
+    </div>
+
+		<hr>		
+		
+		<!--==== JavaScript code ====-->
+		
+		<script src="pgp-recovery.js"></script>
+
+	</body>
+</html>

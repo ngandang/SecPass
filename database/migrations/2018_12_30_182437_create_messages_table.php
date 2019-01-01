@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class Accounts extends Migration
+class CreateMessagesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,13 @@ class Accounts extends Migration
      */
     public function up()
     {
-        Schema::create('accounts',function($table){
+        Schema::create('messages', function (Blueprint $table) {
             $table->uuid('id');
             $table->primary('id');
-            $table->string('name');
-            $table->string('username');
-            $table->datetime('expiry_date')->nullable();
-            $table->string('uri')->nullable();
-            $table->longtext('description')->nullable();
-            $table->timestamps();
+            $table->uuid('sender_id');
+            $table->uuid('receiver_id');
+            $table->longtext('comment');
+            $table->timestamps(); 
         });
     }
 
@@ -32,6 +30,6 @@ class Accounts extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('accounts');
+        Schema::dropIfExists('messages');
     }
 }

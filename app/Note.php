@@ -32,7 +32,7 @@ class Note extends Model
 
     public function Secret()
     {
-        return $this->hasOne('App\Secret', 'note_id','id');
+        return $this->hasOne('App\Secret', 'asset_id','id');
     }
     
     public function Share()
@@ -42,12 +42,12 @@ class Note extends Model
     
     public function User()
     {
-        return $this->belongsToMany('App\User','secrets','note_id','user_id');
+        return $this->belongsToMany('App\User','secrets','asset_id','owner_id');
     }
 
     public function Group()
     {
-        return $this->belongsToMany('App\Group','secrets','note_id','group_id');
+        return $this->belongsToMany('App\Group','secrets','asset_id','owner_id');
     }
 }
 

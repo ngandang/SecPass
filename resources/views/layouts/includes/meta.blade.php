@@ -1,7 +1,7 @@
 <head> 
 		<meta charset="utf-8" />
 		<title>
-			SecPASS
+			{{ config('app.name', 'SecPASS') }}
 		</title>
 		<meta name="description" content="SecPASS - The password management system for indiviuals and groups">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -19,7 +19,7 @@
 		</script>
 		<!--END::Web font -->
         <!--BEGIN::Base Styles -->
-		<link href="{{ asset('vendors/custom/fullcalendar/fullcalendar.bundle.css') }}" rel="stylesheet" type="text/css" />
+		<!-- <link href="{{ asset('vendors/custom/fullcalendar/fullcalendar.bundle.css') }}" rel="stylesheet" type="text/css" /> -->
 		<link rel="stylesheet" href="{{ asset('vendors/base/fontawesome-all.css') }}" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 		<link href="{{ asset('vendors/base/vendors.bundle.css') }}" rel="stylesheet" type="text/css" />
 		<link href="{{ asset('default/base/style.bundle.css') }}" rel="stylesheet" type="text/css" />

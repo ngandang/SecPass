@@ -1,6 +1,6 @@
 @if(count($notes))
 <div class="row">
-    @foreach($notes->sortByDesc('updated_at') as $note)
+    @foreach($notes->sortBy('title') as $note)
     <div class="col-lg-4">
         <!--begin::Portlet-->
         <div class="m-portlet m-portlet--brand m-portlet--head-solid-bg m-portlet--head-sm m-portlet--bordered">
@@ -32,7 +32,7 @@
                                                     </span>
                                                 </li>
                                                 <li class="m-nav__item">
-                                                    <a href="javascript:;" onclick="copyContent('{{$note->id}}')" class="m-nav__link">
+                                                    <a href="javascript:;" class="m-nav__link note-copy-content">
                                                         <i class="m-nav__link-icon flaticon-lock-1"></i>
                                                         <span class="m-nav__link-text">
                                                             Sao chép nội dung
@@ -40,7 +40,7 @@
                                                     </a>
                                                 </li>
                                                 <li class="m-nav__item">
-                                                    <a onclick="edit('{{$note->id}}','{{$note->title}}','{{$note->updated_at}}')" href="#editForm" data-toggle="modal" data-backdrop="static" data-keyboard="false" class="m-nav__link note-edit">
+                                                    <a href="#editNoteForm" data-toggle="modal" data-backdrop="static" data-keyboard="false" class="m-nav__link note-edit">
                                                         <i class="m-nav__link-icon flaticon-edit"></i>
                                                         <span class="m-nav__link-text">
                                                             Chỉnh sửa
@@ -48,7 +48,7 @@
                                                     </a>
                                                 </li>
                                                 <li class="m-nav__item">
-                                                    <a onclick="share('{{$note->id}}')" href="#shareForm" data-toggle="modal" data-backdrop="static" data-keyboard="false" class="m-nav__link">
+                                                    <a href="#shareNoteForm" data-toggle="modal" data-backdrop="static" data-keyboard="false" class="m-nav__link note-share">
                                                         <i class="m-nav__link-icon flaticon-share"></i>
                                                         <span class="m-nav__link-text">
                                                             Chia sẻ
@@ -57,7 +57,7 @@
                                                 </li>
                                                 <li class="m-nav__separator m-nav__separator--fit"></li>
                                                 <li class="m-nav__item">
-                                                    <a onclick="del('{{$note->id}}')" href = "#deleteForm" data-toggle="modal" data-backdrop="static" data-keyboard="false" class="btn btn-outline-danger m-btn m-btn--pill m-btn--wide btn-sm">
+                                                    <a href = "#deleteNoteForm" data-toggle="modal" data-backdrop="static" data-keyboard="false" class="btn btn-outline-danger m-btn m-btn--pill m-btn--wide btn-sm note-delete">
                                                         Xoá ghi chú
                                                     </a>
                                                 </li>
@@ -71,6 +71,7 @@
                 </div>
             </div>
             <div class="m-portlet__body">
+                <input name="id" type="hidden" value="{{ $note->id }}"/>
                 <div class="text-container">
                     <h5 class="text-overflow">{{$note->title}}</h5>
                 </div>
@@ -78,7 +79,7 @@
                     &nbsp;
                 </div>
                 <div class="text-container">
-                    <i>Cập nhật cuối: </i>&nbsp;{{$note->updated_at}}
+                    <i>Cập nhật cuối: </i>&nbsp;{{ $note->updated_at }}
                 </div>
             </div>
         </div>

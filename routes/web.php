@@ -33,6 +33,7 @@ Route::post('legal/terms',function () {
 
 Route::get('accounts','HomeController@accounts');
 Route::group(['prefix' => 'account', 'as' => 'account'], function(){
+    Route::post('detail','HomeController@getAccount');
     Route::post('add','HomeController@addAccount');
     Route::post('edit','HomeController@editAccount');
     Route::post('delete','HomeController@deleteAccount');
@@ -43,6 +44,7 @@ Route::group(['prefix' => 'account', 'as' => 'account'], function(){
 
 Route::get('securenotes','HomeController@notes');
 Route::group(['prefix'=>'securenote','as'=>'securenote'], function(){
+    Route::post('detail','HomeController@getNote');
     Route::post('add','HomeController@addNote');
     Route::post('edit','HomeController@editNote');
     Route::post('delete','HomeController@delNote');
@@ -60,9 +62,16 @@ Route::group(['prefix'=>'drive','as'=>'drive'], function(){
 
 
 Route::get('dashboard','HomeController@dashboard');
+
 Route::get('sharewithme','HomeController@sharewithme');
+Route::post('sharewithme/move','HomeController@moveAsset');
+Route::post('sharewithme/delete','HomeController@deleteAsset');
+Route::post('sharewithme/moveAccounts','HomeController@moveAccounts');
+Route::post('sharewithme/moveNotes','HomeController@moveNotes');
+
 
 Route::get('profile','HomeController@profile');
+Route::post('profile/save','HomeController@saveProfile');
 Route::get('credential','HomeController@profile');
 Route::post('credential/sync','HomeController@addPrivKey');
 Route::post('credential/unsync','HomeController@delPrivKey');
@@ -151,7 +160,7 @@ Route::get('init_roles', function () {
         [
             'name' => 'root',
             'email' => 'master@secpass.com',
-            'password' => '',
+            'password' => bcrypt('password'),
             'active' => 1,
             'role_id' => '5bdf5220-d75c-11e8-843b-a7f6cbee423d',
         ]);

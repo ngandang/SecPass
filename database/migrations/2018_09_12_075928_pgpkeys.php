@@ -16,7 +16,7 @@ class PGPkeys extends Migration
         Schema::create('pgpkeys', function(Blueprint $table){
             $table->uuid('id');
             $table->primary('id');
-            $table->uuid('user_id');
+            $table->uuid('owner_id');
             $table->longText('armored_key');
             $table->integer('bits')->default(2048);
             $table->string('uid');
@@ -25,7 +25,6 @@ class PGPkeys extends Migration
             $table->string('type');
             $table->datetime('expires')->nullable();
             $table->datetime('key_created');
-            // $table->boolean('deleted')->default(false);
             $table->timestamps();
         });
     }

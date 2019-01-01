@@ -17,7 +17,6 @@ class Notes extends Migration
             $table->uuid('id');
             $table->primary('id');
             $table->string('title');
-            // $table->boolean('deleted')->default(false);
             $table->timestamps();
         });
     }
