@@ -58,7 +58,7 @@
 				</h4>
 				<i class="m-menu__section-icon flaticon-more-v3"></i>
 			</li>
-			<li class="m-menu__item  m-menu__item--submenu {{ (Request::segment(1) == 'sharewith') ? 'm-menu__item--active' : '' }}" aria-haspopup="true"  data-menu-submenu-toggle="hover">
+			<li class="m-menu__item  m-menu__item--submenu {{ (Request::segment(1) == 'sharewithme') ? 'm-menu__item--active' : '' }}" aria-haspopup="true"  data-menu-submenu-toggle="hover">
 				<a  href="/sharewithme" class="m-menu__link m-menu__toggle">
 					<i class="m-menu__link-icon flaticon-share"></i>
 					<span class="m-menu__link-text">
@@ -66,7 +66,7 @@
 					</span>
 				</a>
 			</li>
-			<li class="m-menu__item  m-menu__item--submenu {{ (Request::segment(1) == 'groups') ? 'm-menu__item--active' : '' }}" aria-haspopup="true"  data-menu-submenu-toggle="hover">
+			<li class="m-menu__item  m-menu__item--submenu {{ (Request::segment(1) == 'groups' || Request::segment(1) == 'group') ? 'm-menu__item--active' : '' }}" aria-haspopup="true"  data-menu-submenu-toggle="hover">
 				<a  href="/groups" class="m-menu__link m-menu__toggle">
 					<i class="m-menu__link-icon flaticon-users"></i>
 					<span class="m-menu__link-text">

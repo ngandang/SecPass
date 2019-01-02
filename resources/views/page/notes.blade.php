@@ -56,7 +56,7 @@
 
     $(document).ready(function(){
 
-        $('.m-portlet').on('click', function () {
+        $('.portlet-note').on('click', function () {
             var showEditForm = $(this).find(".note-edit");
             if(showEditForm[0])
                 showEditForm[0].click();
@@ -77,16 +77,13 @@
                     cipherToDecrypt = response.content;
 
                     decryptFunction(function (result) {
-                        var $temp = $("#tempInput");
-                        $temp.val(result);
                         // Không copy nhanh được nên phải dùng như bên dưới
                         swal({
                             title: "Giải mã nội dung thành công",
                             type: 'success',
                             confirmButtonText: 'Sao chép',
                             onClose: (input) => {
-                                copy($temp.val())
-                                $temp.val("");
+                                copy(result);
                             }
                         });                            
                     });

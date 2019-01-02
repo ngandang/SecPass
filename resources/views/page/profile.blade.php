@@ -251,7 +251,15 @@
                                         Giới tính
                                     </label>
                                     <div class="col-7">
-                                        <input class="form-control m-input" type="text" value="{{ @$user->profile->gender }}">
+                                        <select class="form-control m-input" name="gender">
+                                            <option>
+                                                Nam
+                                            </option>
+                                            <option>
+                                                Nữ
+                                            </option>
+                                        </select>
+                                        <!-- <input class="form-control m-input" type="text" value="{{ @$user->profile->gender }}"> -->
                                     </div>
                                 </div>
                                 <div class="form-group m-form__group row">
@@ -259,7 +267,8 @@
                                         Ngày sinh
                                     </label>
                                     <div class="col-7">
-                                        <input class="form-control m-input" type="text" value="{{ @$user->profile->date_of_birth }}">
+                                        <input name="date_of_birth" class="form-control m-input" type="date" value="1996-04-03">
+                                        <!-- <input class="form-control m-input" type="text" value="{{ @$user->profile->date_of_birth }}"> -->
                                     </div>
                                 </div>
                                 <div class="form-group m-form__group row">

@@ -78,31 +78,27 @@ Route::post('credential/unsync','HomeController@delPrivKey');
 Route::get('settings','HomeController@profile');
 // Route::get('recovery','Recovery@profile');
 
-Route::get('groups','HomeController@groups');
+Route::get('groups','GroupController@groups');
 Route::group(['prefix' => 'group', 'as' => 'group'], function(){
-    // Route::get('{tab}', ['uses' =>'HomeController@profile']);
-    Route::post('checkUser','HomeController@checkUser');
-    Route::post('addGroup','HomeController@addGroup');
-    Route::post('editGroup','HomeController@editGroup');
-    Route::post('delete','HomeController@deleteGroup');
-    Route::post('deleteUser', 'HomeController@deleteUser');
-    Route::post('changeRole','HomeController@changeRole');
-    Route::get('{group_id}','HomeController@groupDetail');
-    
+    Route::post('checkUser','GroupController@checkUser');
+    Route::post('addGroup','GroupController@addGroup');
+    Route::post('editGroup','GroupController@editGroup');
+    Route::post('delete','GroupController@deleteGroup');
+    Route::post('deleteUser', 'GroupController@deleteUser');
+    Route::post('changeRole','GroupController@changeRole');
+    Route::get('{group_id}','GroupController@groupDetail');
+    Route::group(['prefix' => 'account', 'as' => 'account'], function(){
+        Route::post('detail','GroupController@getAccount');
+        Route::post('add','GroupController@addAccount');
+        Route::post('edit','GroupController@editAccount');
+        Route::post('delete','GroupController@deleteAccount');
+        // Route::post('share','HomeController@shareAccount');
+        // Route::post('share/finalize','HomeController@shareFinalize');
+        Route::post('getContent','HomeController@getPassword');
+    });
 });
 
-// Route::post('deleteUser', [
-//     'as' => 'deleteUser', 'uses' => 'HomeController@deleteUser'
-// ]);
-
-// Route::get('detail', [
-//     'as' => 'detail', 'uses' => 'HomeController@groupDetail'
-// ]);
-
-// Route::post('detail','HomeController@groupDetail');
-
 Route::get('quicksearch','HomeController@quickSearch');
-
 
 Route::get('test_gpg', function () {
     echo '<pre>';

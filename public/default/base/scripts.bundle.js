@@ -8366,7 +8366,7 @@ var mLayout = function() {
 
         qs.mQuicksearch({
             type: qs.data('search-type'), // quick search type
-            source: 'quicksearch',            
+            source: '/quicksearch',            
             spinner: 'm-loader m-loader--skin-light m-loader--right',
 
             input: '#m_quicksearch_input',

@@ -62,7 +62,7 @@
 											<ul class="m-menu__inner">
 												<li class="m-menu__item "  data-redirect="true" aria-haspopup="true">
 													<a  href="header/actions.html" class="m-menu__link ">
-														<i class="m-menu__link-icon flaticon-map"></i>
+														<i class="m-menu__link-icon flaticon-profile"></i>
 														<span class="m-menu__link-text">
 															Facebook
 														</span>
@@ -70,7 +70,7 @@
 												</li>
 												<li class="m-menu__item "  data-redirect="true" aria-haspopup="true">
 													<a  href="header/actions.html" class="m-menu__link ">
-														<i class="m-menu__link-icon flaticon-user"></i>
+														<i class="m-menu__link-icon flaticon-profile"></i>
 														<span class="m-menu__link-text">
 															daa.uit.edu.vn
 														</span>
@@ -78,7 +78,7 @@
 												</li>
 												<li class="m-menu__item "  data-redirect="true" aria-haspopup="true">
 													<a  href="header/actions.html" class="m-menu__link ">
-														<i class="m-menu__link-icon flaticon-clipboard"></i>
+														<i class="m-menu__link-icon flaticon-profile"></i>
 														<span class="m-menu__link-text">
 															trello.com
 														</span>
@@ -86,7 +86,7 @@
 												</li>
 												<li class="m-menu__item "  data-redirect="true" aria-haspopup="true">
 													<a  href="header/actions.html" class="m-menu__link ">
-														<i class="m-menu__link-icon flaticon-graphic-1"></i>
+														<i class="m-menu__link-icon flaticon-profile"></i>
 														<span class="m-menu__link-text">
 															Youtube
 														</span>
@@ -94,7 +94,7 @@
 												</li>
 												<li class="m-menu__item "  data-redirect="true" aria-haspopup="true">
 													<a  href="header/actions.html" class="m-menu__link ">
-														<i class="m-menu__link-icon flaticon-graphic-2"></i>
+														<i class="m-menu__link-icon flaticon-profile"></i>
 														<span class="m-menu__link-text">
 															mail.google.com
 														</span>
@@ -116,7 +116,7 @@
 															<span></span>
 														</i>
 														<span class="m-menu__link-text">
-															10:00:00 AM - 10/25/2018
+														10:02:07 AM - 12/25/2018
 														</span>
 													</a>
 												</li>
@@ -126,7 +126,7 @@
 															<span></span>
 														</i>
 														<span class="m-menu__link-text">
-															10:00:00 AM - 10/25/2018
+														10:01:29 AM - 12/25/2018
 														</span>
 													</a>
 												</li>
@@ -136,7 +136,7 @@
 															<span></span>
 														</i>
 														<span class="m-menu__link-text">
-															10:00:00 AM - 10/25/2018
+														10:01:23 AM - 12/25/2018
 														</span>
 													</a>
 												</li>
@@ -146,7 +146,7 @@
 															<span></span>
 														</i>
 														<span class="m-menu__link-text">
-															10:00:00 AM - 10/25/2018
+														10:00:15 AM - 12/25/2018
 														</span>
 													</a>
 												</li>
@@ -156,7 +156,7 @@
 															<span></span>
 														</i>
 														<span class="m-menu__link-text">
-															10:00:00 AM - 10/25/2018
+															10:00:10 AM - 12/25/2018
 														</span>
 													</a>
 												</li>

@@ -264,17 +264,15 @@ document.addEventListener('getUserPGPEvent', function (event) {
 // document.dispatchEvent(new CustomEvent('letgetUserPGPEvent', {detail: ""}));
 
 function copy(data) {
-    console.log(data);
     var copyText = data;
-    var $temp = $("<input>");
-    $("body").append($temp);        
+    var $temp = $("<textarea>");
+    $("body").append($temp);
+    $("body").append("</textarea>");
     $temp.val(copyText);
-    // setTimeout(() => {
-        $temp.focus();
-        $temp.select();
-        document.execCommand("copy");
-        $temp.remove();
-    // }, 500);
+    $temp.focus();
+    $temp.select();
+    document.execCommand("copy");
+    $temp.remove();
     
 }
 

@@ -62,7 +62,7 @@
 
     $(document).ready(function(){
 
-        $('.m-portlet').on('click', function () {
+        $('.portlet-account').on('click', function () {
             var showEditForm = $(this).find(".account-edit");
             if(showEditForm[0])
                 showEditForm[0].click();
@@ -126,16 +126,13 @@
                     cipherToDecrypt = response.content;
 
                     decryptFunction(function (result) {
-                        var $temp = $("#tempInput");
-                        $temp.val(result);
                         // Không copy nhanh được nên phải dùng như bên dưới
                         swal({
                             title: "Giải mã mật khẩu thành công",
                             type: 'success',
                             confirmButtonText: 'Sao chép',
                             onClose: (input) => {
-                                copy($temp.val())
-                                $temp.val("");
+                                copy(result);
                             }
                         });                            
                     });
@@ -205,8 +202,6 @@
                 }
             });
         });
-
-        
 
         $('#addAccountSubmit').click(function(e){
             e.preventDefault();

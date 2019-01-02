@@ -29,28 +29,8 @@
     </div>
 </div>
 <!-- BEGIN: Content -->
-<div class="m-content">
-    <div class="m-portlet m-portlet--full-height m-portlet--tabs">
-        <div class="m-portlet__head">
-            <div class="m-portlet__head-tools">
-                <ul class="nav nav-tabs m-tabs m-tabs-line m-tabs-line--left m-tabs-line--primary" role="tablist">
-                    <li class="nav-item m-tabs__item">
-                        <a class="nav-link m-tabs__link active" data-toggle="tab" href="#group-account" role="tab">
-                            Tài khoản                            
-                        </a>
-                    </li>
-                    <li class="nav-item m-tabs__item">
-                        <a class="nav-link m-tabs__link" data-toggle="tab" href="#group-note" role="tab">
-                            Ghi chú bảo mật
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div class="tab-content">
-        @include('content.content-sharewithme')
-        </div>
-    </div>   
+<div class="m-content">    
+    @include('content.content-sharewithme')
 </div> 
 <!-- END: Content -->
 
@@ -62,6 +42,42 @@
 <!-- BEGIN: Page Scripts -->
 <script>
     $(document).ready(function(){
+
+        var account_datatable_options = {
+            data: {
+                saveState: {cookie: false},
+            },
+            search: {
+                input: $('#accountSearch'),
+            },
+            columns: [
+                {
+                field: 'Tên',
+                type: 'text',
+                sortable: 'asc',
+                },
+            ],
+            pagination: false,
+        };
+        var note_datatable_options = {
+            data: {
+                saveState: {cookie: false},
+                serverSorting: true,
+            },
+            search: {
+                input: $('#noteSearch'),
+            },
+            columns: [
+                {
+                field: 'Tiêu đề',
+                type: 'text',
+                sortable: 'asc',
+                },
+            ],
+            pagination: false,
+        };
+        account_datatable = $('#group-account .m-datatable').mDatatable(account_datatable_options);
+        note_datatable = $('#group-note .m-datatable').mDatatable(note_datatable_options);
 
         $(".account-delete").click(function (){
             $("#deleteAccountForm input[name=id]").val( $(this).closest('tr').find('input[name=id]').val() );
@@ -95,6 +111,11 @@
                     });
 
                     $('.m-content').html(response.view);
+                    account_datatable.destroy();
+                    note_datatable.destroy();
+                    account_datatable = $('#group-account .m-datatable').mDatatable(account_datatable_options);
+                    note_datatable = $('#group-note .m-datatable').mDatatable(note_datatable_options);
+
                     form.clearForm();
                 },
                 error: function(response, status, xhr, $form) {
@@ -123,6 +144,10 @@
                     });
 
                     $('.m-content').html(response.view);
+                    account_datatable.destroy();
+                    note_datatable.destroy();
+                    account_datatable = $('#group-account .m-datatable').mDatatable(account_datatable_options);
+                    note_datatable = $('#group-note .m-datatable').mDatatable(note_datatable_options);
                 },
                 error: function(response, status, xhr, $form) {
                     console.log(response);
@@ -145,6 +170,10 @@
                     });
 
                     $('.m-content').html(response.view);
+                    account_datatable.destroy();
+                    note_datatable.destroy();
+                    account_datatable = $('#group-account .m-datatable').mDatatable(account_datatable_options);
+                    note_datatable = $('#group-note .m-datatable').mDatatable(note_datatable_options);
                 },
                 error: function(response, status, xhr, $form) {
                     console.log(response);
@@ -167,6 +196,10 @@
                     });
 
                     $('.m-content').html(response.view);
+                    account_datatable.destroy();
+                    note_datatable.destroy();
+                    account_datatable = $('#group-account .m-datatable').mDatatable(account_datatable_options);
+                    note_datatable = $('#group-note .m-datatable').mDatatable(note_datatable_options);
                 },
                 error: function(response, status, xhr, $form) {
                     console.log(response);

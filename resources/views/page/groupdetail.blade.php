@@ -29,7 +29,7 @@
     </div>
 </div>
 
-<div class="group-content">    
+<div class="m-content">    
     <input name="group_id" type="hidden" value="{{ $group->id }}">
     <div class="m-portlet m-portlet--full-height m-portlet--tabs">
         <div class="m-portlet__head">
@@ -61,9 +61,9 @@
                         Thêm tài khoản
                     </button>
                 </div>
-                <form class="m-form m-form--fit m-form--label-align-right">
+                <form class="m-form  m-form--label-align-right">
                     <div class="m-portlet__body">
-                        <div class="group-section">
+                        <div class="m-section">
                             @include('content.content-accounts')
                         </div>
                     </div>
@@ -77,7 +77,7 @@
                 </div>
                 <form class="m-form m-form--fit m-form--label-align-right">
                     <div class="m-portlet__body">
-                        <div class="group-section">
+                        <div class="m-section">
                             @include('content.content-notes')
                         </div>
                     </div>
@@ -91,8 +91,12 @@
                     </a>
                     @endif
                 </div>
-                <div class="g-content">
-                    @include('content.content-group-user')
+                <div class="m-form m-form--label-align-right">
+                    <div class="m-portlet__body">
+                        <div class="m-section">
+                            @include('content.content-group-user')
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -106,13 +110,706 @@
 @endsection
 
 @section('pageSnippets')
+
 <script>
+
     function generate() {
         $('#addAccountForm input[name=password]').val(randomPassword());
     }
     function generateEdit(){
         $('#editAccountForm input[name=password]').val(randomPassword());
     }
+
+    $(document).ready(function(){
+
+        $('.portlet-account').on('click', function () {
+            var showEditForm = $(this).find(".account-edit");
+            if(showEditForm[0])
+                showEditForm[0].click();
+            else
+                showEditForm.click();
+        });
+
+        $('.toggle-password').click(function() {
+            $(this).toggleClass("fa-eye fa-eye-slash");
+            var input = $($(this).attr("toggle"));
+            if (input.attr("type") == "password") {
+                input.attr("type", "text");
+            } else {
+                input.attr("type", "password");
+            }
+        });
+        $('.toggle-edit').click(function() {
+            $(this).toggleClass("fa-eye fa-eye-slash");
+            var input = $($(this).attr("toggle"));
+            if (input.attr("type") == "password") {
+                input.attr("type", "text");
+            } else {
+                input.attr("type", "password");
+            }
+        });
+
+        $('.account-username').click(function (e) {
+            copy($(this).text());
+            swal({
+                position: 'center',
+                type: 'success',
+                title: 'Đã sao chép tên đăng nhập',
+                showConfirmButton: false,
+                timer: 1500
+            });
+            e.stopPropagation();
+            
+        });
+            
+        $('.account-copy-username').click(function (e) {            
+            copy($(this).closest('.m-portlet').find('.account-username').text());
+            swal({
+                position: 'center',
+                type: 'success',
+                title: 'Đã sao chép tên đăng nhập',
+                showConfirmButton: false,
+                timer: 1500
+            });
+        });
+        
+        $('.account-copy-content').click(function (e) {
+            var data = {
+                'id': $(this).closest('.m-portlet').find('input[name=id]').val(),
+            };
+            console.log(data.id);
+            $.ajax({
+                url: 'account/getContent',
+                type: 'POST',
+                data: data,
+                success: function(response, status, xhr, $form) {
+                    cipherToDecrypt = response.content;
+
+                    decryptFunction(function (result) {
+                        // Không copy nhanh được nên phải dùng như bên dưới
+                        swal({
+                            title: "Giải mã mật khẩu thành công",
+                            type: 'success',
+                            confirmButtonText: 'Sao chép',
+                            onClose: (input) => {
+                                copy(result);
+                            }
+                        });                            
+                    });
+                },
+                error: function(response, status, xhr, $form) {
+                    console.log(response);
+                    swal("", response.message.serialize(), "error");
+                }
+            });
+            e.stopPropagation();
+        });
+
+        $('.account-edit').click(function (){
+            var data = {
+                'id': $(this).closest(".m-portlet").find("input[name=id]").val(),
+            };
+            $.ajax({
+                url: 'account/detail',
+                type: 'POST',
+                data: data,
+                success: function(response, status, xhr, $form) {
+                    $('#editAccountForm input[name=id]').val(response.id);
+                    $('#editAccountForm input[name=name]').val(response.name);
+                    $('#editAccountForm input[name=username]').val(response.username);
+                    $('#editAccountForm input[name=url]').val(response.uri);
+                    $('#editAccountForm textarea[name=description]').val(response.description);
+                    $('#editAccountForm .last_updated').text(response.updated_at);
+                },
+                error: function(response, status, xhr, $form) {
+                    console.log(response);
+                    swal("", response.message.serialize(), "error");
+                }
+            });
+        });
+
+        $('.account-share').click(function (e) {
+            var id = $(this).closest(".m-portlet").find("input[name=id]").val();
+            $('#shareAccountForm input[name=id]').val(id);
+        });
+
+        $(".account-delete").click(function(){
+            var id = $(this).closest(".m-portlet").find("input[name=id]").val();
+            $('#deleteAccountForm input[name=id]').val(id);
+        })
+
+        $('#getPassword').click(function () {
+            var data = {
+                'id': $('#editAccountForm input[name=id]').val(),
+            };
+            $.ajax({
+                url: 'account/getContent',
+                type: 'POST',
+                data: data,
+                success: function(response, status, xhr, $form) {
+                    cipherToDecrypt = response.content;
+
+                    decryptFunction(function (result) {
+                        console.log(result);      
+                        $('#editAccountForm input[name=password]').val(result);
+                        $('#getPassword i').removeClass('fa-lock');
+                        $('#getPassword i').addClass('fa-unlock');
+                    });
+                },
+                error: function(response, status, xhr, $form) {
+                    console.log(response);
+                    swal("", response.message.serialize(), "error");
+                }
+            });
+        });
+
+        $('#addAccountSubmit').click(function(e){
+            e.preventDefault();
+            var btn = $(this);
+            var form = $(this).closest('form');
+
+            form.validate({
+                rules: {
+                    url: {
+                        url: true
+                    }
+                }
+            });
+
+            if (!form.valid()) {
+                return;
+            }
+
+            btn.addClass('m-loader m-loader--right m-loader--light');
+            btn.attr('disabled', true);
+
+            // Encrypt password with OpenPGPjs
+            form.find('input[name=password]').prop('disabled', true);
+
+            messageToEncrypt = form.find("input[name=password]").val();
+            encryptFunction(pubkey, function (result) {
+                if(result) {
+                    var $temp = $("<textarea name='cipher'>");
+                    form.append($temp);      
+                    form.append('</textarea>');
+                    $temp.val(result);
+                }
+                form.ajaxSubmit({
+                    url: 'account/add',
+                    type: 'POST',
+                    success: function(response, status, xhr, $form) {
+                        btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false); // remove 
+                        swal({
+                            position: 'center',
+                            type: 'success',
+                            title: response.message,
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(function(result){$('#addAccountForm').modal('hide');});
+
+                        $('.m-content').html(response.view);                        
+                        form.clearForm();
+                        form.validate().resetForm();
+                    },
+                    error: function(response, status, xhr, $form) {
+                        btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false); // remove 
+                        console.log(response);
+                        swal("", response.message.serialize(), "error");
+                    }
+                });
+                if($temp)
+                    $temp.remove();
+                form.find('input[name=password]').prop('disabled', false);
+            }, function (error) {
+                btn.attr('disabled', false);
+                btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false);
+                form.find('input[name=password]').prop('disabled', false);
+            });        
+        });
+
+        $('#editAccountSubmit').click(function(e){
+            e.preventDefault();
+            var btn = $(this);
+            var form = $(this).closest('form');
+
+            form.validate({
+                rules: {
+                    url: {
+                        url: true
+                    }
+                }
+            });
+
+            if (!form.valid()) {
+                return;
+            }
+
+            btn.addClass('m-loader m-loader--right m-loader--light').attr('disabled', true);
+            btn.attr('disabled', true);
+
+            // Encrypt password with OpenPGPjs
+            form.find('input[name=password]').prop('disabled', true);
+
+            messageToEncrypt = form.find("input[name=password]").val();
+            encryptFunction(pubkey, function (result) {
+                if(result) {
+                    var $temp = $("<textarea name='cipher'>");
+                    form.append($temp);      
+                    form.append('</textarea>');
+                    $temp.val(result);
+                }
+                form.ajaxSubmit({
+                    url: 'account/edit',
+                    type: 'POST',
+                    success: function(response, status, xhr, $form) {
+                        btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false); // remove 
+                        swal({
+                            position: 'center',
+                            type: 'success',
+                            title: response.message,
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(function(result){$('#editAccountForm').modal('hide');});
+
+                        $('.m-content').html(response.view);
+                        form.clearForm();
+                        form.validate().resetForm();
+                    },
+                    error: function(response, status, xhr, $form) {
+                        btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false); // remove 
+                        swal("Có lỗi xảy ra", "error");
+                        console.log(response.responseJSON.message);
+                    }
+                });
+                if($temp)
+                    $temp.remove();
+                form.find('input[name=password]').prop('disabled', false);
+            }, function (error) {
+                btn.attr('disabled', false);
+                btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false);
+                form.find('input[name=password]').prop('disabled', false);
+            });
+        });
+
+        $('#deleteAccountSubmit').click(function(e){
+            e.preventDefault();
+            var btn = $(this);
+            var form = $(this).closest('form');
+            
+            btn.addClass('m-loader m-loader--right m-loader--light').attr('disabled', true);
+
+            form.ajaxSubmit({
+                url: 'account/delete',
+                type: 'POST',
+                success: function(response, status, xhr, $form) {
+                    btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false); // remove 
+                    swal({
+                        position: 'center',
+                        type: 'success',
+                        title: response.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(function(result){$('#deleteAccountForm').modal('hide');});
+
+                    $('.m-content').html(response.view);
+                    form.clearForm();
+	                form.validate().resetForm();
+                },
+                error: function(response, status, xhr, $form) {
+                    btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false); // remove 
+                    swal("Có lỗi xảy ra", "", status);
+                    console.log(response);
+                }
+            });
+        });
+        
+        $('#shareAccountSubmit').click(function(e){
+            e.preventDefault();
+            var btn = $(this);
+            var form = $(this).closest('form');
+            
+            btn.addClass('m-loader m-loader--right m-loader--light').attr('disabled', true);
+
+            form.ajaxSubmit({
+                url: 'account/share',
+                type: 'POST',
+                success: function(response, status, xhr, $form) {
+                    if (response.sharedkey && response.content) {
+                        console.info(response.message);
+                        
+                        cipherToDecrypt = response.content;
+                        decryptFunction(function (result) {
+                            messageToEncrypt = result;
+                            const sharedkey = response.sharedkey;
+                            encryptFunction(sharedkey, function (result){
+                                data =  {
+                                    'id': response.id,
+                                    'content': result,
+                                };
+                                $.ajax({
+                                    url: 'account/share/finalize',
+                                    type: 'POST',
+                                    data: data,
+                                    success: function(response, status, xhr, $form) {
+                                        btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false); // remove 
+                                        swal({
+                                            position: 'center',
+                                            type: 'success',
+                                            title: response.message,
+                                            showConfirmButton: false,
+                                            timer: 1500
+                                        }).then(function(result){$('#shareAccountForm').modal('hide');});
+
+                                        form.clearForm();
+                                        form.validate().resetForm();
+                                    },
+                                    error: function(response, status, xhr, $form) {
+                                        btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false); // remove 
+                                        swal("Có lỗi xảy ra", "", status);
+                                        console.log(response);
+                                    }
+                                });
+                            }, function (error) {
+                                btn.attr('disabled', false);
+                                btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false);
+                                form.find('input[name=password]').prop('disabled', false);
+                            });
+
+                        });                     
+                    }
+                    else {
+                        btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false); // remove 
+                        swal({
+                            position: 'center',
+                            type: 'success',
+                            title: response.message,
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(function(result){$('#shareAccountForm').modal('hide');});
+
+                        form.clearForm();
+                        form.validate().resetForm();
+                    }
+                },
+                error: function(response, status, xhr, $form) {
+                    btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false); // remove 
+                    swal(response.responseJSON.message, response.responseJSON.detail, status);
+                    console.log(response);
+                }
+            });
+        });
+    });
+</script>
+
+<script>
+
+    $(document).ready(function(){
+
+        $('.portlet-note').on('click', function () {
+            var showEditForm = $(this).find(".note-edit");
+            if(showEditForm[0])
+                showEditForm[0].click();
+            else
+                showEditForm.click();
+        });
+
+        $('.note-copy-content').click(function (e) {
+            var data = {
+                'id': $(this).closest('.m-portlet').find('input[name=id]').val(),
+            };
+            console.log(data.id);
+            $.ajax({
+                url: 'securenote/getContent',
+                type: 'POST',
+                data: data,
+                success: function(response, status, xhr, $form) {
+                    cipherToDecrypt = response.content;
+
+                    decryptFunction(function (result) {
+                        // Không copy nhanh được nên phải dùng như bên dưới
+                        swal({
+                            title: "Giải mã nội dung thành công",
+                            type: 'success',
+                            confirmButtonText: 'Sao chép',
+                            onClose: (input) => {
+                                copy(result);
+                            }
+                        });                            
+                    });
+                },
+                error: function(response, status, xhr, $form) {
+                    console.log(response);
+                    swal("", response.message.serialize(), "error");
+                }
+            });
+            e.stopPropagation();
+        });
+
+        
+        $('.note-edit').click(function (){
+            var data = {
+                'id': $(this).closest(".m-portlet").find("input[name=id]").val(),
+            };
+            $.ajax({
+                url: 'securenote/detail',
+                type: 'POST',
+                data: data,
+                success: function(response, status, xhr, $form) {
+                    $('#editNoteForm input[name=id]').val(response.id);
+                    $('#editNoteForm input[name=title]').val(response.title);
+                    $('#editNoteForm .last_updated').text(response.updated_at);
+                },
+                error: function(response, status, xhr, $form) {
+                    console.log(response);
+                    swal("", response.message.serialize(), "error");
+                }
+            });
+        });
+
+        $('.note-share').click(function (e) {
+            var id = $(this).closest(".m-portlet").find("input[name=id]").val();
+            $('#shareNoteForm input[name=id]').val(id);
+        });
+
+        $(".note-delete").click(function(){
+            var id = $(this).closest(".m-portlet").find("input[name=id]").val();
+            $('#deleteNoteForm input[name=id]').val(id);
+        })
+
+        $('#getContent').click(function () {
+            var data = {
+                'id': $('#editNoteForm input[name=id]').val(),
+            };
+            $.ajax({
+                url: 'securenote/getContent',
+                type: 'POST',
+                data: data,
+                success: function(response, status, xhr, $form) {
+                    cipherToDecrypt = response.content;
+
+                    decryptFunction(function (result) {
+                        $('#editNoteForm textarea[name=note_content]').val(result);
+                        $('#editNoteForm textarea[name=note_content]').prop('rows','10');
+                    });
+                },
+                error: function(response, status, xhr, $form) {
+                    console.log(response);
+                    swal("", response.message.serialize(), "error");
+                }
+            });
+        });
+
+        $('#addNoteSubmit').click(function(e){
+            e.preventDefault();
+            var btn = $(this);
+            var form = $(this).closest('form');
+            
+            btn.addClass('m-loader m-loader--right m-loader--light');
+            btn.attr('disabled', true);
+
+            // Encrypt note content with OpenPGPjs
+            form.find('textarea[name=note_content]').prop('disabled', true);
+
+            messageToEncrypt = form.find("textarea[name=note_content]").val();
+
+            encryptFunction(pubkey, function (result) {
+                if(result) {
+                    var $temp = $("<textarea name='cipher'>");
+                    form.append($temp);      
+                    form.append('</textarea>');
+                    $temp.val(result);
+                }
+                form.ajaxSubmit({
+                    url: 'securenote/add',
+                    type: 'POST',
+                    success: function(response, status, xhr, $form) {
+                        btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false); // remove 
+                        swal({
+                            position: 'center',
+                            type: 'success',
+                            title: response.message,
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(function(result){$('#addNoteForm').modal('hide');});
+
+                        $('.m-content').html(response.view);                        
+                        form.clearForm();
+                        form.validate().resetForm();
+                    },
+                    error: function(response, status, xhr, $form) {
+                        btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false); // remove 
+                        console.log(response);
+                        swal("", response.message.serialize(), "error");
+                    }
+                });
+                if($temp)
+                    $temp.remove();
+                form.find('textarea[name=note_content]').prop('disabled', false);
+            }, function (error) {
+                btn.attr('disabled', false);
+                btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false);
+                form.find('textarea[name=note_content]').prop('disabled', false);
+            });
+        });
+
+        $('#editNoteSubmit').click(function(e){
+            e.preventDefault();
+            var btn = $(this);
+            var form = $(this).closest('form');
+             
+            btn.addClass('m-loader m-loader--right m-loader--light').attr('disabled', true);
+            btn.attr('disabled', true);
+
+            // Encrypt note content with OpenPGPjs
+            form.find('textarea[name=note_content]').prop('disabled', true);
+
+            messageToEncrypt = form.find("textarea[name=note_content]").val();
+            encryptFunction(pubkey, function (result) {
+                if(result) {
+                    var $temp = $("<textarea name='cipher'>");
+                    form.append($temp);      
+                    form.append('</textarea>');
+                    $temp.val(result);
+                }
+                form.ajaxSubmit({
+                    url: 'securenote/edit',
+                    type: 'POST',
+                    success: function(response, status, xhr, $form) {
+                        btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false); // remove 
+                        swal({
+                            position: 'center',
+                            type: 'success',
+                            title: response.message,
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(function(result){$('#editNoteForm').modal('hide');});
+
+                        $('.m-content').html(response.view);
+                        form.clearForm();
+                        form.validate().resetForm();
+                    },
+                    error: function(response, status, xhr, $form) {
+                        btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false); // remove 
+                        swal("","Có lỗi xảy ra", "error");
+                        console.log(response.responseJSON.message);
+                    }
+                });
+                if($temp)
+                    $temp.remove();
+                form.find('textarea[name=note_content]').prop('disabled', false);
+            }, function (error) {
+                btn.attr('disabled', false);
+                btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false);
+                form.find('textarea[name=note_content]').prop('disabled', false);
+            });
+        });
+
+        $('#deleteNoteSubmit').click(function(e){
+            e.preventDefault();
+            var btn = $(this);
+            var form = $(this).closest('form');
+            
+            form.ajaxSubmit({
+                url: 'securenote/delete',
+                type: 'POST',
+                success: function(response, status, xhr, $form) {
+                    swal({
+                        position: 'center',
+                        type: 'success',
+                        title: response.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(function(result){$('#deleteNoteForm').modal('hide');});
+
+                    $('.m-content').html(response.view);
+                    form.clearForm();
+	                form.validate().resetForm();
+                },
+                error: function(response, status, xhr, $form) {
+                    swal("", response.serialize(), "error");
+                }
+            });
+        });
+
+        $('#shareNoteSubmit').click(function(e){
+            e.preventDefault();
+            var btn = $(this);
+            var form = $(this).closest('form');
+            
+            btn.addClass('m-loader m-loader--right m-loader--light').attr('disabled', true);
+
+            form.ajaxSubmit({
+                url: 'securenote/share',
+                type: 'POST',
+                success: function(response, status, xhr, $form) {
+                    if (response.sharedkey && response.content) {
+                        console.info(response.message);
+                        
+                        cipherToDecrypt = response.content;
+                        decryptFunction(function (result) {
+                            messageToEncrypt = result;
+                            const sharedkey = response.sharedkey;
+                            encryptFunction(sharedkey, function (result){
+                                data =  {
+                                    'id': response.id,
+                                    'content': result,
+                                };
+                                $.ajax({
+                                    url: 'securenote/share/finalize',
+                                    type: 'POST',
+                                    data: data,
+                                    success: function(response, status, xhr, $form) {
+                                        btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false); // remove 
+                                        swal({
+                                            position: 'center',
+                                            type: 'success',
+                                            title: response.message,
+                                            showConfirmButton: false,
+                                            timer: 1500
+                                        }).then(function(result){$('#shareNoteForm').modal('hide');});
+
+                                        form.clearForm();
+                                        form.validate().resetForm();
+                                    },
+                                    error: function(response, status, xhr, $form) {
+                                        btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false); // remove 
+                                        swal("Có lỗi xảy ra", "", status);
+                                        console.log(response);
+                                    }
+                                });
+                            }, function (error) {
+                                btn.attr('disabled', false);
+                                btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false);
+                                form.find('textarea[name=note_content]').prop('disabled', false);
+                            });
+                        });                     
+                    }
+                    else {
+                        btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false); // remove 
+                        swal({
+                            position: 'center',
+                            type: 'success',
+                            title: response.message,
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(function(result){$('#shareNoteForm').modal('hide');});
+
+                        form.clearForm();
+                        form.validate().resetForm();
+                    }
+                },
+                error: function(response, status, xhr, $form) {
+                    btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false); // remove 
+                    swal(response.responseJSON.message, response.responseJSON.detail, status);
+                    console.log(response);
+                }
+            });
+        });
+    });
+</script>
+
+<script>
+    
     function editGroup(id, name)
     {
         $('#editGroupForm input[name=id]').val(id);
@@ -126,6 +823,42 @@
     
 
     $(document).ready(function(){
+
+        var users_datatable_options = {
+            data: {
+                saveState: {cookie: false},
+            },
+            search: {
+                input: $('#userSearch'),
+            },
+            columns: [
+                {
+                field: '#',
+                type: 'number',                
+                textAlign: 'center',
+                width: 50,
+                },
+                {
+                field: 'Tên người dùng',
+                type: 'text',
+                sortable: 'asc',
+                },
+                {
+                field: 'Vai trò',
+                type: 'text',
+                width: 150,
+                },
+                {
+                field: '',
+                type: 'text',
+                textAlign: 'center',
+                width: 50,
+                },
+            ],
+            pagination: false,
+        };
+
+        users_datatable = $('.m-datatable').mDatatable(users_datatable_options);
 
         $('#addUser').click(function(e){
             e.preventDefault();

@@ -19,12 +19,12 @@ use App\Group;
 use App\GroupUser;
 use App\Share;
 
-use Hash;
+// use Hash;
 
-use App\Mail\PotentialUser;
+// use App\Mail\PotentialUser;
 
 
-class HomeController extends Controller
+class GroupController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -36,46 +36,6 @@ class HomeController extends Controller
         $this->middleware('auth');
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function dashboard()
-    {
-        $accounts = Auth::user()->account()->get();
-        $notes = Auth::user()->note()->get();
-        $groups = Auth::user()->group()->get();
-        return view('page.dashboard', compact('accounts', 'notes', 'groups'));
-    }
-    // public function getUserAccounts()
-    // {
-
-    //     $accounts = DB::table('accounts')
-    //         ->join('secrets', 'accounts.id', '=', 'secrets.account_id')
-    //         ->where('secrets.user_id', '=', Auth::user()->id)
-    //         ->select('accounts.*','secrets.data')
-    //         ->get();
-        
-    //     return $accounts;
-    // }
-    // public function getUserNotes()
-    // {
-        // $notes = DB::table('notes')
-    //     //     ->join('secrets', 'notes.id', '=', 'secrets.note_id')
-    //     //     ->where('secrets.user_id', '=', Auth::user()->id)
-    //     //     ->select('notes.*')
-    //     //     ->get();
-    //     $notes = Auth::user()->note()->get();
-        
-    //     return $notes;
-    // }
-    public function accounts()
-    {
-        $accounts = Auth::user()->account()->get();
-        return view('page.accounts', compact('accounts'));
-    }
-
     public function getAccount(Request $request)
     {
         $account = Account::where("id", $request->id)->first();
@@ -84,6 +44,7 @@ class HomeController extends Controller
 
     public function addAccount(Request $request)
     {
+        $group = Group::find($request->group_id);
         $account = new Account;
         $account->name = $request->name;
         $account->uri = $request->url;
@@ -93,19 +54,18 @@ class HomeController extends Controller
 
         // Nối id tới secret ứng mỗi user khác nhau
         $secret = new Secret;
-        $user = Auth::user();
-        $secret->owner_id = $user->id;
+        $secret->owner_id = $group->id;
         $secret->asset_id = $account->id;
         // TODO: encrypt OpenGPG
         $secret->data = $request->cipher;
         $secret->save();
         
-        $accounts = Auth::user()->account()->get();
+        $accounts = $group->account()->get();
         return response()->json([
             'success' => true,
             // TODO: lang this message
             'message' => 'Thêm tài khoản thành công',
-            'view' => view('content.content-accounts', compact('accounts'))->render()
+            'view' => view('page.groupdetail', compact('group','groupUsers','admin', 'accounts', 'notes')),
         ]);
     }
 
@@ -270,13 +230,6 @@ class HomeController extends Controller
         ]);
     }
 
-    public function notes()
-    {
-        $notes = Auth::user()->note()->get();
-
-        return view('page.notes',compact('notes'));
-    }
-
     public function getNote(Request $request)
     {
         $note = Note::where("id", $request->id)->first();
@@ -433,245 +386,216 @@ class HomeController extends Controller
         return Storage::disk('userstorage')->download(Auth::user()->id.'/'.$filename);
     }
     
-    public function sharewithme()
+    public function groups()
     {
-        $assets = Auth::user()->share()->get();
-        $asset_ids = $assets->pluck('asset_id');
-        $accounts = Account::whereIn('id', $asset_ids)->get();
-        $notes = Note::whereIn('id', $asset_ids)->get();
-
-        return view('page.sharewithme', compact('accounts','notes'));
+        $groups = Auth::user()->group()->get();
+        return view('page.groups', compact('groups'));
     }
 
-    public function deleteAsset(Request $request)
+    public function groupDetail($group_id)
     {
-        $asset = Share::find($request->id);
-
-        Secret::where('asset_id', $asset->id)->delete();
-        Account::where('id', $asset->id)->delete();
-        Note::where('id', $asset->id)->delete();
-        $asset->delete();
-
-        $assets = Auth::user()->share()->get();
-        $asset_ids = $assets->pluck('asset_id');
-        $accounts = Account::whereIn('id', $asset_ids)->get();
-        $notes = Note::whereIn('id', $asset_ids)->get();
-
-        return response()->json([
-            'success' => true,
-            // TODO: lang this message
-            'message' => 'Xoá thành công',
-            'view' => view('content.content-sharewithme', compact('accounts','notes'))->render()
-        ]);
-    }
-
-    public function moveAsset(Request $request)
-    {
-        $asset_id = $request->id;
-        Share::where('asset_id', $asset_id)->delete();
-
-        $assets = Auth::user()->share()->get();
-        $asset_ids = $assets->pluck('asset_id');
-        $accounts = Account::whereIn('id', $asset_ids)->get();
-        $notes = Note::whereIn('id', $asset_ids)->get();
-
-        return response()->json([
-            'success' => true,
-            // TODO: lang this message
-            'message' => 'Đã chuyển thành công',
-            'view' => view('content.content-sharewithme', compact('accounts','notes'))->render()
-        ]);
-    }
-
-    public function moveAccounts(Request $request)
-    {
-        $assets = Auth::user()->share()->get();
-        $asset_ids = $assets->pluck('asset_id');
-
-        $accounts = Account::whereIn('id', $asset_ids)->get();
-        $account_ids = $accounts->pluck('id');
-        Share::whereIn('asset_id', $account_ids)->delete();
-
-        $assets = Auth::user()->share()->get();
-        $asset_ids = $assets->pluck('asset_id');
-        $accounts = Account::whereIn('id', $asset_ids)->get();
-        $notes = Note::whereIn('id', $asset_ids)->get();
-
-        return response()->json([
-            'success' => true,
-            // TODO: lang this message
-            'message' => 'Đã chuyển thành công',
-            'view' => view('content.content-sharewithme', compact('accounts','notes'))->render()
-        ]);        
+        $group = Group::find($group_id);
+        $groupUsers = DB::table('groups_users')
+                ->where('group_id', $group_id)        
+                ->join('users', 'groups_users.user_id', '=', 'users.id')
+                ->select('groups_users.*','users.email','users.name')
+                ->get();
+        $admin = Auth::user()->GroupUser()->where('group_id', $group->id)->first()->is_admin;
+        $accounts =  $group->account()->get();
+        $notes = $group->note()->get();
+        return view('page.groupdetail', compact('group','groupUsers','admin', 'accounts', 'notes'));
     }
     
-    public function moveNotes(Request $request)
+    public function checkUser(Request $request)
     {
-        $assets = Auth::user()->share()->get();
-        $asset_ids = $assets->pluck('asset_id');
-
-        $notes = Note::whereIn('id', $asset_ids)->get();
-        $note_ids = $notes->pluck('id');
-        Share::whereIn('asset_id', $note_ids)->delete();
-
-        $assets = Auth::user()->share()->get();
-        $asset_ids = $assets->pluck('asset_id');
-        $accounts = Account::whereIn('id', $asset_ids)->get();
-        $notes = Note::whereIn('id', $asset_ids)->get();
-
-
-        return response()->json([
-            'success' => true,
-            // TODO: lang this message
-            'message' => 'Đã chuyển thành công',
-            'view' => view('content.content-sharewithme', compact('accounts','notes'))->render()
-        ]);
-    }
-
-    public function profile()
-    { 
-        $user = Auth::user();
-        return view('page.profile', compact('user'));
-    }
-
-    public function saveProfile(Request $request)
-    { 
-        $user = Auth::user();
-        $user->name = $request->name;
-        $user->save();
-
-        $profile = $user->profile();
-        $profile->avatar = $request->avatar;
-        $profile->firstname = $request->firstname;
-        $profile->lastname = $request->lastname;
-        $profile->gender = $request->gender;
-        $profile->date_of_birth = $request->date_of_birth;
-        $profile->phone = $request->phone;
-        $profile->address = $request->address;
-        $profile->timezone = $request->timezone;
-        $profile->language = $request->language;
-        $profile->save();
-
-        return response()->json([
-            'success' => true,
-            // TODO: lang this message
-            'message' => 'Lưu thay đổi thành công',
-            'view' => view('content.profile', compact('user'))->render()
-        ]);
-    }
-
-    public function addPrivKey(Request $request)
-    { 
-        try {            
-            $user = Auth::user();
-            // Only allow 2 keys in early development
-            $pgp = PGPkey::where([
-                ['owner_id', $user->id],
-                ['type', '5'],
+        $email = $request->email;
+        $user = User::where('email',$request->email)->first();
+        if($user != null)
+        {
+            return response()->json([
+                'success' => true,
+                // TODO: lang this message
+                'message' => 'Người dùng tồn tại'
             ]);
-            $pgp->delete();
-
-            $pgp_key = new PGPkey;
-            $pgp_key->owner_id = $user->id;
-            $pgp_key->armored_key = $request->armored_key;
-            $pgp_key->uid = $request->uid;
-            $pgp_key->key_id = $request->key_id;
-
-            $chars = array_map("chr", $request->fingerprint);
-            $bin = join($chars);
-            $hex = bin2hex($bin);
-            $pgp_key->fingerprint = $hex;
-            
-            $pgp_key->type = $request->type; // '5' - private; '6' - public key packet
-
-            if( $request->expires != "0" ) {
-                $key_expires = substr( $request->key_expires, 0, strpos($request->key_expires, '(') );
-                $pgp_key->expires = $key_expires;
-            }
-
-            $key_created = substr( $request->key_created, 0, strpos($request->key_created, '(') );
-            $pgp_key->key_created = date('Y-m-d h:i:s', strtotime($key_created));
-            
-            $pgp_key->save();
         }
-        catch(\Exception $e) {
+        
+        else{
             return response()->json([
                 'success' => false,
-                'message' => 'Lưu khoá không thành công',
-            ],500);
+                // TODO: lang this message
+                'message' => 'Người dùng không tồn tại'
+            ], 500);
         }
-
-        return response()->json([
-            'success' => true,
-            'message' => "Lưu khoá thành công",
-        ]);
     }
 
-    public function delPrivKey()
+    public function addGroup(Request $request)
     {
-        // Delete private key(s) as user requested
-        $user = Auth::user();
-        $pgp = PGPkey::where([
-            ['owner_id', $user->id],
-            ['type', '5'],
-        ]);
-        $pgp->delete();
+        $user_admin = Auth::user();
+        $group = new Group;
+        $group->name = $request->name;
+        $group->created_by = $user_admin->id;
+        $group->modified_by = $user_admin->id;
+        $group->save();
 
-        return response()->json([
-            'success' => true,
-            'message' => "Huỷ khoá thành công",
-        ]);
-    }
+        $group_user = new GroupUser;
+        $group_user->group_id = $group->id;
+        $group_user->user_id = $user_admin->id;
+        $group_user->is_admin = true;
+        $group_user->save();
+       
+        $data = json_decode(stripslashes($_POST['li_variable']));
 
-    public function quickSearch(Request $request)
-    {
-        $accounts = Auth::user()->account()->search($request->q, null, true)->get();
-        $notes = Auth::user()->note()->search($request->q, null, true)->get();
-        $groups = Auth::user()->group()->search($request->q, null, true)->get();
+        foreach($data as $email){
+            $user = User::where('email',$email)->first();
+            if( $user != Auth::user() ) 
+            {
+                $group_user = new GroupUser;
+                $group_user->group_id = $group->id;
+                $group_user->user_id = $user->id;
+                $group_user->save();          
+            }
+        }
         
-        return view('content.quicksearch', compact('accounts','notes','groups'));
-    } 
-
-    public function getUser()
-    {
-        $users = User::where('role_id','!=','5bdf5220-d75c-11e8-843b-a7f6cbee423d')->get();
-        return view('admin.user-manage', compact('users'));
-    }
-
-    public function editUser(Request $request)
-    {
-        $id = $request->id;
-        $user = User::find($id);
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->active = $request->status;
-        $user->role_id = $request->role;
-
-        $user->save();
-
-        $users = User::where('role_id','!=','5bdf5220-d75c-11e8-843b-a7f6cbee423d')->get();
+        $groups = Auth::user()->group()->get();
         return response()->json([
             'success' => true,
             // TODO: lang this message
-            'message' => 'Chỉnh sửa người dùng thành công',
-            'view' => view('admin.content-user-manage', compact('users'))->render()
+            'message' => 'Tạo nhóm mới thành công',
+            'view' => view('content.content-group', compact('groups'))->render()
         ]);
     }
-
-    public function getGroup()
-    {
-        $groups = Group::all();
-        return view('admin.group-manage', compact('groups'));
-    }
     
-    public function pgp()
+    public function editGroup(Request $request)
     {
-        return view('page.pgp');
+        $group_id = $request->id;
+        $group = Group::find($group_id);
+        $group->name = $request->name;
+        $group->save();
+
+        $groups_users = GroupUser::where('group_id', $group_id)->get();
+        $user_id = $groups_users->pluck('user_id');
+        $users = User::whereIn('id',$user_id)->get();;
+
+        $emails = json_decode(stripslashes($_POST['li_variable']));
+
+        foreach($emails as $email){
+            $user = User::where('email', $email)->first();
+            if(!($groups_users->where('user_id',$user->id)->first())) {
+                $group_user = new GroupUser;
+                $group_user->group_id = $group->id;
+                $group_user->user_id = $user->id;
+                $group_user->save();
+            }
+        }
+
+        $groupUsers = DB::table('groups_users')
+                ->where('group_id', $group_id)        
+                ->join('users', 'groups_users.user_id', '=', 'users.id')
+                ->select('groups_users.*','users.email','users.name')
+                ->get();
+        $admin = Auth::user()->GroupUser()->where('group_id',$group->id)->first()->is_admin;
+
+        return response()->json([
+            'success' => true,
+            // TODO: lang this message
+            'message' => 'Chỉnh sửa nhóm thành công',
+            'view' => view('content.content-group-user', compact('group','groupUsers','admin'))->render()
+        ]);
+
     }
 
-    public function keepalive()
+    public function deleteGroup(Request $request)
     {
-        return response('',204);
+        $group_id = $request->id;
+        
+        $group = Group::find($group_id);
+        $group->delete();
+
+        $group_user = GroupUser::where('group_id', $group_id)->first();
+        $group_user->delete();
+
+        $groups = Auth::user()->group()->get();
+        return response()->json([
+            'success' => true,
+            // TODO: lang this message
+            'message' => 'Xóa nhóm thành công',
+            'view' => view('content.content-group', compact('groups'))->render()
+        ]);
+    }
+    public function deleteUser(Request $request)
+    {
+        $user_id = $request->user_id;
+        $group_id = $request->group_id;
+        $group_user = GroupUser::where('group_id',$group_id)
+                                ->where('user_id', $user_id)->first();
+        $group = GroupUser::where('group_id',$group_id)->get();
+
+        if( ($group_user->is_admin == true) && ( count($group->where('is_admin',true)) == 1) ) {
+            return response()->json([
+                'success' => false,
+                // TODO: lang this message
+                'message' => 'Vui lòng chọn quản trị viên thay thế'
+            ],'500');
+        }
+
+        $group_user->delete();
+
+        // Refresh content
+        $group = Group::find($group_id);
+        $groupUsers = DB::table('groups_users')
+                ->where('group_id', $group_id)        
+                ->join('users', 'groups_users.user_id', '=', 'users.id')
+                ->select('groups_users.*','users.email','users.name')
+                ->get();
+        $admin = Auth::user()->GroupUser()->where('group_id',$group->id)->first()->is_admin;
+
+        return response()->json([
+            'success' => true,
+            // TODO: lang this message
+            'message' => 'Xóa người dùng khỏi nhóm thành công',
+            'view' => view('content.content-group-user', compact('group','groupUsers','admin'))->render()
+        ]);
+
+    }
+
+    public function changeRole(Request $request)
+    {
+        $user_id = $request->idUser;
+        $group_id = $request->idGroup;
+        $group = GroupUser::where('group_id',$group_id)->get();
+        $user = $group->where('user_id', $user_id)->first();
+        
+        if($request->role == 1) {
+            $user->is_admin = 1;
+        }
+        else {
+            if($request->role == 0) {
+                if(count($group->where('is_admin',true)) == 1) {
+                    return response()->json([
+                        'success' => false,
+                        // TODO: lang this message
+                        'message' => 'Vui lòng chọn quản trị viên thay thế'
+                    ],'500');
+                }
+                $user->is_admin = 0;
+            }
+        }
+        $user->save();
+
+        $group = Group::find($group_id);
+        $groupUsers = DB::table('groups_users')
+                ->where('group_id', $group_id)        
+                ->join('users', 'groups_users.user_id', '=', 'users.id')
+                ->select('groups_users.*','users.email','users.name')
+                ->get();
+        $admin = Auth::user()->GroupUser()->where('group_id',$group->id)->first()->is_admin;
+
+        return response()->json([
+            'success' => true,
+            // TODO: lang this message
+            'message' => 'Thay đổi vai trò người dùng thành công',
+            'view' => view('content.content-group-user', compact('group','groupUsers','admin'))->render()
+        ]);
     }
 
 }

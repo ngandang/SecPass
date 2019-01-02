@@ -37,7 +37,6 @@
                 </span>
             </a>
         </div>
-
     </div>
 </div>
 
@@ -107,11 +106,6 @@
     function del(id){
         $('#deleteForm input[name=id]').val(id);
     }
-    // function delUser()
-    // {
-    //     // $(this).closest('li').remove();
-    //     $(this).remove(li);
-    // }
     
     $(document).ready(function(){
 
@@ -124,8 +118,6 @@
         });
 
         $('#addForm input[name=email]').keypress(function(e) {            
-            
-            // e.stopPropagation();
             if(e.which == 13){
                 e.preventDefault();
                 $("#addUser").click();
@@ -168,10 +160,6 @@
         $('.del-email').click(function()
         {
             $('#users').removeAttr('li');
-            // $(this).prev('li').remove();
-            // $(this).remove();    
-            // var btn = $(this);
-            // $(this).parent().remove(li);
         });
 
         $('#addSubmit').click(function(e){

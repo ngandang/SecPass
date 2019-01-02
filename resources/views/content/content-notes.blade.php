@@ -3,7 +3,7 @@
     @foreach($notes->sortBy('title') as $note)
     <div class="col-lg-4">
         <!--begin::Portlet-->
-        <div class="m-portlet m-portlet--brand m-portlet--head-solid-bg m-portlet--head-sm m-portlet--bordered">
+        <div class="portlet-note m-portlet m-portlet--brand m-portlet--head-solid-bg m-portlet--head-sm m-portlet--bordered">
             <div class="m-portlet__head">
                 <div class="m-portlet__head-caption">
                     <div class="m-portlet__head-title">

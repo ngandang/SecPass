@@ -4,7 +4,7 @@
     @foreach($accounts->sortBy('name') as $acc)
     <div class="col-lg-3">
         <!--begin::Portlet-->
-        <div class="m-portlet m-portlet--brand m-portlet--head-solid-bg m-portlet--head-sm m-portlet--bordered">
+        <div class="portlet-account m-portlet m-portlet--brand m-portlet--head-solid-bg m-portlet--head-sm m-portlet--bordered">
             <div class="m-portlet__head">
                 <div class="m-portlet__head-caption">
                     <div class="m-portlet__head-title">

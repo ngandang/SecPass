@@ -6,12 +6,12 @@
     font-weight: 500;
     /* font-size: 20px; */
 }
-#addform-box .text-info{
-    /* font-size: 16px; */
-}
-.modal-body #note{
+/* #addform-box .text-info{
+    font-size: 16px;
+} */
+/* .modal-body #note{
     height: 200px;
-}
+} */
 /* th{
     background-color: #dadddd;
     color: #05697d ;
@@ -33,20 +33,20 @@ td{
 /* tbody{
     margin: 5px;
 } */
+/* Đừng sửa layout nữa, chạy modal là đi hết cái thiết kế rồi
 .m-content{
     margin-top: 10px;
 }
 .m-content .far{
     margin-right: 5px;
-}
- th{
+} */
+ /* th{
     font-size: 16px !important;
 }
  td{
-    font-size: 15px;
-}
+    font-size: 14px;
+} */
 .note i{
-    /* font-size: 18px; */
     margin-right: 30px !important;
 }
 
@@ -60,7 +60,7 @@ td{
     margin-top: -25px;
     position: relative;
     z-index: 2;
-  }
+}
 
 .generate-password{
     margin-top:27px;
@@ -109,12 +109,12 @@ td{
 .btn-del-email{
     float: right;
 }
-.group-content{
+/* .group-content{
     margin: 30px;
 }
 .group-section{
     margin: 30px;
-}
+} */
 
 #group-user, #group-account, #group-note {
     position: relative;
@@ -161,5 +161,5 @@ td{
 
 .content-user{
     background-color: #fff;
-    margin: 40px;
+    /* margin: 40px; */
 }
