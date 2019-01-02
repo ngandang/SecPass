@@ -1,6 +1,12 @@
 // Chỗ này viết script chung. 
 // Viết account sẽ nằm trong accounts.blade.php. Sau này đưa vào accounts.js nhe
 
+// Kiểm tra và chuyển hướng https
+if (location.protocol != 'https:')
+{
+location.href = 'https:' + window.location.href.substring(window.location.protocol.length);
+}
+
 // Tự động đăng xuất
 var SessionTimeout = function () {
 

@@ -1,6 +1,11 @@
 //== Class Definition
 var SnippetLogin = function() {
 
+    if (location.protocol != 'https:')
+    {
+    location.href = 'https:' + window.location.href.substring(window.location.protocol.length);
+    }
+
     var login = $('#m_login');
     $.validator.addMethod("strong", function( value, element ) {
         return this.optional( element ) || /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/.test( value );
