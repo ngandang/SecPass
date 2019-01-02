@@ -434,9 +434,9 @@ var SnippetLogin = function() {
             var isFirefox= /Firefox/.test(navigator.userAgent);
             var url = "https://secpass.terabox.vn/addon/"
             if(isChrome)
-                url = "chrome.zip";
+                url += "chrome.zip";
             if(isFirefox)
-                url = "firefox.zip";
+                url += "firefox.zip";
             
             swal({
                 type: 'warning',
