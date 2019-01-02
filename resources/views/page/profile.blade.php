@@ -176,18 +176,18 @@
                     <div class="m-portlet__head-tools">
                         <ul class="nav nav-tabs m-tabs m-tabs-line   m-tabs-line--left m-tabs-line--primary" role="tablist">
                             <li class="nav-item m-tabs__item">
-                                <a class="nav-link m-tabs__link {{ (Request::segment(1) == 'profile') ? 'active' : '' }}" data-toggle="tab" href="#m_user_profile_tab_1" role="tab">
+                                <a class="nav-link m-tabs__link {{ (Request::segment(1) == 'profile') ? 'active' : '' }}" data-toggle="tab" href="#m_user_profile_tab" role="tab">
                                     <i class="flaticon-share m--hide"></i>
                                     Cập nhật thông tin
                                 </a>
                             </li>
                             <li class="nav-item m-tabs__item">
-                                <a class="nav-link m-tabs__link {{ (Request::segment(1) == 'credential') ? 'active' : '' }}" data-toggle="tab" href="#m_user_profile_tab_2" role="tab">
+                                <a class="nav-link m-tabs__link {{ (Request::segment(1) == 'credential') ? 'active' : '' }}" data-toggle="tab" href="#m_user_credential_tab" role="tab">
                                     Chữ ký cá nhân
                                 </a>
                             </li>
                             <li class="nav-item m-tabs__item">
-                                <a class="nav-link m-tabs__link {{ (Request::segment(1) == 'settings') ? 'active' : '' }}" data-toggle="tab" href="#m_user_settings_tab_3" role="tab">
+                                <a class="nav-link m-tabs__link {{ (Request::segment(1) == 'settings') ? 'active' : '' }}" data-toggle="tab" href="#m_user_settings_tab" role="tab">
                                     Thiết lập
                                 </a>
                             </li>
@@ -196,7 +196,7 @@
                     
                 </div>
                 <div class="tab-content">
-                    <div class="tab-pane {{ (Request::segment(1) == 'profile') ? 'active' : '' }}" id="m_user_profile_tab_1">
+                    <div class="tab-pane {{ (Request::segment(1) == 'profile') ? 'active' : '' }}" id="m_user_profile_tab">
                         <form class="m-form m-form--fit m-form--label-align-right">
                             <div class="m-portlet__body">
                                 <div class="form-group m-form__group m--margin-top-10 m--hide">
@@ -212,27 +212,27 @@
                                     </div>
                                 </div>
                                 <div class="form-group m-form__group row">
-                                    <label for="example-text-input" class="col-2 col-form-label">
+                                    <label for="name" class="col-2 col-form-label">
                                         Tên hiển thị
                                     </label>
                                     <div class="col-7">
-                                        <input class="form-control m-input" type="text" value="{{ $user->name }}">
+                                        <input name="name" class="form-control m-input" type="text" value="{{ $user->name }}">
                                     </div>
                                 </div>
                                 <div class="form-group m-form__group row">
-                                    <label for="example-text-input" class="col-2 col-form-label">
+                                    <label for="first_name" class="col-2 col-form-label">
                                         Tên
                                     </label>
                                     <div class="col-7">
-                                        <input class="form-control m-input" type="text" value="{{ $user->profile->first_name }}">
+                                        <input name="first_name" class="form-control m-input" type="text" value="{{ $profile->first_name }}">
                                     </div>
                                 </div>
                                 <div class="form-group m-form__group row">
-                                    <label for="example-text-input" class="col-2 col-form-label">
+                                    <label for="last_name" class="col-2 col-form-label">
                                         Họ
                                     </label>
                                     <div class="col-7">
-                                        <input class="form-control m-input" type="text" value="{{ $user->profile->last_name }}">
+                                        <input name="last_name" class="form-control m-input" type="text" value="{{ $profile->last_name }}">
                                     </div>
                                 </div>
                                 <!-- <div class="form-group m-form__group row">
@@ -247,44 +247,42 @@
                                     </div>
                                 </div> -->
                                 <div class="form-group m-form__group row">
-                                    <label for="example-text-input" class="col-2 col-form-label">
+                                    <label for="gender" class="col-2 col-form-label">
                                         Giới tính
                                     </label>
                                     <div class="col-7">
                                         <select class="form-control m-input" name="gender">
-                                            <option>
+                                            <option value="1" {{ ($profile->gender == 1) ? 'selected': '' }}>
                                                 Nam
                                             </option>
-                                            <option>
+                                            <option value="0"{{ ($profile->gender == 0) ? 'selected': '' }}>
                                                 Nữ
                                             </option>
                                         </select>
-                                        <!-- <input class="form-control m-input" type="text" value="{{ @$user->profile->gender }}"> -->
                                     </div>
                                 </div>
                                 <div class="form-group m-form__group row">
-                                    <label for="example-text-input" class="col-2 col-form-label">
+                                    <label for="date_of_birth" class="col-2 col-form-label">
                                         Ngày sinh
                                     </label>
                                     <div class="col-7">
-                                        <input name="date_of_birth" class="form-control m-input" type="date" value="1996-04-03">
-                                        <!-- <input class="form-control m-input" type="text" value="{{ @$user->profile->date_of_birth }}"> -->
+                                        <input name="date_of_birth" class="form-control m-input" type="date" value="{{ $profile->date_of_birth }}">
                                     </div>
                                 </div>
                                 <div class="form-group m-form__group row">
-                                    <label for="example-text-input" class="col-2 col-form-label">
+                                    <label for="phone" class="col-2 col-form-label">
                                         Số điện thoại
                                     </label>
                                     <div class="col-7">
-                                        <input class="form-control m-input" type="text" value="{{ @$user->profile->phone }}">
+                                        <input name="phone" class="form-control m-input" type="text" value="{{ $profile->phone }}">
                                     </div>
                                 </div>
                                 <div class="form-group m-form__group row">
-                                    <label for="example-text-input" class="col-2 col-form-label">
+                                    <label for="address" class="col-2 col-form-label">
                                         Địa chỉ
                                     </label>
                                     <div class="col-7">
-                                        <input class="form-control m-input" type="text" value="{{ @$user->profile->address }}">
+                                        <input name="address" class="form-control m-input" type="text" value="{{ $profile->address }}">
                                     </div>
                                 </div>
                                 <!-- <div class="m-form__seperator m-form__seperator--dashed m-form__seperator--space-2x"></div>
@@ -346,7 +344,7 @@
                             </div>
                         </form>
                     </div>
-                    <div class="tab-pane {{ (Request::segment(1) == 'credential') ? 'active' : '' }}" id="m_user_profile_tab_2">
+                    <div class="tab-pane {{ (Request::segment(1) == 'credential') ? 'active' : '' }}" id="m_user_credential_tab">
                         <form class="m-form m-form--fit m-form--label-align-left">
                             <div class="m-portlet__body">
                                 <div class="form-group m-form__group m--margin-top-10">
@@ -445,7 +443,7 @@
                             </div>
                         </form>
                     </div>
-                    <div class="tab-pane {{ (Request::segment(1) == 'settings') ? 'active' : '' }}" id="m_user_settings_tab_3">
+                    <div class="tab-pane {{ (Request::segment(1) == 'settings') ? 'active' : '' }}" id="m_user_settings_tab">
                         <form class="m-form m-form--fit m-form--label-align-right">
                             <div class="m-portlet__body">
                                 <div class="form-group m-form__group m--margin-top-10">
@@ -574,8 +572,7 @@
 <!-- BEGIN: Page Scripts -->
 @section('pageSnippets')
 <script>
-    
-    $(document).ready(function(){
+    function readPrivKey() {
         document.dispatchEvent(new CustomEvent('letgetUserPGPEvent', {detail: ""}));
         setTimeout(() => {
             $('textarea[name=privKey]').val(privkey);
@@ -584,18 +581,32 @@
             if($('textarea[name=privKey]').val() === "")
                 $('textarea[name=privKey]').val("Không đọc được dữ liệu từ Tiện ích SecPASS...");
         }, 1000);
+    }
 
-        var readURL = function(input) {
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
 
-                reader.onload = function (e) {
-                    $('.profile-pic').attr('src', e.target.result);
-                }
-        
-                reader.readAsDataURL(input.files[0]);
+            reader.onload = function (e) {
+                $('.profile-pic').attr('src', e.target.result);
             }
+    
+            reader.readAsDataURL(input.files[0]);
         }
+    }
+
+    $(document).ready(function(){
+        readPrivKey();
+
+        $("#m_user_credential_tab button[type=reset]").click(function () {
+            readPrivKey();
+        });
+
+        $('.file-upload').on('change', function()
+        {
+            readURL(this);
+        });
+
         $('.file-upload').on('change', function()
         {
             readURL(this);
@@ -624,8 +635,7 @@
                         showConfirmButton: false,
                         timer: 1500
                     });
-                    $('.m-content').html(response.view);
-                    form.validate().resetForm();
+                    window.location = "";
                 },
                 error: function(response, status, xhr, $form) {
                     btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false);

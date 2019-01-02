@@ -531,7 +531,9 @@ class HomeController extends Controller
     public function profile()
     { 
         $user = Auth::user();
-        return view('page.profile', compact('user'));
+        $profile = $user->profile()->first();
+        $profile->date_of_birth = \Carbon\Carbon::parse($profile->date_of_birth)->toDateString();
+        return view('page.profile', compact('user', 'profile'));
     }
 
     public function saveProfile(Request $request)
@@ -540,23 +542,21 @@ class HomeController extends Controller
         $user->name = $request->name;
         $user->save();
 
-        $profile = $user->profile();
-        $profile->avatar = $request->avatar;
-        $profile->firstname = $request->firstname;
-        $profile->lastname = $request->lastname;
+        $profile = $user->profile()->first();
+        $profile->first_name = $request->first_name;
+        $profile->last_name = $request->last_name;
         $profile->gender = $request->gender;
         $profile->date_of_birth = $request->date_of_birth;
         $profile->phone = $request->phone;
         $profile->address = $request->address;
-        $profile->timezone = $request->timezone;
-        $profile->language = $request->language;
+        // $profile->timezone = $request->timezone;
+        // $profile->language = $request->language;
         $profile->save();
 
         return response()->json([
             'success' => true,
             // TODO: lang this message
-            'message' => 'Lưu thay đổi thành công',
-            'view' => view('content.profile', compact('user'))->render()
+            'message' => 'Lưu thay đổi thành công'
         ]);
     }
 

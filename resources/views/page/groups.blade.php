@@ -45,10 +45,10 @@
     @include('content.content-group')
 </div>
 <!-- END: Content -->
-<!-- BEGIN: Add form -->
-<form id="add-form" class="form-horizontal" action="" enctype="multipart/form-data" method="post">
+<!-- BEGIN: Add group form -->
+<form id="add-group-form" class="form-horizontal" action="" enctype="multipart/form-data" method="post">
     {{ csrf_field() }}
-    <div class="modal fade" id="addForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal fade" id="addGroupForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -69,7 +69,7 @@
                                     <label for="email" class="text-info">Thêm email người dùng</label>
                                     <input type="text" name="email" id="email" class="form-control">
                                     <span class="m-form__help text-muted">
-                                        Bạn được mặc định là trưởng nhóm.
+                                        Bạn được mặc định là quản trị viên của nhóm.
                                     </span>
                                 </div>
                                 <div class="col-md-2">
@@ -89,12 +89,13 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary pull-left" data-dismiss="modal">Huỷ</button>
-                    <button type="submit" class="btn btn-primary pull-right" id="addSubmit">Lưu</button>
+                    <button type="submit" class="btn btn-primary pull-right" id="addGroupSubmit">Lưu</button>
                 </div>
             </div>
         </div>
     </div>
 </form>
+<!-- END: Add group form -->
 
 @endsection
 
@@ -162,7 +163,7 @@
             $('#users').removeAttr('li');
         });
 
-        $('#addSubmit').click(function(e){
+        $('#addGroupSubmit').click(function(e){
             e.preventDefault();
             var btn = $(this);
             var form = $(this).closest('form');
@@ -194,7 +195,7 @@
                         title: response.message,
                         showConfirmButton: false,
                         timer: 1500
-                    }).then(function(result){$('#addForm').modal('hide');});
+                    }).then(function(result){$('#addGroupForm').modal('hide');});
 
                     $('.m-content').html(response.view);
                     $("#users li").remove();
