@@ -461,6 +461,7 @@ class GroupController extends Controller
             'success' => true,
             // TODO: lang this message
             'message' => 'Tạo nhóm mới thành công',
+            'id' => $group->id,
             'view' => view('content.content-group', compact('groups'))->render()
         ]);
     }

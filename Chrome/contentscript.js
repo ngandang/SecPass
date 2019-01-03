@@ -22,7 +22,6 @@ document.addEventListener('letgetUserPassphraseEvent', function (event) {
 document.addEventListener('removeUserPassphraseEvent', function (event) {
     chrome.storage.local.remove('user_passphrase', function(){
         console.log('addon: destroy passphrase');
-        alert('SecPASS: Mật khẩu đã được xoá khỏi tiện ích.'); 
     });
 });
 

@@ -132,7 +132,7 @@ Route::get('pgp','HomeController@pgp');
 
 Route::get('session-timeout/keepalive', 'HomeController@keepalive');
 
-Route::get('init_roles', function () {
+Route::get('setup', function () {
     App\Role::create(
         [
             'id' => '5bdf5220-d75c-11e8-843b-a7f6cbee423d',
