@@ -20,15 +20,15 @@
 		<!--END::Web font -->
         <!--BEGIN::Base Styles -->
 		<!-- <link href="{{ asset('vendors/custom/fullcalendar/fullcalendar.bundle.css') }}" rel="stylesheet" type="text/css" /> -->
-		<link rel="stylesheet" href="{{ asset('vendors/base/fontawesome-all.css') }}" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+		<link href="{{ asset('vendors/base/fontawesome-all.css') }}" rel="stylesheet" type="text/css" />
 		<link href="{{ asset('vendors/base/vendors.bundle.css') }}" rel="stylesheet" type="text/css" />
-		<link href="{{ asset('default/base/style.bundle.css') }}" rel="stylesheet" type="text/css" />
-		<link href="{{ asset('css/style.css') }}" rel="stylesheet" type="text/css" />
+		<link href="{{ asset('app/base/style.bundle.css') }}" rel="stylesheet" type="text/css" />
+		<link href="{{ asset('app/css/style.css') }}" rel="stylesheet" type="text/css" />
 		<!--END::Base Styles -->
         <!--BEGIN::Page Vendors -->
 		<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
 		<!--END::Page Vendors -->
 		
 		
-		<link rel="shortcut icon" href="{{ asset('default/media/img/logo/favicon.ico') }}" />
+		<link rel="shortcut icon" href="{{ asset('app/media/images/logo/favicon.ico') }}" />
 	</head>

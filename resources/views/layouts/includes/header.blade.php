@@ -6,7 +6,7 @@
 				<div class="m-stack m-stack--ver m-stack--general">
 					<div class="m-stack__item m-stack__item--middle m-brand__logo">
 						<a href="#" class="m-brand__logo-wrapper">
-							<img alt="" src="{{ asset('default/media/img/logo/logo_default_dark.png') }}"/>
+							<img alt="" src="{{ asset('app/media/images/logo/logo_default_dark.png') }}"/>
 						</a>
 					</div>
 					<div class="m-stack__item m-stack__item--middle m-brand__tools">
@@ -48,7 +48,8 @@
 									Lịch sử
 								</span>
 							</a>
-							<div class="m-menu__submenu  m-menu__submenu--fixed m-menu__submenu--left" style="width:600px">
+							<!-- TODO: Đưa nó vào section -->
+							<!-- <div class="m-menu__submenu  m-menu__submenu--fixed m-menu__submenu--left" style="width:600px">
 								<span class="m-menu__arrow m-menu__arrow--adjust"></span>
 								<div class="m-menu__subnav">
 									<ul class="m-menu__content">
@@ -164,7 +165,7 @@
 										</li>
 									</ul>
 								</div>
-							</div>
+							</div> -->
 						</li>
 						<!--begin::Search-->
 						<li class="m-menu__item m-menu__item--large m-dropdown m-dropdown--arrow m-dropdown--large m-dropdown--mobile-full-width m-dropdown--align-right m-dropdown--skin-light m-header-search m-header-search--expandable m-header-search--skin-" id="m_quicksearch" data-search-type="default">
@@ -217,7 +218,7 @@
 								<div class="m-dropdown__wrapper">
 									<span class="m-dropdown__arrow m-dropdown__arrow--right m-dropdown__arrow--adjust"></span>
 									<div class="m-dropdown__inner">
-										<div class="m-dropdown__header m--align-center" style="background: url({{ asset('app/media/img/misc/hiphip_bg.jpg') }}); background-size: cover;">
+										<div class="m-dropdown__header m--align-center" style="background: url({{ asset('app/media/images/misc/hiphip_bg.jpg') }}); background-size: cover;">
 											<span class="m-dropdown__header-title">
 												Tạo mật khẩu mạnh
 											</span>
@@ -229,74 +230,9 @@
 											<div class="m-dropdown__content">
 												<div class="m-scrollable" data-scrollable="false" data-max-height="380" data-mobile-max-height="200">
 													<div class="m-nav-grid m-nav-grid--skin-light">
-														<!-- <div class="m-nav-grid__row">
-															<a href="#" class="m-nav-grid__item">
-																<i class="m-nav-grid__icon flaticon-file"></i>
-																<span class="m-nav-grid__text">
-																	Generate Report
-																</span>
-															</a>
-															<a href="#" class="m-nav-grid__item">
-																<i class="m-nav-grid__icon flaticon-time"></i>
-																<span class="m-nav-grid__text">
-																	Add New Event
-																</span>
-															</a>
-														</div>
-														<div class="m-nav-grid__row">
-															<a href="#" class="m-nav-grid__item">
-																<i class="m-nav-grid__icon flaticon-folder"></i>
-																<span class="m-nav-grid__text">
-																	Create New Task
-																</span>
-															</a>
-															<a href="#" class="m-nav-grid__item">
-																<i class="m-nav-grid__icon flaticon-clipboard"></i>
-																<span class="m-nav-grid__text">
-																	Completed Tasks
-																</span>
-															</a>
-														</div> -->
+													<!-- TODO: sinh mật khẩu -->
 													</div>
 												</div>
-												<!-- <form action="javascript:void();" method="POST" onsubmit="doGenerate(event);">
-													<div id="gen-charset" class="section">
-														<p>Bộ ký tự:</p>
-														<table>
-															<tbody>
-																<tr>
-																	<td><input type="checkbox" id="gen-custom"></td>
-																	<td><label for="custom"> Khác:</label> <input type="text" id="gen-customchars" value="" size="15" oninput="document.getElementById('custom').checked=true;"></td>
-																</tr>
-															</tbody>
-														</table>
-													</div>
-													<div class="section">
-														<table id="type">
-															<tbody>
-																<tr>
-																	<td><input type="radio" name="type" id="gen-by-length" checked="checked"> <label for="gen-by-length">Độ dài:&#xA0;</label></td>
-																	<td><input type="number" min="0" value="10" step="1" id="gen-length" style="width:4em" oninput="document.getElementById('by-length').checked=true;"> ký tự</td>
-																</tr>
-																<tr>
-																	<td><input type="radio" name="type" id="gen-by-entropy"> <label for="gen-by-entropy">Mức độ hỗn loạn:</label>&#xA0;</td>
-																	<td><input type="number" min="0" value="128" step="any" id="gen-entropy" style="width:4em" oninput="document.getElementById('by-entropy').checked=true;"> bit</td>
-																</tr>
-															</tbody>
-														</table>
-													</div>
-													<p style="text-align:center">
-														<input type="submit" id="gen-submit-button" value="Sinh mật khẩu">
-														<input type="button" value="Sao chép" onclick="doCopy();" disabled="disabled">
-													</p>
-													<p style="max-width:unset; word-break:break-all">
-														Mật khẩu: <span id="gen-password"></span>
-													</p>
-													<p id="gen-statistics" class="lowlight">&#xA0;</p>
-													<p class="lowlight" style="max-width:unset">Nguồn sinh hỗn loạn:<br>
-														✓ <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random"><code>Math.random()</code></a> (bảo mật cơ bản)<br>
-														<span id="crypto-getrandomvalues-entropy"></span> <a href="https://developer.mozilla.org/en-US/docs/Web/API/RandomSource/getRandomValues"><code>crypto.getRandomValues()</code></a> (bảo mật cao)</p>
-												</form> -->
 											</div>
 										</div>
 									</div>
@@ -309,10 +245,11 @@
 										<i class="flaticon-music-2"></i>
 									</span>
 								</a>
+								<!-- TODO: notifcation -->
 								<div class="m-dropdown__wrapper">
 									<span class="m-dropdown__arrow m-dropdown__arrow--right"></span>
 									<div class="m-dropdown__inner">
-										<div class="m-dropdown__header m--align-center" style="background: url({{ asset('app/media/img/misc/notification_bg.jpg') }}); background-size: cover;">
+										<div class="m-dropdown__header m--align-center" style="background: url({{ asset('app/media/images/misc/notification_bg.jpg') }}); background-size: cover;">
 											<span class="m-dropdown__header-title">
 												9 thông báo mới
 											</span>
@@ -420,7 +357,7 @@
 							<li class="m-nav__item m-topbar__user-profile m-topbar__user-profile--img  m-dropdown m-dropdown--medium m-dropdown--arrow m-dropdown--header-bg-fill m-dropdown--align-right m-dropdown--mobile-full-width m-dropdown--skin-light" data-dropdown-toggle="click">
 								<a href="#" class="m-nav__link m-dropdown__toggle">
 									<span class="m-topbar__userpic">
-										<img src="{{ '/storage/avatars/' . Auth::user()->profile->avatar }}" class="m--img-rounded m--marginless m--img-centered" alt=""/>
+										<img src="{{ '/app/media/images/avatars/' . Auth::user()->profile->avatar }}" class="m--img-rounded m--marginless m--img-centered" alt=""/>
 									</span>
 									<span class="m-topbar__username m--hide">
 										{{ Auth::user()->name }}
@@ -429,10 +366,10 @@
 								<div class="m-dropdown__wrapper">
 									<span class="m-dropdown__arrow m-dropdown__arrow--right m-dropdown__arrow--adjust"></span>
 									<div class="m-dropdown__inner">
-										<div class="m-dropdown__header m--align-center" style="background: url({{ asset('app/media/img/misc/user_profile_bg.jpg') }}); background-size: cover;">
+										<div class="m-dropdown__header m--align-center" style="background: url({{ asset('app/media/images/misc/user_profile_bg.jpg') }}); background-size: cover;">
 											<div class="m-card-user m-card-user--skin-dark">
 												<div class="m-card-user__pic">
-													<img src="{{ '/storage/avatars/' . Auth::user()->profile->avatar }}" class="m--img-rounded m--marginless" alt=""/>
+													<img src="{{ 'app/media/images/avatars/' . Auth::user()->profile->avatar }}" class="m--img-rounded m--marginless" alt=""/>
 												</div>
 												<div class="m-card-user__details">
 													<span class="m-card-user__name m--font-weight-500">

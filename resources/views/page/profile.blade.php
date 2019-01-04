@@ -94,7 +94,7 @@
                         </div>
                         <div class="m-card-profile__pic p-picture">
                             <div class="m-card-profile__pic-wrapper">
-                                <img class="profile-pic" src="{{ url('storage/avatars/' . $user->profile->avatar) }}" alt=""/>
+                                <img class="profile-pic" src="{{ asset('app/media/images/avatars/' . $user->profile->avatar) }}" alt=""/>
                             </div>
                             <div class="p-image">
                                 <i class="fa fa-camera upload-button"></i>

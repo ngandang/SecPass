@@ -23,21 +23,21 @@
 		<!--end::Web font -->
         <!--begin::Base Styles -->
 		<link href="{{ asset('vendors/base/vendors.bundle.css') }}" rel="stylesheet" type="text/css" />
-		<link href="{{ asset('default/base/style.bundle.css') }}" rel="stylesheet" type="text/css" />
+		<link href="{{ asset('app/base/style.bundle.css') }}" rel="stylesheet" type="text/css" />
 		<!--end::Base Styles -->
-		<link rel="shortcut icon" href="default/media/img/logo/favicon.ico" />
+		<link rel="shortcut icon" href="{{ asset('app/media/images/logo/favicon.ico') }}" />
 	</head>
 	<!-- end::Head -->
     <!-- end::Body -->
 	<body class="m--skin- m-header--fixed m-header--fixed-mobile m-aside-left--enabled m-aside-left--skin-dark m-aside-left--offcanvas m-footer--push m-aside--offcanvas-default"  >
 		<!-- begin:: Page -->
 		<div class="m-grid m-grid--hor m-grid--root m-page">
-			<div class="m-grid__item m-grid__item--fluid m-grid m-grid--hor m-login m-login--signin m-login--2 m-login-2--skin-1" id="m_login" style="background-image: url({{ asset('app/media/img/bg/bg-5.jpg') }});">
+			<div class="m-grid__item m-grid__item--fluid m-grid m-grid--hor m-login m-login--signin m-login--2 m-login-2--skin-1" id="m_login" style="background-image: url({{ asset('app/media/images/bg/bg-5.jpg') }});">
 				<div class="m-grid__item m-grid__item--fluid	m-login__wrapper">
 					<div class="m-login__container">
 						<div class="m-login__logo">
 							<a href="#">
-								<img width="300" src="{{ asset('default/media/img/logo/logo_395x50_dark.png') }}"/>
+								<img width="300" src="{{ asset('app/media/images/logo/logo_395x50_dark.png') }}"/>
 							</a>
 						</div>
 						<div class="m-login__signin">
@@ -80,19 +80,15 @@
 								<h3 class="m-login__title">
 									Đăng ký tài khoản
 								</h3>
-								<div class="m-login__desc">
-									Điền thông tin chi tiết cho các trường bên dưới.
-								</div>
 							</div>
 							<form class="m-login__form m-form" action="">
 		  						@csrf
 								<div class="form-group m-form__group">
-									<input class="form-control m-input" type="text" placeholder="Tên đăng nhập" name="name" autocomplete="off">
+									<input class="form-control m-input" type="text" placeholder="Tên hiển thị" name="name" autocomplete="off">
 								</div>
 								<div class="form-group m-form__group">
 									<input class="form-control m-input" type="text" placeholder="Email" name="email" autocomplete="off">
 								</div>
-								
 								<div class="form-group m-form__group last password-strength" data-container="body" data-toggle="m-popover" data-html="true" data-placement="left" data-content="Mật khẩu phải chứa ít nhất 8 ký tự bao gồm ít nhất:<br><ul><li>một ký tự hoa,</li><li>một ký tự thường,</li><li>một ký tự số,</li><li>một ký tự đăc biệt.</li></ul>" data-original-title="" title="">
 									<input class="form-control m-input" type="password" placeholder="Mật khẩu" name="password" id="register_password">
 								</div>

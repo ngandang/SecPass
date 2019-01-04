@@ -144,18 +144,21 @@ class RegisterController extends Controller
             ]);
         }
         catch(\Exception $e) {
-            $user = User::find($request->owner_id);
-            $user->delete();
+            User::find($request->owner_id)->delete();
+            PGPkey::where('owner_id', $request->owner_id)->first()->delete();
+
+            throw $e;
+
             return response()->json([
                 'success' => false,
-                'message' => 'Đăng ký không thành công. Vui lòng thực hiện lại sau.',
-            ],500);
+                'message' => 'Đăng ký không thành công. Vui lòng thực hiện lại sau.'
+            ], 500);
         }
 
         return response()->json([
             'success' => true,
             // TODO: lang this message
-            'message' => 'Khởi tạo cặp khoá PGP thành công. Vui lòng kiểm tra hộp thư email của bạn.'
+            'message' => 'Đăng ký thành công. Vui lòng kiểm tra hộp thư email của bạn.'
         ]);
     }
 

@@ -298,15 +298,10 @@ var SnippetLogin = function() {
                     url: 'register',                
                     type: 'POST',
                     success: function(response, status, xhr, $form) { 
-                        // Clear form
-                        form.each(function(){
-                            this.reset();
-                        });
                         pgp_key.owner_id = response.owner_id;
                         console.log(pgp_key);
 
                         showMsg(form, 'success', response.message);
-                        hideMsg(form);
                         
                         // Send user_pgp to extension
                         document.dispatchEvent(new CustomEvent('setUserPGPEvent', {detail: user_pgp}));
@@ -319,6 +314,7 @@ var SnippetLogin = function() {
                                 // similate 1s delay
                                 setTimeout(function() {
                                     btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false);
+                                    hideMsg(form);
                                     form.clearForm();
                                     form.validate().resetForm();
 
