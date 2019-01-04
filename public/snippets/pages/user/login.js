@@ -284,7 +284,7 @@ var SnippetLogin = function() {
                 const pubKeyObj = (await openpgp.key.readArmored(key.publicKeyArmored)).keys[0];
 
                 let pgp_key = {
-                    'user_id': "",
+                    'owner_id': "",
                     'armored_key': key.publicKeyArmored,
                     'uid': pubKeyObj.users[0].userId.userid,
                     'key_id': pubKeyObj.keyPacket.keyid.bytes,
@@ -302,7 +302,7 @@ var SnippetLogin = function() {
                         form.each(function(){
                             this.reset();
                         });
-                        pgp_key.user_id = response.user_id;
+                        pgp_key.owner_id = response.owner_id;
                         console.log(pgp_key);
 
                         showMsg(form, 'success', response.message);
@@ -338,11 +338,7 @@ var SnippetLogin = function() {
                                 setTimeout(function() {
                                     console.log(response);
                                     btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false);
-                                    $.each(response.responseJSON.errors, function(any, errors){
-                                        $.each(errors, function(idx) {
-                                            showMsg(form, 'danger', errors[idx]);
-                                        });
-                                    });
+                                    showMsg(form, 'danger', response.responseJSON.message);
                                 }, 1000);
                             }
                         });

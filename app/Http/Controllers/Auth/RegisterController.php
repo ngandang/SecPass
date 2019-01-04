@@ -105,7 +105,7 @@ class RegisterController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Đang khởi tạo cặp khoá PGP...',
-            'user_id' => $user->id
+            'owner_id' => $user->id
         ]);
     }
 
@@ -114,7 +114,7 @@ class RegisterController extends Controller
         try {
             // TODO: receiving Info and publicKey from addon.
             $pgp_key = new PGPkey;
-            $pgp_key->owner_id = $request->user_id;
+            $pgp_key->owner_id = $request->owner_id;
             $pgp_key->armored_key = $request->armored_key;
             $pgp_key->uid = $request->uid;
             $pgp_key->key_id = $request->key_id;
@@ -144,7 +144,7 @@ class RegisterController extends Controller
             ]);
         }
         catch(\Exception $e) {
-            $user = User::find($request->user_id);
+            $user = User::find($request->owner_id);
             $user->delete();
             return response()->json([
                 'success' => false,
