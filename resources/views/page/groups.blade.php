@@ -28,7 +28,7 @@
         </div>
 
         <div class="btn-add-group">
-            <a class="btn btn-accent m-btn m-btn--custom m-btn--icon m-btn--pill m-btn--air" href="#addForm" data-toggle="modal" data-backdrop="static" data-keyboard="false">
+            <a class="btn btn-accent m-btn m-btn--custom m-btn--icon m-btn--pill m-btn--air" href="#addGroupForm" data-toggle="modal" data-backdrop="static" data-keyboard="false">
                 <span>
                     <i class="la la-plus"></i>
                     <span>

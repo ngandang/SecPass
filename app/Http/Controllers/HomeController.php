@@ -20,6 +20,7 @@ use App\GroupUser;
 use App\Share;
 
 use Hash;
+use Image;
 
 use App\Mail\PotentialUser;
 
@@ -535,7 +536,35 @@ class HomeController extends Controller
         $profile->date_of_birth = \Carbon\Carbon::parse($profile->date_of_birth)->toDateString();
         return view('page.profile', compact('user', 'profile'));
     }
+    public function updateAvatar(Request $request)
+    {
+        if($request->hasFile('avatar'))
+        {
+            $avatar = $request->file('avatar');
+            $filename = time() . '.' .$avatar->getClientOriginalExtension();
+            Image::make($avatar)->resize(130,130)->save( public_path('storage/avatars/' . $filename) );
+            $user = Auth::user();
+            $profile = $user->profile()->first();
+            $profile->avatar = $filename;
+            $profile->save();
 
+            // return view('page.profile', compact('user', 'profile'));
+            return response()->json([
+                'success' => true,
+                // TODO: lang this message
+                'message' => 'Lưu thay đổi thành công',
+                'view' => view('page.profile', compact('user', 'profile'))
+            ]);
+        }
+        else
+        {
+            return response()->json([
+                'success' => true,
+                // TODO: lang this message
+                'message' => 'Vui lòng chọn ảnh'
+            ], 500);
+        }
+    }
     public function saveProfile(Request $request)
     { 
         $user = Auth::user();
