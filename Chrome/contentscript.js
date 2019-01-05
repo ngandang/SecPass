@@ -58,13 +58,14 @@ document.addEventListener('letgetUserPGPEvent', function (event) {
 
 document.addEventListener('setGroupPGPEvent', function (event) {
     var group_id = event.detail.group_id;
+    var group_pgp = event.detail.group_pgp;
     chrome.storage.local.get(group_id, function(result){
         console.log('addon: read group_pgp');
         if (result[0])
             if(!confirm('SecPASS: Tiện ích hiện đang chứa khoá của nhóm này. Dữ liệu này sẽ bị ghi đè nếu tiếp tục. Bạn có chắc chắn ?'))
                 return 1;
 
-        chrome.storage.local.set({group_id: event.detail.group_pgp}, function(){
+        chrome.storage.local.set({group_id: group_pgp}, function(){
             console.log('addon: saved');
             // console.log(event.detail);
             alert('SecPASS: Đã nhận được cặp khoá của nhóm.');

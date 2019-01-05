@@ -465,6 +465,58 @@ class GroupController extends Controller
             'view' => view('content.content-group', compact('groups'))->render()
         ]);
     }
+
+    public function addPGP(Request $request)
+    {
+        $group = Group::find($request->owner_id);
+        if ($group) 
+        {
+            try {
+                $pgp_key = new PGPkey;
+                $pgp_key->owner_id = $request->owner_id;
+                $pgp_key->armored_key = $request->armored_key;
+                $pgp_key->uid = $request->uid;
+                $pgp_key->key_id = $request->key_id;
+    
+                $chars = array_map("chr", $request->fingerprint);
+                $bin = join($chars);
+                $hex = bin2hex($bin);
+                $pgp_key->fingerprint = $hex;
+                
+                $pgp_key->type = $request->type; // '6' - public key packet
+    
+                if( $request->expires != "0" ) {
+                    $key_expires = substr( $request->key_expires, 0, strpos($request->key_expires, '(') );
+                    $pgp_key->expires = $key_expires;
+                }
+    
+                $key_created = substr( $request->key_created, 0, strpos($request->key_created, '(') );
+                $pgp_key->key_created = date('Y-m-d h:i:s', strtotime($key_created));
+                
+                $pgp_key->save();
+            }
+            catch(\Exception $e) {
+                $group->delete();
+
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Tạo nhóm không thành công. Vui lòng thực hiện lại sau.',
+                ],500);
+            }
+    
+            return response()->json([
+                'success' => true,
+                // TODO: lang this message
+                'message' => 'Tạo nhóm thành công.'
+            ]);
+        }
+
+        return response()->json([
+            'success' => false,
+            // TODO: lang this message
+            'message' => 'Không tìm thấy nhóm.'
+        ], 500);
+    }
     
     public function editGroup(Request $request)
     {

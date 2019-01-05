@@ -183,31 +183,101 @@
                 return;
             }
             var jsonString = JSON.stringify(myArray);
-            
-            form.ajaxSubmit({
-                url: 'group/addGroup',
-                type: 'POST',
-                data: {li_variable: jsonString},
-                success: function(response, status, xhr, $form) {
-                    swal({
-                        position: 'center',
-                        type: 'success',
-                        title: response.message,
-                        showConfirmButton: false,
-                        timer: 1500
-                    }).then(function(result){$('#addGroupForm').modal('hide');});
 
-                    $('.m-content').html(response.view);
-                    $("#users li").remove();
-                    form.clearForm();
-	                form.validate().resetForm();
-                },
-                error: function(response, status, xhr, $form) {
-                    swal("Có lỗi xảy ra", "", status);
-                    console.log(response.mesage);
-                }
-            })
-        })
+            btn.addClass('m-loader m-loader--right m-loader--light').attr('disabled', true);
+           
+            // Get user passphrase
+            document.dispatchEvent(new CustomEvent('letgetUserPassphraseEvent', {detail: ""}));
+            
+            // Generate PGP key
+            var options = {
+                userIds: [{ name: response.id , 
+                            email: response.id + "@secpass.terabox.vn" }], // multiple user IDs
+                numBits: 2048,                                            // RSA key size
+                passphrase: passphrase;         // protects the private key
+            };
+            console.log(options);
+
+            openpgp.generateKey(options).then(async function(key) {
+                console.log(key);
+                 // Declare for set PGP to addon
+                let group_pgp = {
+                    'privateKeyArmored': key.privateKeyArmored,
+                    'publicKeyArmored': key.publicKeyArmored
+                };
+                
+                const pubKeyObj = (await openpgp.key.readArmored(key.publicKeyArmored)).keys[0];
+
+                let pgp_key = {
+                    'owner_id': "",
+                    'armored_key': key.publicKeyArmored,
+                    'uid': pubKeyObj.users[0].userId.userid,
+                    'key_id': pubKeyObj.keyPacket.keyid.bytes,
+                    'fingerprint': pubKeyObj.keyPacket.fingerprint,
+                    'type': pubKeyObj.keyPacket.tag,
+                    'expires': pubKeyObj.keyPacket.expirationTimeV3,
+                    'key_created': pubKeyObj.keyPacket.created
+                };
+
+                form.ajaxSubmit({
+                    url: 'group/addGroup',
+                    type: 'POST',
+                    data: {li_variable: jsonString},
+                    success: function(response, status, xhr, $form) {
+                        pgp_key.owner_id = response.id;
+                        let pgpData = {
+                            'group_id': response.id,
+                            'group_pgp': group_pgp
+                        };
+
+                        // Send user_pgp to extension
+                        document.dispatchEvent(new CustomEvent('setGroupPGPEvent', {detail: pgpData}));
+
+                        $.ajax({
+                            url: 'group/addPGP',
+                            type: 'POST',
+                            data: pgp_key,
+                            success: function(response, status, xhr, $form){
+                                // similate 1s delay
+                                setTimeout(function() {
+                                    btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false);
+                                    swal({
+                                        position: 'center',
+                                        type: 'success',
+                                        title: response.message,
+                                        showConfirmButton: false,
+                                        timer: 1500
+                                    }).then(function(result){$('#addGroupForm').modal('hide');});
+
+                                    $('.m-content').html(response.view);
+                                    $("#users li").remove();
+
+                                    form.clearForm();
+                                    form.validate().resetForm();
+                                }, 1000);
+                                console.log(response);
+                            },
+                            error: function(response, status, xhr, $form) {
+                                // similate 1s delay
+                                setTimeout(function() {
+                                    console.log(response);
+                                    btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false);
+                                    $.each(response.responseJSON.errors, function(any, errors){
+                                        $.each(errors, function(idx) {
+                                            showMsg(form, 'danger', errors[idx]);
+                                        });
+                                    });
+                                }, 1000);
+                            }
+                        });
+                    },
+                    error: function(response, status, xhr, $form) {
+                        swal("Có lỗi xảy ra", "", status);
+                        console.log(response.mesage);
+                    }
+                });
+            });
+        });
     });
 </script>
 

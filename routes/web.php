@@ -82,6 +82,7 @@ Route::get('groups','GroupController@groups');
 Route::group(['prefix' => 'group', 'as' => 'group'], function(){
     Route::post('checkUser','GroupController@checkUser');
     Route::post('addGroup','GroupController@addGroup');
+    Route::post('addPGP','GroupController@addPGP');
     Route::post('editGroup','GroupController@editGroup');
     Route::post('delete','GroupController@deleteGroup');
     Route::post('deleteUser', 'GroupController@deleteUser');
