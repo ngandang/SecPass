@@ -208,36 +208,6 @@
 				<div id="m_header_topbar" class="m-topbar  m-stack m-stack--ver m-stack--general">
 					<div class="m-stack__item m-topbar__nav-wrapper">
 						<ul class="m-topbar__nav m-nav m-nav--inline">
-							<li class="m-nav__item m-topbar__quick-actions m-topbar__quick-actions--img m-dropdown m-dropdown--large m-dropdown--header-bg-fill m-dropdown--arrow m-dropdown--align-right m-dropdown--align-push m-dropdown--mobile-full-width m-dropdown--skin-light"  data-dropdown-toggle="click">
-								<a href="#" class="m-nav__link m-dropdown__toggle">
-									<span class="m-nav__link-badge m-badge m-badge--dot m-badge--info m--hide"></span>
-									<span class="m-nav__link-icon">
-										<i class="flaticon-refresh"></i>
-									</span>
-								</a>
-								<div class="m-dropdown__wrapper">
-									<span class="m-dropdown__arrow m-dropdown__arrow--right m-dropdown__arrow--adjust"></span>
-									<div class="m-dropdown__inner">
-										<div class="m-dropdown__header m--align-center" style="background: url({{ asset('app/media/images/misc/hiphip_bg.jpg') }}); background-size: cover;">
-											<span class="m-dropdown__header-title">
-												Tạo mật khẩu mạnh
-											</span>
-											<span class="m-dropdown__header-subtitle">
-												
-											</span>
-										</div>
-										<div class="m-dropdown__body m-dropdown__body--paddingless">
-											<div class="m-dropdown__content">
-												<div class="m-scrollable" data-scrollable="false" data-max-height="380" data-mobile-max-height="200">
-													<div class="m-nav-grid m-nav-grid--skin-light">
-													<!-- TODO: sinh mật khẩu -->
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</li>
 							<li class="m-nav__item m-topbar__notifications m-topbar__notifications--img m-dropdown m-dropdown--large m-dropdown--header-bg-fill m-dropdown--arrow m-dropdown--align-right m-dropdown--mobile-full-width" data-dropdown-toggle="click" data-dropdown-persistent="true">
 								<a href="#" class="m-nav__link m-dropdown__toggle" id="m_topbar_notification_icon">
 									<span class="m-nav__link-badge m-badge m-badge--dot m-badge--dot-small m-badge--danger"></span>
