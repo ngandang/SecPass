@@ -89,7 +89,7 @@
 </div>
 @else
     <div class="text-center">
-        <img src="{{ asset('default/media/img/misc/emptystate.png') }}">
+        <img src="{{ asset('app/media/images/misc/emptystate.png') }}"/>
         <h3><small class="text-muted">Hiện không có ghi chú nào...</small></h3>
     </div>
 @endif

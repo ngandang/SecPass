@@ -120,7 +120,7 @@
                 },
                 error: function(response, status, xhr, $form) {
                     btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false);
-                    swal("Có lỗi xảy ra", "", status);
+                    swal("", response.responseJSON.message, "error");
                     console.log(response);
                 }
             });
@@ -151,7 +151,7 @@
                 },
                 error: function(response, status, xhr, $form) {
                     console.log(response);
-                    swal("", response.message.serialize(), "error");
+                    swal("", response.responseJSON.message, "error");
                 }
             });
         });
@@ -177,7 +177,7 @@
                 },
                 error: function(response, status, xhr, $form) {
                     console.log(response);
-                    swal("", response.message.serialize(), "error");
+                    swal("", response.responseJSON.message, "error");
                 }
             });
         });
@@ -203,7 +203,7 @@
                 },
                 error: function(response, status, xhr, $form) {
                     console.log(response);
-                    swal("", response.message.serialize(), "error");
+                    swal("", response.responseJSON.message, "error");
                 }
             });
         });

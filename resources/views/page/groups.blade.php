@@ -203,8 +203,8 @@
 	                form.validate().resetForm();
                 },
                 error: function(response, status, xhr, $form) {
-                    swal("Có lỗi xảy ra", "", status);
-                    console.log(response.mesage);
+                    swal("", response.responseJSON.message, "error");
+                    console.log(response);
                 }
             })
         })

@@ -99,7 +99,7 @@
             </form>    
             @else
             <div class="text-center">
-                <img src="{{ asset('default/media/img/misc/emptystate.png') }}"/>
+                <img src="{{ asset('app/media/images/misc/emptystate.png') }}"/>
                 <h3><small class="text-muted">Hiện bạn chưa được chia sẻ tài khoản nào...</small></h3>
             </div>
             @endif           
@@ -182,7 +182,7 @@
             </form>
             @else
             <div class="text-center">
-                <img src="{{ asset('default/media/img/misc/emptystate.png') }}"/>
+                <img src="{{ asset('app/media/images/misc/emptystate.png') }}"/>
                 <h3><small class="text-muted">Hiện bạn chưa được chia sẻ ghi chú bảo mật nào...</small></h3>
             </div>
             @endif

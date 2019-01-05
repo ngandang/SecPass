@@ -123,6 +123,10 @@
     $(document).ready(function(){
 
         $('.portlet-account').on('click', function () {
+            // Ignore this event if head-tools has been clicked.
+            if($('.m-portlet__head-tools').data('clicked'))
+                return;
+
             var showEditForm = $(this).find(".account-edit");
             if(showEditForm[0])
                 showEditForm[0].click();
@@ -199,7 +203,7 @@
                 },
                 error: function(response, status, xhr, $form) {
                     console.log(response);
-                    swal("", response.message.serialize(), "error");
+                    swal("", response.responseJSON.message, "error");
                 }
             });
             e.stopPropagation();
@@ -223,7 +227,7 @@
                 },
                 error: function(response, status, xhr, $form) {
                     console.log(response);
-                    swal("", response.message.serialize(), "error");
+                    swal("", response.responseJSON.message, "error");
                 }
             });
         });
@@ -258,7 +262,7 @@
                 },
                 error: function(response, status, xhr, $form) {
                     console.log(response);
-                    swal("", response.message.serialize(), "error");
+                    swal("", response.responseJSON.message, "error");
                 }
             });
         });
@@ -314,7 +318,7 @@
                     error: function(response, status, xhr, $form) {
                         btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false); // remove 
                         console.log(response);
-                        swal("", response.message.serialize(), "error");
+                        swal("", response.responseJSON.message, "error");
                     }
                 });
                 if($temp)
@@ -377,7 +381,7 @@
                     },
                     error: function(response, status, xhr, $form) {
                         btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false); // remove 
-                        swal("Có lỗi xảy ra", "error");
+                        swal("", response.responseJSON.message, "error");
                         console.log(response.responseJSON.message);
                     }
                 });
@@ -417,7 +421,7 @@
                 },
                 error: function(response, status, xhr, $form) {
                     btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false); // remove 
-                    swal("Có lỗi xảy ra", "", status);
+                    swal("", response.responseJSON.message, "error");
                     console.log(response);
                 }
             });
@@ -465,7 +469,7 @@
                                     },
                                     error: function(response, status, xhr, $form) {
                                         btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false); // remove 
-                                        swal("Có lỗi xảy ra", "", status);
+                                        swal("", response.responseJSON.message, "error");
                                         console.log(response);
                                     }
                                 });
@@ -506,6 +510,10 @@
     $(document).ready(function(){
 
         $('.portlet-note').on('click', function () {
+            // Ignore this event if head-tools has been clicked.
+            if($('.m-portlet__head-tools').data('clicked'))
+                return;
+
             var showEditForm = $(this).find(".note-edit");
             if(showEditForm[0])
                 showEditForm[0].click();
@@ -539,7 +547,7 @@
                 },
                 error: function(response, status, xhr, $form) {
                     console.log(response);
-                    swal("", response.message.serialize(), "error");
+                    swal("", response.responseJSON.message, "error");
                 }
             });
             e.stopPropagation();
@@ -561,7 +569,7 @@
                 },
                 error: function(response, status, xhr, $form) {
                     console.log(response);
-                    swal("", response.message.serialize(), "error");
+                    swal("", response.responseJSON.message, "error");
                 }
             });
         });
@@ -594,7 +602,7 @@
                 },
                 error: function(response, status, xhr, $form) {
                     console.log(response);
-                    swal("", response.message.serialize(), "error");
+                    swal("", response.responseJSON.message, "error");
                 }
             });
         });
@@ -639,7 +647,7 @@
                     error: function(response, status, xhr, $form) {
                         btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false); // remove 
                         console.log(response);
-                        swal("", response.message.serialize(), "error");
+                        swal("", response.responseJSON.message, "error");
                     }
                 });
                 if($temp)
@@ -690,7 +698,7 @@
                     },
                     error: function(response, status, xhr, $form) {
                         btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false); // remove 
-                        swal("","Có lỗi xảy ra", "error");
+                        swal("", response.responseJSON.message, "error");
                         console.log(response.responseJSON.message);
                     }
                 });
@@ -726,7 +734,7 @@
 	                form.validate().resetForm();
                 },
                 error: function(response, status, xhr, $form) {
-                    swal("", response.serialize(), "error");
+                    swal("", response.responseJSON.message, "error");
                 }
             });
         });
@@ -773,7 +781,7 @@
                                     },
                                     error: function(response, status, xhr, $form) {
                                         btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false); // remove 
-                                        swal("Có lỗi xảy ra", "", status);
+                                        swal("", response.responseJSON.message, "error");
                                         console.log(response);
                                     }
                                 });
@@ -928,7 +936,7 @@
 	                form.validate().resetForm();
                 },
                 error: function(response, status, xhr, $form) {
-                    swal("Có lỗi xảy ra", "", status);
+                    swal("", response.responseJSON.message, "error");
                     console.log(response.mesage);
                 }
             })
@@ -961,7 +969,7 @@
                 },
                 error: function(response, status, xhr, $form) {
                     btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false); // remove 
-                    swal("Có lỗi xảy ra", "", status);
+                    swal("", response.responseJSON.message, "error");
                     console.log(response);
                 }
             });
@@ -993,7 +1001,7 @@
                 },
                 error: function(response, status, xhr, $form) {
                     btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false); // remove 
-                    swal(response.responseJSON.message, "", status);
+                    swal("", response.responseJSON.message, "error");
                     console.log(response);
                 }
             });
@@ -1058,7 +1066,7 @@
                 },
                 error: function(response, status, xhr, $form) {
                     btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false); // remove 
-                    swal(response.responseJSON.message,"", status);
+                    swal("", response.responseJSON.message, "error");
                     console.log(response);
                 }
             });

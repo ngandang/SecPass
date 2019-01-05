@@ -18,7 +18,7 @@ class Account extends Model
     protected $searchable = [
         'columns' => [
             'name' => 10,
-            'username' => 10,
+            'username' => 7,
             'uri' => 2,
         ],
     ];
@@ -41,6 +41,11 @@ class Account extends Model
     public function Share()
     {
         return $this->hasOne('App\Share', 'asset_id','id');
+    }
+    
+    public function Track()
+    {
+        return $this->hasMany('App\AssetTracking', 'asset_id', 'id');
     }
     
     public function User()

@@ -39,6 +39,11 @@ class Note extends Model
     {
         return $this->hasOne('App\Share', 'asset_id','id');
     }
+
+    public function Track()
+    {
+        return $this->hasMany('App\AssetTracking', 'asset_id', 'id');
+    }
     
     public function User()
     {

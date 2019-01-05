@@ -99,6 +99,7 @@ Route::group(['prefix' => 'group', 'as' => 'group'], function(){
 });
 
 Route::get('quicksearch','HomeController@quickSearch');
+Route::post('history','HomeController@history');
 
 Route::get('test_gpg', function () {
     echo '<pre>';
