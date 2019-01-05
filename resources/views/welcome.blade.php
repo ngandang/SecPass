@@ -11,8 +11,8 @@
     <!-- Title -->
     <title>SecPASS</title>
     <!-- Place favicon.ico in the root directory -->
-    <link rel="apple-touch-icon" href="{{ asset('default/media/img/logo/favicon.ico') }}') }}">
-    <link rel="shortcut icon" type="image/ico" href="{{ asset('default/media/img/logo/favicon.ico') }}" />
+    <link rel="apple-touch-icon" href="{{ asset('app/media/images/logo/favicon.ico') }}') }}">
+    <link rel="shortcut icon" type="image/ico" href="{{ asset('app/media/images/logo/favicon.ico') }}" />
     <!-- Plugin-CSS -->
     <link rel="stylesheet" href="{{ asset('welcome/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('welcome/css/owl.carousel.min.css') }}">
