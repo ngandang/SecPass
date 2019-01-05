@@ -28,7 +28,7 @@
         </div>
 
         <div class="btn-add-group">
-            <a class="btn btn-accent m-btn m-btn--custom m-btn--icon m-btn--pill m-btn--air" href="#addForm" data-toggle="modal" data-backdrop="static" data-keyboard="false">
+            <a class="btn btn-accent m-btn m-btn--custom m-btn--icon m-btn--pill m-btn--air" href="#addGroupForm" data-toggle="modal" data-backdrop="static" data-keyboard="false">
                 <span>
                     <i class="la la-plus"></i>
                     <span>
@@ -262,17 +262,13 @@
                                 setTimeout(function() {
                                     console.log(response);
                                     btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false);
-                                    $.each(response.responseJSON.errors, function(any, errors){
-                                        $.each(errors, function(idx) {
-                                            showMsg(form, 'danger', errors[idx]);
-                                        });
-                                    });
+                                    swal("", response.responseJSON.message, "error");
                                 }, 1000);
                             }
                         });
                     },
                     error: function(response, status, xhr, $form) {
-                        swal("Có lỗi xảy ra", "", status);
+                        swal("", response.responseJSON.message, "error");
                         console.log(response.mesage);
                     }
                 });

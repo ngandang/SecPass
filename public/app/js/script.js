@@ -1,6 +1,3 @@
-// Chỗ này viết script chung. 
-// Viết account sẽ nằm trong accounts.blade.php. Sau này đưa vào accounts.js nhe
-
 // Kiểm tra và chuyển hướng https
 if (location.protocol != 'https:')
 {
@@ -45,6 +42,43 @@ var DataDismiss = function () {
     });
 };
 
+var HistoryToggle = function () {
+    $("#historyBtn").on('click', function(){
+        $.ajax({
+            url: "/history",
+            method: "POST",
+            success: function(response, status, xhr, $form) {
+                $("#historyData").html(response.view);
+            },
+            error: function(response, status, xhr, $form) {
+                console.log(response);
+                swal("", response.responseJSON.message, "error");
+            }
+        });
+    });
+}
+
+var QuickSearchToggle = function () {
+    $(".quickSearch-account a").on('click', function(){
+        var data = {
+            'id' : $(this).find("input[name=id]").val(),
+        };
+        $.ajax({
+            url: "/account/detail",
+            method: "POST",
+            data : data,
+            success: function(response, status, xhr, $form) {
+                // get
+                $("#historyData").html(response.view);
+            },
+            error: function(response, status, xhr, $form) {
+                console.log(response);
+                swal("", response.responseJSON.message, "error");
+            }
+        });
+    });
+}
+
 var QuickbarToggle = function () {
     $('#messenger_toggle').on('click', function(){
         $('#m_quick_sidebar_toggle').click();
@@ -69,10 +103,12 @@ var LogoutButton = function () {
         $.ajax({
             url: "/logout",
             method: "POST",
-            success: window.location="/login",
+            success: function(response, status, xhr, $form) {
+                window.location="/login";
+            },
             error: function(response, status, xhr, $form) {
                 console.log(response);
-                swal("", response.message.serialize(), "error");
+                swal("", response.responseJSON.message, "error");
             }
         });
     });
@@ -80,8 +116,11 @@ var LogoutButton = function () {
 
 var ForContent = function () {
 
-    $('.m-portlet__nav-link, .m-nav__item').click(function() {
-        $(this).closest('.m-portlet').unbind('click');
+    $('.m-portlet__head-tools').click(function(e) {
+        $(this).data('clicked', true);
+        setTimeout(() => {
+            $(this).data('clicked', false);
+        }, 500);
     });
 
     // Lose modal focus to show swal
@@ -309,7 +348,9 @@ $(document).ready(function() {
     });
     AddonChecking();
     DataDismiss();
-    // Asidebar toggle
+    HistoryToggle();
+    QuickSearchToggle();
+    // Quickbar: Asidebar toggle
     QuickbarToggle();
     ForContent();
     LogoutButton();

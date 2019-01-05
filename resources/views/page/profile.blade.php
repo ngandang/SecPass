@@ -94,14 +94,15 @@
                         </div>
                         <div class="m-card-profile__pic p-picture">
                             <div class="m-card-profile__pic-wrapper">
-                                <img class="profile-pic" src="{{ asset('app/media/images/avatars/' . $user->profile->avatar) }}" alt=""/>
+                                <img class="profile-pic" src="{{ url('storage/avatars/' . $user->profile->avatar) }}" alt=""/>
                             </div>
-                            <div class="p-image">
-                                <i class="fa fa-camera upload-button"></i>
-                                <input class="file-upload" type="file" accept="image/*"/>
-                            </div>
+                            <form enctype="multipart/form-data" action="" method="POST">
+                                {{ csrf_field() }}
+                                <i class="fa fa-camera upload-button p-image"></i>
+                                <input class="file-upload" type="file" name ="avatar" accept="image/*"/>
+                                <button type="submit" class="btn updateAvatar" >Thay đổi</button>
+                            </form>
                         </div>
-
                         <!-- <div class="modal fade" id="cropImagePop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 						    <div class="modal-dialog">
 						        <div class="modal-content">
@@ -614,6 +615,37 @@
         $('.upload-button').on('click', function() 
         {
             $('.file-upload').click();
+        });
+        
+
+        $('.updateAvatar').click(function(e){
+            e.preventDefault();
+            var btn = $(this);
+            var form = $(this).closest('form');
+            
+            // btn.addClass('m-loader m-loader--right m-loader--light').attr('disabled', true);
+            
+            
+            form.ajaxSubmit({
+                url: '/profile/avatar',
+                type: 'POST',
+                success: function(response, status, xhr, $form) {
+                    btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false);
+                    swal({
+                        position: 'center',
+                        type: 'success',
+                        title: response.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    window.location = "";
+                },
+                error: function(response, status, xhr, $form) {
+                    btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false);
+                    swal(response.responseJSON.message, response.responseJSON.detail, status);
+                    console.log(response);
+                }
+            });
         });
 
         $('#saveProfileSubmit').click(function(e){

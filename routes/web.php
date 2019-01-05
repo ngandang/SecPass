@@ -72,6 +72,8 @@ Route::post('sharewithme/moveNotes','HomeController@moveNotes');
 
 Route::get('profile','HomeController@profile');
 Route::post('profile/save','HomeController@saveProfile');
+Route::post('profile/avatar','HomeController@updateAvatar');
+
 Route::get('credential','HomeController@profile');
 Route::post('credential/sync','HomeController@addPrivKey');
 Route::post('credential/unsync','HomeController@delPrivKey');
@@ -100,6 +102,7 @@ Route::group(['prefix' => 'group', 'as' => 'group'], function(){
 });
 
 Route::get('quicksearch','HomeController@quickSearch');
+Route::post('history','HomeController@history');
 
 Route::get('test_gpg', function () {
     echo '<pre>';

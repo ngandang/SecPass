@@ -18,8 +18,12 @@ use App\Secret;
 use App\Group;
 use App\GroupUser;
 use App\Share;
+use App\AssetTracking;
+use App\Message;
+
 
 use Hash;
+use Image;
 
 use App\Mail\PotentialUser;
 
@@ -48,6 +52,7 @@ class HomeController extends Controller
         $groups = Auth::user()->group()->get();
         return view('page.dashboard', compact('accounts', 'notes', 'groups'));
     }
+    // Tham khảo lại sau này
     // public function getUserAccounts()
     // {
 
@@ -70,6 +75,7 @@ class HomeController extends Controller
         
     //     return $notes;
     // }
+
     public function accounts()
     {
         $accounts = Auth::user()->account()->get();
@@ -79,6 +85,14 @@ class HomeController extends Controller
     public function getAccount(Request $request)
     {
         $account = Account::where("id", $request->id)->first();
+
+        // Asset tracking
+        $log = new AssetTracking;
+        $log->user_id = Auth::user()->id;
+        $log->asset_id = $account->id;
+        $log->type = "get";
+        $log->save();
+        
         return $account;
     }
 
@@ -100,6 +114,13 @@ class HomeController extends Controller
         $secret->data = $request->cipher;
         $secret->save();
         
+        // Asset tracking
+        $log = new AssetTracking;
+        $log->user_id = Auth::user()->id;
+        $log->asset_id = $account->id;
+        $log->type = "add";
+        $log->save();
+
         $accounts = Auth::user()->account()->get();
         return response()->json([
             'success' => true,
@@ -111,18 +132,25 @@ class HomeController extends Controller
 
     public function editAccount(Request $request){
         $account_id = $request->id;
-        $acc = Account::find($account_id);
-        $acc->name = $request->name;
-        $acc->username = $request->username;
-        $acc->uri = $request->url;
-        $acc->description = $request->description;
-        $acc->save();
+        $account = Account::find($account_id);
+        $account->name = $request->name;
+        $account->username = $request->username;
+        $account->uri = $request->url;
+        $account->description = $request->description;
+        $account->save();
 
         if ($request->cipher) {
             $secret = Secret::where('asset_id', $account_id)->first();
             $secret->data = $request->cipher;
             $secret->save();
         }
+        
+        // Asset tracking
+        $log = new AssetTracking;
+        $log->user_id = Auth::user()->id;
+        $log->asset_id = $account->id;
+        $log->type = "edit";
+        $log->save();
         
         $accounts = Auth::user()->account()->get();
         return response()->json([
@@ -136,11 +164,18 @@ class HomeController extends Controller
     public function deleteAccount(Request $request){
         $account_id = $request->id;
         
-        $acc = Account::find($account_id);
-        $acc->delete();
+        $account = Account::find($account_id);
+        $account->delete();
 
         $secret = Secret::where('asset_id', $account_id)->first();
         $secret->delete();
+
+        // Asset tracking
+        $log = new AssetTracking;
+        $log->user_id = Auth::user()->id;
+        $log->asset_id = $account_id;
+        $log->type = "delete";
+        $log->save();
 
         $accounts = Auth::user()->account()->get();
         return response()->json([
@@ -178,6 +213,13 @@ class HomeController extends Controller
                                 ->where('type','6')
                                 ->first();
             
+            // Asset tracking
+            $log = new AssetTracking;
+            $log->user_id = Auth::user()->id;
+            $log->asset_id = $account_id;
+            $log->type = "share";
+            $log->save();
+
             return response()->json([
                 'success' => true,
                 'message' => 'Truy xuất khoá người nhận thành công', // Người dùng tồn tại
@@ -226,6 +268,13 @@ class HomeController extends Controller
                                 ->where('type','6')
                                 ->first();
             
+            // Asset tracking
+            $log = new AssetTracking;
+            $log->user_id = Auth::user()->id;
+            $log->asset_id = $note_id;
+            $log->type = "share";
+            $log->save();
+            
             return response()->json([
                 'success' => true,
                 'message' => 'Truy xuất khoá người nhận thành công', // Người dùng tồn tại
@@ -263,6 +312,13 @@ class HomeController extends Controller
         $account_id = $request->id;
         $secret = Secret::where('asset_id', $account_id)->first();
 
+        // Asset tracking
+        $log = new AssetTracking;
+        $log->user_id = Auth::user()->id;
+        $log->asset_id = $account_id;
+        $log->type = "get";
+        $log->save();
+        
         return response()->json([
             'success' => true,
             'message' => 'Đã sao chép mật khẩu',
@@ -280,6 +336,14 @@ class HomeController extends Controller
     public function getNote(Request $request)
     {
         $note = Note::where("id", $request->id)->first();
+
+        // Asset tracking
+        $log = new AssetTracking;
+        $log->user_id = Auth::user()->id;
+        $log->asset_id = $note->id;
+        $log->type = "get";
+        $log->save();
+
         return $note;
     }
 
@@ -287,6 +351,13 @@ class HomeController extends Controller
     {
         $note_id = $request->id;
         $secret = Secret::where('asset_id', $note_id)->first();
+
+        // Asset tracking
+        $log = new AssetTracking;
+        $log->user_id = Auth::user()->id;
+        $log->asset_id = $note_id;
+        $log->type = "get";
+        $log->save();
 
         return response()->json([
             'success' => true,
@@ -311,6 +382,13 @@ class HomeController extends Controller
         $secret->data = $req->cipher;
         $secret->save();
 
+        // Asset tracking
+        $log = new AssetTracking;
+        $log->user_id = Auth::user()->id;
+        $log->asset_id = $note_id;
+        $log->type = "add";
+        $log->save();
+
         $notes = Auth::user()->note()->get();
         return response()->json([
             'success' => true,
@@ -333,6 +411,13 @@ class HomeController extends Controller
             $secret->save();
         }
 
+        // Asset tracking
+        $log = new AssetTracking;
+        $log->user_id = Auth::user()->id;
+        $log->asset_id = $note_id;
+        $log->type = "edit";
+        $log->save();
+
         $notes = Auth::user()->note()->get();
         return response()->json([
             'success' => true,
@@ -349,6 +434,13 @@ class HomeController extends Controller
 
         $secret = Secret::where('asset_id', $note_id)->first();
         $secret->delete();
+
+        // Asset tracking
+        $log = new AssetTracking;
+        $log->user_id = Auth::user()->id;
+        $log->asset_id = $note_id;
+        $log->type = "delete";
+        $log->save();
 
         $notes = Auth::user()->note()->get();
         return response()->json([
@@ -535,7 +627,35 @@ class HomeController extends Controller
         $profile->date_of_birth = \Carbon\Carbon::parse($profile->date_of_birth)->toDateString();
         return view('page.profile', compact('user', 'profile'));
     }
+    public function updateAvatar(Request $request)
+    {
+        if($request->hasFile('avatar'))
+        {
+            $avatar = $request->file('avatar');
+            $filename = time() . '.' .$avatar->getClientOriginalExtension();
+            Image::make($avatar)->resize(130,130)->save( public_path('storage/avatars/' . $filename) );
+            $user = Auth::user();
+            $profile = $user->profile()->first();
+            $profile->avatar = $filename;
+            $profile->save();
 
+            // return view('page.profile', compact('user', 'profile'));
+            return response()->json([
+                'success' => true,
+                // TODO: lang this message
+                'message' => 'Lưu thay đổi thành công',
+                'view' => view('page.profile', compact('user', 'profile'))
+            ]);
+        }
+        else
+        {
+            return response()->json([
+                'success' => true,
+                // TODO: lang this message
+                'message' => 'Vui lòng chọn ảnh'
+            ], 500);
+        }
+    }
     public function saveProfile(Request $request)
     { 
         $user = Auth::user();
@@ -631,6 +751,19 @@ class HomeController extends Controller
         
         return view('content.quicksearch', compact('accounts','notes','groups'));
     } 
+
+    public function history()
+    {
+        $user = Auth::user();
+        $logs = $user->track()->where("type","get")->get();
+        $log_ids = $logs->pluck("asset_id");
+        $accounts = Account::whereIn('id', $log_ids)->get();
+
+        return response()->json([
+            'success' => true,
+            'view' => view('content.history', compact('accounts'))->render()
+        ]);
+    }
 
     public function getUser()
     {

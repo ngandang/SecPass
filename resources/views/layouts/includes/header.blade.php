@@ -41,7 +41,7 @@
 				</button>
 				<div id="m_header_menu" class="m-header-menu m-aside-header-menu-mobile m-aside-header-menu-mobile--offcanvas  m-header-menu--skin-light m-header-menu--submenu-skin-light m-aside-header-menu-mobile--skin-dark m-aside-header-menu-mobile--submenu-skin-dark "  >
 					<ul class="m-menu__nav m-menu__nav--submenu-arrow ">
-						<li class="m-menu__item  m-menu__item--submenu m-menu__item--rel"  data-menu-submenu-toggle="click" data-redirect="true" aria-haspopup="true">
+						<li id="historyBtn" class="m-menu__item  m-menu__item--submenu m-menu__item--rel"  data-menu-submenu-toggle="click" data-redirect="true" aria-haspopup="true">
 							<a  href="#" class="m-menu__link m-menu__toggle">
 								<i class="m-menu__link-icon flaticon-notes"></i>
 								<span class="m-menu__link-text">
@@ -49,123 +49,16 @@
 								</span>
 							</a>
 							<!-- TODO: Đưa nó vào section -->
-							<!-- <div class="m-menu__submenu  m-menu__submenu--fixed m-menu__submenu--left" style="width:600px">
+							<div class="m-menu__submenu  m-menu__submenu--fixed m-menu__submenu--left" style="width:500px">
 								<span class="m-menu__arrow m-menu__arrow--adjust"></span>
 								<div class="m-menu__subnav">
 									<ul class="m-menu__content">
-										<li class="m-menu__item">
-											<h3 class="m-menu__heading m-menu__toggle">
-												<span class="m-menu__link-text">
-													Tài khoản
-												</span>
-												<i class="m-menu__ver-arrow la la-angle-right"></i>
-											</h3>
-											<ul class="m-menu__inner">
-												<li class="m-menu__item "  data-redirect="true" aria-haspopup="true">
-													<a  href="header/actions.html" class="m-menu__link ">
-														<i class="m-menu__link-icon flaticon-profile"></i>
-														<span class="m-menu__link-text">
-															Facebook
-														</span>
-													</a>
-												</li>
-												<li class="m-menu__item "  data-redirect="true" aria-haspopup="true">
-													<a  href="header/actions.html" class="m-menu__link ">
-														<i class="m-menu__link-icon flaticon-profile"></i>
-														<span class="m-menu__link-text">
-															daa.uit.edu.vn
-														</span>
-													</a>
-												</li>
-												<li class="m-menu__item "  data-redirect="true" aria-haspopup="true">
-													<a  href="header/actions.html" class="m-menu__link ">
-														<i class="m-menu__link-icon flaticon-profile"></i>
-														<span class="m-menu__link-text">
-															trello.com
-														</span>
-													</a>
-												</li>
-												<li class="m-menu__item "  data-redirect="true" aria-haspopup="true">
-													<a  href="header/actions.html" class="m-menu__link ">
-														<i class="m-menu__link-icon flaticon-profile"></i>
-														<span class="m-menu__link-text">
-															Youtube
-														</span>
-													</a>
-												</li>
-												<li class="m-menu__item "  data-redirect="true" aria-haspopup="true">
-													<a  href="header/actions.html" class="m-menu__link ">
-														<i class="m-menu__link-icon flaticon-profile"></i>
-														<span class="m-menu__link-text">
-															mail.google.com
-														</span>
-													</a>
-												</li>
-											</ul>
-										</li>
-										<li class="m-menu__item">
-											<h3 class="m-menu__heading m-menu__toggle">
-												<span class="m-menu__link-text">
-													Sử dụng cuối
-												</span>
-												<i class="m-menu__ver-arrow la la-angle-right"></i>
-											</h3>
-											<ul class="m-menu__inner">
-												<li class="m-menu__item "  data-redirect="true" aria-haspopup="true">
-													<a  href="header/actions.html" class="m-menu__link ">
-														<i class="m-menu__link-bullet m-menu__link-bullet--line">
-															<span></span>
-														</i>
-														<span class="m-menu__link-text">
-														10:02:07 AM - 12/25/2018
-														</span>
-													</a>
-												</li>
-												<li class="m-menu__item "  data-redirect="true" aria-haspopup="true">
-													<a  href="header/actions.html" class="m-menu__link ">
-														<i class="m-menu__link-bullet m-menu__link-bullet--line">
-															<span></span>
-														</i>
-														<span class="m-menu__link-text">
-														10:01:29 AM - 12/25/2018
-														</span>
-													</a>
-												</li>
-												<li class="m-menu__item "  data-redirect="true" aria-haspopup="true">
-													<a  href="header/actions.html" class="m-menu__link ">
-														<i class="m-menu__link-bullet m-menu__link-bullet--line">
-															<span></span>
-														</i>
-														<span class="m-menu__link-text">
-														10:01:23 AM - 12/25/2018
-														</span>
-													</a>
-												</li>
-												<li class="m-menu__item "  data-redirect="true" aria-haspopup="true">
-													<a  href="header/actions.html" class="m-menu__link ">
-														<i class="m-menu__link-bullet m-menu__link-bullet--line">
-															<span></span>
-														</i>
-														<span class="m-menu__link-text">
-														10:00:15 AM - 12/25/2018
-														</span>
-													</a>
-												</li>
-												<li class="m-menu__item "  data-redirect="true" aria-haspopup="true">
-													<a  href="header/actions.html" class="m-menu__link ">
-														<i class="m-menu__link-bullet m-menu__link-bullet--line">
-															<span></span>
-														</i>
-														<span class="m-menu__link-text">
-															10:00:10 AM - 12/25/2018
-														</span>
-													</a>
-												</li>
-											</ul>
+										<li id="historyData" class="m-menu__item">
+										
 										</li>
 									</ul>
 								</div>
-							</div> -->
+							</div>
 						</li>
 						<!--begin::Search-->
 						<li class="m-menu__item m-menu__item--large m-dropdown m-dropdown--arrow m-dropdown--large m-dropdown--mobile-full-width m-dropdown--align-right m-dropdown--skin-light m-header-search m-header-search--expandable m-header-search--skin-" id="m_quicksearch" data-search-type="default">
@@ -208,36 +101,6 @@
 				<div id="m_header_topbar" class="m-topbar  m-stack m-stack--ver m-stack--general">
 					<div class="m-stack__item m-topbar__nav-wrapper">
 						<ul class="m-topbar__nav m-nav m-nav--inline">
-							<li class="m-nav__item m-topbar__quick-actions m-topbar__quick-actions--img m-dropdown m-dropdown--large m-dropdown--header-bg-fill m-dropdown--arrow m-dropdown--align-right m-dropdown--align-push m-dropdown--mobile-full-width m-dropdown--skin-light"  data-dropdown-toggle="click">
-								<a href="#" class="m-nav__link m-dropdown__toggle">
-									<span class="m-nav__link-badge m-badge m-badge--dot m-badge--info m--hide"></span>
-									<span class="m-nav__link-icon">
-										<i class="flaticon-refresh"></i>
-									</span>
-								</a>
-								<div class="m-dropdown__wrapper">
-									<span class="m-dropdown__arrow m-dropdown__arrow--right m-dropdown__arrow--adjust"></span>
-									<div class="m-dropdown__inner">
-										<div class="m-dropdown__header m--align-center" style="background: url({{ asset('app/media/images/misc/hiphip_bg.jpg') }}); background-size: cover;">
-											<span class="m-dropdown__header-title">
-												Tạo mật khẩu mạnh
-											</span>
-											<span class="m-dropdown__header-subtitle">
-												
-											</span>
-										</div>
-										<div class="m-dropdown__body m-dropdown__body--paddingless">
-											<div class="m-dropdown__content">
-												<div class="m-scrollable" data-scrollable="false" data-max-height="380" data-mobile-max-height="200">
-													<div class="m-nav-grid m-nav-grid--skin-light">
-													<!-- TODO: sinh mật khẩu -->
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</li>
 							<li class="m-nav__item m-topbar__notifications m-topbar__notifications--img m-dropdown m-dropdown--large m-dropdown--header-bg-fill m-dropdown--arrow m-dropdown--align-right m-dropdown--mobile-full-width" data-dropdown-toggle="click" data-dropdown-persistent="true">
 								<a href="#" class="m-nav__link m-dropdown__toggle" id="m_topbar_notification_icon">
 									<span class="m-nav__link-badge m-badge m-badge--dot m-badge--dot-small m-badge--danger"></span>
@@ -357,7 +220,7 @@
 							<li class="m-nav__item m-topbar__user-profile m-topbar__user-profile--img  m-dropdown m-dropdown--medium m-dropdown--arrow m-dropdown--header-bg-fill m-dropdown--align-right m-dropdown--mobile-full-width m-dropdown--skin-light" data-dropdown-toggle="click">
 								<a href="#" class="m-nav__link m-dropdown__toggle">
 									<span class="m-topbar__userpic">
-										<img src="{{ '/app/media/images/avatars/' . Auth::user()->profile->avatar }}" class="m--img-rounded m--marginless m--img-centered" alt=""/>
+										<img src="{{ url('storage/avatars/' . Auth::user()->profile->avatar) }}" class="m--img-rounded m--marginless" alt=""/>
 									</span>
 									<span class="m-topbar__username m--hide">
 										{{ Auth::user()->name }}
@@ -369,7 +232,7 @@
 										<div class="m-dropdown__header m--align-center" style="background: url({{ asset('app/media/images/misc/user_profile_bg.jpg') }}); background-size: cover;">
 											<div class="m-card-user m-card-user--skin-dark">
 												<div class="m-card-user__pic">
-													<img src="{{ 'app/media/images/avatars/' . Auth::user()->profile->avatar }}" class="m--img-rounded m--marginless" alt=""/>
+													<img src="{{ url('storage/avatars/' . Auth::user()->profile->avatar) }}" class="m--img-rounded m--marginless" alt=""/>
 												</div>
 												<div class="m-card-user__details">
 													<span class="m-card-user__name m--font-weight-500">

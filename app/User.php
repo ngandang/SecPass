@@ -87,4 +87,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany('App\Note','secrets','owner_id','asset_id');
     }
+    
+    public function Track()
+    { 
+        return $this->hasMany('App\AssetTracking','user_id','id');
+    }
 }

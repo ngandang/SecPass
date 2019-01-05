@@ -78,12 +78,11 @@ td{
 }
 .p-image{
     position: absolute;
-    bottom: 32px;
-    right: 13px;
-}
-.p-image .fa-camera{
+    bottom: 61px;
+    right: 24px;
     font-size: 20px;
 }
+
 .p-image:hover{
     color: #88898a;
 }

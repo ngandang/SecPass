@@ -37,14 +37,6 @@
                                                         Tác vụ nhanh
                                                     </span>
                                                 </li>                                                
-                                                <li class="m-nav__item hide">
-                                                    <a class="m-nav__link asset-move">
-                                                        <i class="m-nav__link-icon flaticon-app "></i>
-                                                        <span class="m-nav__link-text">
-                                                            <b>Chuyển vào kho lưu trữ</b>
-                                                        </span>
-                                                    </a>
-                                                </li>
                                                 <li class="m-nav__item">
                                                     <a href="javascript:;" class="m-nav__link account-copy-username">
                                                         <i class="m-nav__link-icon flaticon-user-ok"></i>
@@ -108,7 +100,7 @@
 </div>
 @else
     <div class="text-center">
-        <img src="{{ asset('default/media/img/misc/emptystate.png') }}"/>
+        <img src="{{ asset('app/media/images/misc/emptystate.png') }}"/>
         <h3><small class="text-muted">Hiện không có tài khoản nào...</small></h3>
     </div>
 @endif
