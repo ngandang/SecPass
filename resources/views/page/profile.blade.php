@@ -100,7 +100,7 @@
                                 {{ csrf_field() }}
                                 <i class="fa fa-camera upload-button p-image"></i>
                                 <input class="file-upload" type="file" name ="avatar" accept="image/*"/>
-                                <button type="submit" class="btn updateAvatar" >Thay đổi</button>
+                                <button type="submit" class="btn updateAvatar" >Lưu</button>
                             </form>
                         </div>
                         <!-- <div class="modal fade" id="cropImagePop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

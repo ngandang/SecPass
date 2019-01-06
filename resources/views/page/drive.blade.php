@@ -69,10 +69,12 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="tilte" class="text-info">Tập Tin:</label>
+                                    <input type="file" name="fileToUpload" id="fileToUpload">
+                                    <!-- <label for="tilte" class="text-info">Tập Tin:</label>
                                     <div id="drop_zone">Kéo thả tập tin</div>
                                     <input class="file-upload" type="file" id="files" name="files[]" multiple />
                                     <span class="custom-file-control" toggle="#files"></span>
-                                    <output id="list"></output>
+                                    <output id="list"></output> -->
                                 </div> 
                             </form>
                         </div>  
@@ -150,12 +152,12 @@
     </form>
 <!-- END: Download form -->
 <script>
-    // Check for the various File API support.
-    if (window.File && window.FileReader && window.FileList && window.Blob) {
-    // Great success! All the File APIs are supported.
-    } else {
-    alert('The File APIs are not fully supported in this browser.');
-    }
+    // // Check for the various File API support.
+    // if (window.File && window.FileReader && window.FileList && window.Blob) {
+    // // Great success! All the File APIs are supported.
+    // } else {
+    // alert('The File APIs are not fully supported in this browser.');
+    // }
 
 
     function del(filename){
@@ -168,19 +170,19 @@
     }
 
     $(document).ready(function(){
-        $('#files').on('change', function(e){
-            var files = e.target.files; // FileList object
+        // $('#files').on('change', function(e){
+        //     var files = e.target.files; // FileList object
 
-            // files is a FileList of File objects. List some properties.
-            var output = [];
-            for (var i = 0, f; f = files[i]; i++) {
-            output.push('<li><h5>', escape(f.name), '</h5> (', f.type || 'n/a', ') - ',
-                        f.size, ' bytes, cập nhật cuối: ',
-                        f.lastModifiedDate ? f.lastModifiedDate.toLocaleDateString() : 'n/a',
-                        '</li>');
-            }
-            $('#list').html('<ul>' + output.join('') + '</ul>');
-        });
+        //     // files is a FileList of File objects. List some properties.
+        //     var output = [];
+        //     for (var i = 0, f; f = files[i]; i++) {
+        //     output.push('<li><h5>', escape(f.name), '</h5> (', f.type || 'n/a', ') - ',
+        //                 f.size, ' bytes, cập nhật cuối: ',
+        //                 f.lastModifiedDate ? f.lastModifiedDate.toLocaleDateString() : 'n/a',
+        //                 '</li>');
+        //     }
+        //     $('#list').html('<ul>' + output.join('') + '</ul>');
+        // });
 
         $('#addSubmit').click(function(e){
             e.preventDefault();

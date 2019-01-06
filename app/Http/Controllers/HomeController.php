@@ -493,7 +493,7 @@ class HomeController extends Controller
         return response()->json([
             'success' => true,
             // TODO: lang this message
-            'message' => 'Thêm ghi chú bảo mật thành công',
+            'message' => 'Thêm tài liệu thành công',
             'view' => view('content.content-drive', compact('files'))->render()
         ]);
     }
