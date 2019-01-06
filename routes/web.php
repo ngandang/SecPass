@@ -89,7 +89,10 @@ Route::group(['prefix' => 'group', 'as' => 'group'], function(){
     Route::post('delete','GroupController@deleteGroup');
     Route::post('deleteUser', 'GroupController@deleteUser');
     Route::post('changeRole','GroupController@changeRole');
+
     Route::get('{group_id}','GroupController@groupDetail');
+    Route::get('{group_id}/pgp','GroupController@groupPGP');
+
     Route::group(['prefix' => 'account', 'as' => 'account'], function(){
         Route::post('detail','GroupController@getAccount');
         Route::post('add','GroupController@addAccount');
@@ -129,16 +132,14 @@ Route::get('test_gpg', function () {
 
 });
 
-// Route::get('userManage','HomeController@getUser');
-// Route::group(['prefix' => 'userManage', 'as' => 'userManage'], function(){
-//     Route::post('editUser','HomeController@editUser');
-// });
-
 Route::group(['prefix' => 'admin', 'as' => 'admin'], function(){
-    Route::get('userManage','HomeController@getUser');
-    Route::post('editUser','HomeController@editUser');
-    Route::get('groupManage','HomeController@getGroup');
+    Route::get('','AdminController@admin');
+
+    Route::get('users','AdminController@getUsers');
+    Route::post('editUser','AdminController@editUser');
+    Route::get('groups','AdminController@getGroups');
 });
+
 Route::get('email','HomeController@sendMail');
 
 Route::get('pgp','HomeController@pgp');
@@ -146,19 +147,19 @@ Route::get('pgp','HomeController@pgp');
 Route::get('session-timeout/keepalive', 'HomeController@keepalive');
 
 Route::get('setup', function () {
-    App\Role::create(
+    App\Role::insert(
         [
             'id' => '5bdf5220-d75c-11e8-843b-a7f6cbee423d',
             'name' => 'root',
             'description' => 'Super User for who the BOSS here.',
         ]);
-    App\Role::create(
+    App\Role::insert(
         [
             'id' => '5bed2760-d75c-11e8-8098-a930bf45516a',
             'name' => 'admin',
             'description' => 'Admin who under root',
         ]);
-    App\Role::create(
+    App\Role::insert(
         [
             'id' => '5bf9dea0-d75c-11e8-965c-95bc72799a6b',
             'name' => 'user',
@@ -168,7 +169,7 @@ Route::get('setup', function () {
     App\User::create(
         [
             'name' => 'root',
-            'email' => 'master@secpass.com',
+            'email' => 'master@secpass.terabox.vn',
             'password' => bcrypt('password'),
             'active' => 1,
             'role_id' => '5bdf5220-d75c-11e8-843b-a7f6cbee423d',

@@ -6,19 +6,17 @@
         <table class="m-datatable">
             <thead>
                 <tr style="text-align:center">
-                    <th>#</th>
                     <th> Tên người dùng </th>
-                    <th> Địa chỉ email </th>
+                    <th> Email </th>
                     <th> Vai trò </th>
                     <th> Ngày tham gia </th>
                     <th> </th>
                 </tr>
             </thead>
             <tbody>
-            @foreach($groupUsers->sortBy('name') as $key=>$user)
+            @foreach($groupUsers->sortBy('name') as $user)
                 
                 <tr style="text-align:center">
-                    <td> {{$key}}</td>
                     <td> {{$user->name}} </td>
                     <td> {{$user->email}}</td>
                     <td> 

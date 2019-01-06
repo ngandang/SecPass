@@ -34,7 +34,7 @@
         </div>
         &nbsp;&nbsp;
 		<div class="">
-            <a class="deleteGroup" href="#deleteGroupForm" data-toggle="modal" data-backdrop="static" data-keyboard="false">
+            <a id="deleteGroup" href="#deleteGroupForm" data-toggle="modal" data-backdrop="static" data-keyboard="false">
                 <button class="btn btn-danger">Xoá nhóm</button>
             </a>
         </div>              
@@ -873,26 +873,32 @@
             },
             columns: [
                 {
-                field: '#',
-                type: 'number',                
-                textAlign: 'center',
-                width: 50,
-                },
-                {
                 field: 'Tên người dùng',
                 type: 'text',
+                textAlign: 'center',
                 sortable: 'asc',
+                width: 150,
+                },
+                {
+                field: 'Email',
+                type: 'text',
+                textAlign: 'center',
+                width: 200,
                 },
                 {
                 field: 'Vai trò',
                 type: 'text',
+                textAlign: 'center',
                 width: 150,
                 },
                 {
-                field: '',
-                type: 'text',
+                field: 'Ngày tham gia',
                 textAlign: 'center',
-                width: 50,
+                width: 200,
+                },
+                {
+                field: '',
+                textAlign: 'center',
                 },
             ],
             pagination: false,
@@ -904,16 +910,17 @@
         var group_id = $("input[name=group_id]").val();
         $("form").append('<input name="group_id" type="hidden" value="'+ group_id +'" />');        
 
-        $('#addGroupForm input[name=email]').keypress(function(e) {            
+        $('#editGroupForm input[name=email]').keypress(function(e) {            
             if(e.which == 13){
                 e.preventDefault();
                 $("#addUser").click();
             }
         });
-        
+
         $('#addUser').click(function(e){
             e.preventDefault();
-
+            var form = $(this).closest('form');
+            form.find("input[name=email]").css('border-color','');
             email =  {
                 'email' : $('#editGroupForm input[name=email]').val()
             };
@@ -922,35 +929,41 @@
                 type: 'POST',
                 data: email,
                 success: function(response, status, xhr, $form) {
-                    var email = document.getElementById('email').value;
+                    var email = form.find("input[name=email]").val();
                    
                     var list = $('#users');
                     var entry = $('<li>');
                     var span = $('<span>');
                     span.text(email);
-                    var button = $('<button onclick="delUser()">');
-                    button.text('Xóa');
-                    button.addClass("btn-del-email");
+                    var button = $('<a href="javascript:;" class="m-link del-email">&nbsp;&nbsp;Xoá</a>');
 
                     list.append(entry);
                     entry.append(span);
                     entry.append(button);
                     
                     console.log(response.message);
+                    $('#editGroupForm input[name=email]').val("");
                 },
                 error: function(response, status, xhr, $form) {
                     // btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false); // remove 
-                    swal("Không tìm thấy người dùng", "", status);
+                    swal(response.responseJSON.message, "", status);
                     console.log(response);
                 }
             });
         });
-        
+
+        $(document).on("click",'.del-email', function() {
+            $(this).closest('li').remove();
+        });
 
         $('#editGroupSubmit').click(function(e){
             e.preventDefault();
             var btn = $(this);
             var form = $(this).closest('form');
+
+            if (!form.valid()) {
+                return;
+            }
             
             myArray = new Array();
             cnt = 0;
@@ -960,11 +973,14 @@
             });
             var jsonString = JSON.stringify(myArray);
 
+            btn.addClass('m-loader m-loader--right m-loader--light').attr('disabled', true);
+
             form.ajaxSubmit({
                 url: '/group/editGroup',
                 type: 'POST',
                 data: {li_variable: jsonString},
                 success: function(response, status, xhr, $form) {
+                    btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false);
                     swal({
                         position: 'center',
                         type: 'success',
@@ -973,7 +989,9 @@
                         timer: 1500
                     }).then(function(result){$('#editGroupForm').modal('hide');});
 
-                    $('.m-section').html(response.view);
+                    $('#group-user .m-section').html(response.view);
+                    users_datatable = $('.m-datatable').mDatatable(users_datatable_options);
+
                     $("#users li").remove();
                     form.clearForm();
 	                form.validate().resetForm();
@@ -985,7 +1003,7 @@
             })
         });
         
-        $('.deleteGroup').click(function (){
+        $('#deleteGroup').click(function (){
             $("#deleteGroupForm input[name=id]").val($("input[name=group_id]").val());
         });
         
@@ -1043,7 +1061,9 @@
                         timer: 1500
                     }).then(function(result){$('#deleteUserForm').modal('hide');});
 
-                    $('.g-content').html(response.view);
+                    $('#group-user .m-section').html(response.view);
+                    users_datatable = $('.m-datatable').mDatatable(users_datatable_options);
+
                     form.clearForm();
 	                form.validate().resetForm();
                 },

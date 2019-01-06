@@ -92,4 +92,13 @@ class User extends Authenticatable
     { 
         return $this->hasMany('App\AssetTracking','user_id','id');
     }
+
+    public function isAdmin()
+    {
+        $role = auth()->user()->role_id;
+        if( $role == "5bdf5220-d75c-11e8-843b-a7f6cbee423d" || $role == "5bed2760-d75c-11e8-8098-a930bf45516a") {
+            return true;
+        }
+        return false;
+    }
 }

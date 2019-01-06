@@ -26,9 +26,9 @@
                                 @endif
                             </td>
                             <td> 
-                                @if($user->role_id == '5bf9dea0-d75c-11e8-965c-95bc72799a6b') 
+                                @if($user->role()->first()['name'] === 'user') 
                                     Người dùng
-                                @elseif ($user->role_id == '5bed2760-d75c-11e8-8098-a930bf45516a')
+                                @elseif($user->role()->first()['name'] === 'admin')
                                     Quản trị viên
                                 @endif
                             </td>

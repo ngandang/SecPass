@@ -97,21 +97,30 @@ class GroupController extends Controller
 
     public function deleteAccount(Request $request){
         $group = Group::find($request->group_id);
+        $admin = Auth::user()->GroupUser()->where('group_id', $group->id)->first()->is_admin;
+        if($admin)
+        {
+            $account_id = $request->id;        
+            $acc = Account::find($account_id);
+            $acc->delete();
 
-        $account_id = $request->id;        
-        $acc = Account::find($account_id);
-        $acc->delete();
+            $secret = Secret::where('asset_id', $account_id)->first();
+            $secret->delete();
 
-        $secret = Secret::where('asset_id', $account_id)->first();
-        $secret->delete();
+            $accounts = $group->account()->get();
+            return response()->json([
+                'success' => true,
+                // TODO: lang this message
+                'message' => 'Xóa tài khoản thành công',
+                'view' => view('content.content-accounts', compact('accounts'))->render()
+            ]);
+        }
 
-        $accounts = $group->account()->get();
         return response()->json([
-            'success' => true,
+            'success' => false,
             // TODO: lang this message
-            'message' => 'Xóa tài khoản thành công',
-            'view' => view('content.content-accounts', compact('accounts'))->render()
-        ]);
+            'message' => 'Bạn không là quản trị viên của nhóm này'
+        ]); 
     }
     
     public function shareAccount(Request $request){
@@ -302,21 +311,30 @@ class GroupController extends Controller
 
     public function delNote(Request $req){
         $group = Group::find($request->group_id);
+        $admin = Auth::user()->GroupUser()->where('group_id', $group->id)->first()->is_admin;
+        if($admin)
+        {
+            $note_id = $request->id;
+            $note = Note::find($note_id);
+            $note->delete();
 
-        $note_id = $request->id;
-        $note = Note::find($note_id);
-        $note->delete();
+            $secret = Secret::where('asset_id', $note_id)->first();
+            $secret->delete();
 
-        $secret = Secret::where('asset_id', $note_id)->first();
-        $secret->delete();
+            $notes = $group->note()->get();
+            return response()->json([
+                'success' => true,
+                // TODO: lang this message
+                'message' => 'Xóa ghi chú bảo mật thành công',
+                'view' => view('content.content-notes', compact('notes'))->render()
+            ]);
+        }
 
-        $notes = $group->note()->get();
         return response()->json([
-            'success' => true,
+            'success' => false,
             // TODO: lang this message
-            'message' => 'Xóa ghi chú bảo mật thành công',
-            'view' => view('content.content-notes', compact('notes'))->render()
-        ]);
+            'message' => 'Bạn không là quản trị viên của nhóm này'
+        ]); 
     }
 
     public function drive()
@@ -436,7 +454,7 @@ class GroupController extends Controller
             return response()->json([
                 'success' => false,
                 // TODO: lang this message
-                'message' => 'Người dùng không tồn tại'
+                'message' => 'Không tìm thấy người dùng'
             ], 500);
         }
     }
@@ -536,133 +554,174 @@ class GroupController extends Controller
     {
         $group_id = $request->id;
         $group = Group::find($group_id);
-        $group->name = $request->name;
-        $group->save();
+        $admin = Auth::user()->GroupUser()->where('group_id', $group->id)->first()->is_admin;
+        if($admin)
+        {
+            $group->name = $request->name;
+            $group->modified_by = Auth::user()->id;
+            $group->save();
 
-        $groups_users = GroupUser::where('group_id', $group_id)->get();
-        $user_id = $groups_users->pluck('user_id');
-        $users = User::whereIn('id',$user_id)->get();;
+            $groups_users = GroupUser::where('group_id', $group_id)->get();
+            $user_id = $groups_users->pluck('user_id');
+            $users = User::whereIn('id',$user_id)->get();;
 
-        $emails = json_decode(stripslashes($_POST['li_variable']));
+            $emails = json_decode(stripslashes($_POST['li_variable']));
 
-        foreach($emails as $email){
-            $user = User::where('email', $email)->first();
-            if(!($groups_users->where('user_id',$user->id)->first())) {
-                $group_user = new GroupUser;
-                $group_user->group_id = $group->id;
-                $group_user->user_id = $user->id;
-                $group_user->save();
+            foreach($emails as $email){
+                $user = User::where('email', $email)->first();
+                if( ($user) && !($groups_users->where('user_id',$user->id)->first()) ) {
+                    $group_user = new GroupUser;
+                    $group_user->group_id = $group->id;
+                    $group_user->user_id = $user->id;
+                    $group_user->save();
+                }
             }
+
+            $groupUsers = DB::table('groups_users')
+                    ->where('group_id', $group_id)        
+                    ->join('users', 'groups_users.user_id', '=', 'users.id')
+                    ->select('groups_users.*','users.email','users.name')
+                    ->get();
+            $admin = Auth::user()->GroupUser()->where('group_id', $group->id)->first()->is_admin;
+
+            return response()->json([
+                'success' => true,
+                // TODO: lang this message
+                'message' => 'Chỉnh sửa nhóm thành công',
+                'view' => view('content.content-group-user', compact('group','groupUsers','admin'))->render()
+            ]);
         }
 
-        $groupUsers = DB::table('groups_users')
-                ->where('group_id', $group_id)        
-                ->join('users', 'groups_users.user_id', '=', 'users.id')
-                ->select('groups_users.*','users.email','users.name')
-                ->get();
-        $admin = Auth::user()->GroupUser()->where('group_id',$group->id)->first()->is_admin;
-
         return response()->json([
-            'success' => true,
+            'success' => false,
             // TODO: lang this message
-            'message' => 'Chỉnh sửa nhóm thành công',
-            'view' => view('content.content-group-user', compact('group','groupUsers','admin'))->render()
-        ]);
-
+            'message' => 'Bạn không là quản trị viên của nhóm này'
+        ]); 
     }
 
     public function deleteGroup(Request $request)
     {
         $group_id = $request->id;
-        
         $group = Group::find($group_id);
-        $group->delete();
+        $admin = Auth::user()->GroupUser()->where('group_id', $group->id)->first()->is_admin;
+        if($admin)
+        {
+            $group->delete();
 
-        $group_user = GroupUser::where('group_id', $group_id)->first();
-        $group_user->delete();
+            $group_user = GroupUser::where('group_id', $group_id)->first();
+            $group_user->delete();
 
-        $groups = Auth::user()->group()->get();
+            $groups = Auth::user()->group()->get();
+            return response()->json([
+                'success' => true,
+                // TODO: lang this message
+                'message' => 'Xóa nhóm thành công',
+                'view' => view('content.content-group', compact('groups'))->render()
+            ]);
+        }
+
         return response()->json([
-            'success' => true,
+            'success' => false,
             // TODO: lang this message
-            'message' => 'Xóa nhóm thành công',
-            'view' => view('content.content-group', compact('groups'))->render()
-        ]);
+            'message' => 'Bạn không là quản trị viên của nhóm này'
+        ]); 
     }
     public function deleteUser(Request $request)
     {
-        $user_id = $request->user_id;
         $group_id = $request->group_id;
-        $group_user = GroupUser::where('group_id',$group_id)
-                                ->where('user_id', $user_id)->first();
-        $group = GroupUser::where('group_id',$group_id)->get();
+        $group = Group::find($group_id);
+        $admin = Auth::user()->GroupUser()->where('group_id', $group->id)->first()->is_admin;
+        if($admin)
+        {
+            $user_id = $request->user_id;
+            $group_user = GroupUser::where('group_id', $group_id)
+                                    ->where('user_id', $user_id)->first();
+            $group = GroupUser::where('group_id', $group_id)->get();
 
-        if( ($group_user->is_admin == true) && ( count($group->where('is_admin',true)) == 1) ) {
+            if( ($group_user->is_admin == true) && ( count($group->where('is_admin',true)) == 1) ) {
+                return response()->json([
+                    'success' => false,
+                    // TODO: lang this message
+                    'message' => 'Vui lòng chọn quản trị viên thay thế'
+                ],'500');
+            }
+
+            $group_user->delete();
+
+            // Refresh content
+            $group = Group::find($group_id);
+            $groupUsers = DB::table('groups_users')
+                    ->where('group_id', $group_id)        
+                    ->join('users', 'groups_users.user_id', '=', 'users.id')
+                    ->select('groups_users.*','users.email','users.name')
+                    ->get();
+            $admin = Auth::user()->GroupUser()->where('group_id', $group->id)->first()->is_admin;
+
             return response()->json([
-                'success' => false,
+                'success' => true,
                 // TODO: lang this message
-                'message' => 'Vui lòng chọn quản trị viên thay thế'
-            ],'500');
+                'message' => 'Xóa người dùng khỏi nhóm thành công',
+                'view' => view('content.content-group-user', compact('group','groupUsers','admin'))->render()
+            ]);
         }
 
-        $group_user->delete();
-
-        // Refresh content
-        $group = Group::find($group_id);
-        $groupUsers = DB::table('groups_users')
-                ->where('group_id', $group_id)        
-                ->join('users', 'groups_users.user_id', '=', 'users.id')
-                ->select('groups_users.*','users.email','users.name')
-                ->get();
-        $admin = Auth::user()->GroupUser()->where('group_id',$group->id)->first()->is_admin;
-
         return response()->json([
-            'success' => true,
+            'success' => false,
             // TODO: lang this message
-            'message' => 'Xóa người dùng khỏi nhóm thành công',
-            'view' => view('content.content-group-user', compact('group','groupUsers','admin'))->render()
-        ]);
-
+            'message' => 'Bạn không là quản trị viên của nhóm này'
+        ]); 
     }
 
     public function changeRole(Request $request)
     {
-        $user_id = $request->idUser;
-        $group_id = $request->idGroup;
-        $group = GroupUser::where('group_id',$group_id)->get();
-        $user = $group->where('user_id', $user_id)->first();
-        
-        if($request->role == 1) {
-            $user->is_admin = 1;
-        }
-        else {
-            if($request->role == 0) {
-                if(count($group->where('is_admin',true)) == 1) {
-                    return response()->json([
-                        'success' => false,
-                        // TODO: lang this message
-                        'message' => 'Vui lòng chọn quản trị viên thay thế'
-                    ],'500');
-                }
-                $user->is_admin = 0;
-            }
-        }
-        $user->save();
-
+        $group_id = $request->group_id;
         $group = Group::find($group_id);
-        $groupUsers = DB::table('groups_users')
-                ->where('group_id', $group_id)        
-                ->join('users', 'groups_users.user_id', '=', 'users.id')
-                ->select('groups_users.*','users.email','users.name')
-                ->get();
-        $admin = Auth::user()->GroupUser()->where('group_id',$group->id)->first()->is_admin;
+        $admin = Auth::user()->GroupUser()->where('group_id', $group->id)->first()->is_admin;
+        if($admin)
+        {
+            $user_id = $request->idUser;
+            $group_id = $request->idGroup;
+            $group = GroupUser::where('group_id',$group_id)->get();
+            $user = $group->where('user_id', $user_id)->first();
+            
+            if($request->role == 1) {
+                $user->is_admin = 1;
+            }
+            else {
+                if($request->role == 0) {
+                    if(count($group->where('is_admin',true)) == 1) {
+                        return response()->json([
+                            'success' => false,
+                            // TODO: lang this message
+                            'message' => 'Vui lòng chọn quản trị viên thay thế'
+                        ],'500');
+                    }
+                    $user->is_admin = 0;
+                }
+            }
+            $user->save();
+    
+            $group = Group::find($group_id);
+            $groupUsers = DB::table('groups_users')
+                    ->where('group_id', $group_id)        
+                    ->join('users', 'groups_users.user_id', '=', 'users.id')
+                    ->select('groups_users.*','users.email','users.name')
+                    ->get();
+            $admin = Auth::user()->GroupUser()->where('group_id', $group->id)->first()->is_admin;
+    
+            return response()->json([
+                'success' => true,
+                // TODO: lang this message
+                'message' => 'Thay đổi vai trò người dùng thành công',
+                'view' => view('content.content-group-user', compact('group','groupUsers','admin'))->render()
+            ]);   
+        }
 
         return response()->json([
-            'success' => true,
+            'success' => false,
             // TODO: lang this message
-            'message' => 'Thay đổi vai trò người dùng thành công',
-            'view' => view('content.content-group-user', compact('group','groupUsers','admin'))->render()
-        ]);
+            'message' => 'Bạn không là quản trị viên của nhóm này'
+        ]); 
     }
 
 }

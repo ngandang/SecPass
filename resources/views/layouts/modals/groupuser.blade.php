@@ -21,10 +21,10 @@
                             <div class="form-group row">
                                 <div class="col-md-9">
                                     <label for="email" class="text-info">Thêm email người dùng</label>
-                                    <input type="text" name="email" id="email" class="form-control" required>
+                                    <input type="text" name="email" class="form-control">
                                 </div>
                                 <div class="col-md-2">
-                                    <label class="text-info">&nbsp</label>
+                                    <label class="text-info">&nbsp;</label>
                                     <button id="addUser" type="button" class="btn btn-primary">
                                         Thêm
                                     </button>
@@ -32,18 +32,12 @@
                             </div>
                             <div class="form-group">
                                 <label for="list" class="text-info">Danh sách người dùng</label>
-                                <ul id="users" class="col-lg-8">
-                                    
-                                </ul>
-                            </div>
-                        
+                                <ul id="users" class="col-lg-8"></ul>
+                            </div>                        
                         </div>  
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <a style="position:absolute; left:20px;" class="deleteGroup" href="#deleteGroupForm" data-toggle="modal" data-backdrop="static" data-keyboard="false">
-                        <button type="button" class="btn btn-outline-danger m-btn m-btn--pill m-btn--wide btn-sm">Xoá nhóm</button>
-                    </a>
                     <button type="button" class="btn btn-secondary pull-left" data-dismiss="modal">Huỷ</button>
                     <button type="submit" class="btn btn-primary pull-right" id="editGroupSubmit">Lưu</button>
                 </div>

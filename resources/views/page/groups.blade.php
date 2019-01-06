@@ -67,7 +67,7 @@
                             <div class="form-group row">
                                 <div class="col-md-9">
                                     <label for="email" class="text-info">Thêm email người dùng</label>
-                                    <input type="text" name="email" id="email" class="form-control">
+                                    <input type="text" name="email" class="form-control">
                                     <span class="m-form__help text-muted">
                                         Bạn được mặc định là quản trị viên của nhóm.
                                     </span>
@@ -82,8 +82,7 @@
                             <div class="form-group">
                                 <label for="list" class="text-info">Danh sách người dùng</label>
                                 <ul id="users" class="col-lg-8"></ul>
-                            </div>
-                        
+                            </div>                        
                         </div>  
                     </div>
                 </div>
@@ -123,6 +122,7 @@
                 $("#addUser").click();
             }
         });
+
         $('#addUser').click(function(e){
             e.preventDefault();
             var form = $(this).closest('form');
@@ -135,7 +135,7 @@
                 type: 'POST',
                 data: email,
                 success: function(response, status, xhr, $form) {
-                    var email = $('#email').val();
+                    var email = form.find("input[name=email]").val();
                    
                     var list = $('#users');
                     var entry = $('<li>');
@@ -152,11 +152,12 @@
                 },
                 error: function(response, status, xhr, $form) {
                     // btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false); // remove 
-                    swal("Không tìm thấy người dùng", "", status);
+                    swal(response.responseJSON.message, "", status);
                     console.log(response);
                 }
             });
         });
+
         $(document).on("click",'.del-email', function() {
             $(this).closest('li').remove();
         });
@@ -185,7 +186,7 @@
             btn.addClass('m-loader m-loader--right m-loader--light').attr('disabled', true);
 
             form.ajaxSubmit({
-                    url: 'group/addGroup',
+                    url: '/group/addGroup',
                     type: 'POST',
                     data: {li_variable: jsonString},
                     success: function(response, status, xhr, $form) {
