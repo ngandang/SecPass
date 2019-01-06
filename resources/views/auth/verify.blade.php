@@ -4,7 +4,7 @@
 	<head>
 		<meta charset="utf-8" />
 		<title>
-			SecPASS | Xác thực tài khoản
+		{{ config('app.name', 'SecPASS') }} | Xác thực tài khoản
 		</title>
 		<meta name="description" content="SecPASS - The password management system for indiviuals and groups">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -22,21 +22,21 @@
 		<!--end::Web font -->
         <!--begin::Base Styles -->
 		<link href="{{ asset('vendors/base/vendors.bundle.css') }}" rel="stylesheet" type="text/css" />
-		<link href="{{ asset('default/base/style.bundle.css') }}" rel="stylesheet" type="text/css" />
+		<link href="{{ asset('app/base/style.bundle.css') }}" rel="stylesheet" type="text/css" />
 		<!--end::Base Styles -->
-		<link rel="shortcut icon" href="default/media/img/logo/favicon.ico" />
+		<link rel="shortcut icon" href="app/media/images/logo/favicon.ico" />
 	</head>
 	<!-- end::Head -->
     <!-- end::Body -->
 	<body class="m--skin- m-header--fixed m-header--fixed-mobile m-aside-left--enabled m-aside-left--skin-dark m-aside-left--offcanvas m-footer--push m-aside--offcanvas-default"  >
 		<!-- begin:: Page -->
 		<div class="m-grid m-grid--hor m-grid--root m-page">
-			<div class="m-grid__item m-grid__item--fluid m-grid m-grid--hor m-login m-login--signin m-login--2 m-login-2--skin-1" id="m_login" style="background-image: url({{ asset('app/media/img/bg/bg-5.jpg') }});">
+			<div class="m-grid__item m-grid__item--fluid m-grid m-grid--hor m-login m-login--signin m-login--2 m-login-2--skin-1" id="m_login" style="background-image: url({{ asset('app/media/images/bg/bg-5.jpg') }});">
 				<div class="m-grid__item m-grid__item--fluid m-login__wrapper">
 					<div class="m-login__container">
 						<div class="m-login__logo">
 							<a href="#">
-								<img width="300" src="{{ asset('default/media/img/logo/logo_395x50_dark.png') }}"/>
+								<img width="300" src="{{ asset('app/media/images/logo/logo_395x50_dark.png') }}"/>
 							</a>
 						</div>
 						<div class="m-login__signin">
@@ -90,10 +90,10 @@
 		<!-- end:: Page -->
     	<!--begin::Base Scripts -->
 		<script src="{{ asset('vendors/base/vendors.bundle.js') }}" type="text/javascript"></script>
-		<script src="{{ asset('default/base/scripts.bundle.js') }}" type="text/javascript"></script>
+		<script src="{{ asset('app/base/scripts.bundle.js') }}" type="text/javascript"></script>
 		<!--end::Base Scripts -->   
 		<!--begin::Page Snippets -->
-		<script src="{{ asset('js/validation_vi.js') }}" type="text/javascript"></script>
+		<script src="{{ asset('app/js/validation_vi.js') }}" type="text/javascript"></script>
 		<script src="{{ asset('snippets/pages/user/verify.js') }}" type="text/javascript"></script>
 		<!--end::Page Snippets -->
 	</body>

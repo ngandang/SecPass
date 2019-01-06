@@ -421,7 +421,7 @@
                                             Đồng bộ lên máy chủ
                                         </button>
                                         <span class="m-form__help">
-                                            Nếu bạn sử dụng chữ ký điện tử được cấp từ chính phủ, bạn cũng có thể sử dụng nó cho SecPASS.
+                                            Nếu bạn sử dụng chữ ký điện tử được cấp từ cơ quan - tổ chức, bạn cũng có thể sử dụng nó cho SecPASS.
                                         </span>
                                     </div>
                                 </div>
