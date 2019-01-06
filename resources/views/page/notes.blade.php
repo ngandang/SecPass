@@ -41,7 +41,9 @@
  
 <!-- BEGIN: Content -->
 <div class="m-content">
+    <div class="m-section">
     @include('content.content-notes')
+    </div>
 </div>
 <!-- END: Content -->
 
@@ -56,7 +58,7 @@
 
     $(document).ready(function(){
 
-        $('.portlet-note').on('click', function () {
+        $(document).on('click', '.portlet-note', function () {
             // Ignore this event if head-tools has been clicked.
             if($('.m-portlet__head-tools').data('clicked'))
                 return;
@@ -68,7 +70,7 @@
                 showEditForm.click();
         });
 
-        $('.note-copy-content').click(function (e) {
+        $(document).on('click', '.note-copy-content', function (e) {
             var data = {
                 'id': $(this).closest('.m-portlet').find('input[name=id]').val(),
             };
@@ -101,7 +103,7 @@
         });
 
         
-        $('.note-edit').click(function (){
+        $(document).on('click', '.note-edit', function (){
             var data = {
                 'id': $(this).closest(".m-portlet").find("input[name=id]").val(),
             };
@@ -121,12 +123,12 @@
             });
         });
 
-        $('.note-share').click(function (e) {
+        $(document).on('click', '.note-share', function (e) {
             var id = $(this).closest(".m-portlet").find("input[name=id]").val();
             $('#shareNoteForm input[name=id]').val(id);
         });
 
-        $(".note-delete").click(function(){
+        $(document).on('click', ".note-delete", function(){
             var id = $(this).closest(".m-portlet").find("input[name=id]").val();
             $('#deleteNoteForm input[name=id]').val(id);
         })
@@ -187,7 +189,7 @@
                             timer: 1500
                         }).then(function(result){$('#addNoteForm').modal('hide');});
 
-                        $('.m-content').html(response.view);                        
+                        $('.m-section').html(response.view);                        
                         form.clearForm();
                         form.validate().resetForm();
                     },
@@ -239,7 +241,7 @@
                             timer: 1500
                         }).then(function(result){$('#editNoteForm').modal('hide');});
 
-                        $('.m-content').html(response.view);
+                        $('.m-section').html(response.view);
                         form.clearForm();
                         form.validate().resetForm();
                     },
@@ -276,7 +278,7 @@
                         timer: 1500
                     }).then(function(result){$('#deleteNoteForm').modal('hide');});
 
-                    $('.m-content').html(response.view);
+                    $('.m-section').html(response.view);
                     form.clearForm();
 	                form.validate().resetForm();
                 },

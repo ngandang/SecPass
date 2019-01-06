@@ -8,7 +8,7 @@ console.log('addon: getin');
 document.addEventListener('setUserPassphraseEvent', function (event) {
     chrome.storage.local.set({'user_passphrase': event.detail}, function(){
         console.log('addon: saved passphrase');
-        alert('SecPASS: Mật khẩu sẽ được nhớ cho đến khi đăng xuất.');
+        // alert('SecPASS: Mật khẩu sẽ được nhớ cho đến khi đăng xuất.');
     });
 });
 
@@ -42,9 +42,9 @@ document.addEventListener('setUserPGPEvent', function (event) {
         const publicKeyObj = (await openpgp.key.readArmored(event.detail.publicKeyArmored)).keys[0];
         chrome.storage.local.set({'user_email': publicKeyObj.users[0].userId.email});
         chrome.storage.local.set({'user_pgp': event.detail}, function(){
-            console.log('addon: saved');
+            console.log('addon: saved user_pgp');
             // console.log(event.detail);
-            alert('SecPASS: Đã nhận được cặp khoá của bạn.');
+            // alert('SecPASS: Đã nhận được cặp khoá của bạn.');
         });
     });
 });
@@ -65,10 +65,15 @@ document.addEventListener('setGroupPGPEvent', function (event) {
             if(!confirm('SecPASS: Tiện ích hiện đang chứa khoá của nhóm này. Dữ liệu này sẽ bị ghi đè nếu tiếp tục. Bạn có chắc chắn ?'))
                 return 1;
 
-        chrome.storage.local.set({group_id: group_pgp}, function(){
-            console.log('addon: saved');
+        // Thêm ngoặc [] để biến thành chuỗi
+        chrome.storage.local.set({[group_id]: group_pgp}, function(){
+            console.log('addon: saved group_pgp');
+            chrome.storage.local.get(group_id, function(result){
+                console.log('addon: read group_pgp');
+                console.log(result);
+            });
             // console.log(event.detail);
-            alert('SecPASS: Đã nhận được cặp khoá của nhóm.');
+            // alert('SecPASS: Đã nhận được cặp khoá của nhóm.');
         });
     });
 });
@@ -77,7 +82,14 @@ document.addEventListener('letgetGroupPGPEvent', function (event) {
     var group_id = event.detail;
     chrome.storage.local.get(group_id, function(result){
         console.log('addon: read group_pgp');
+        console.log(result);
         document.dispatchEvent(new CustomEvent('getGroupPGPEvent', {detail: JSON.stringify(result[0])})); // bypass firefox permission error
     });
 });
 
+document.addEventListener('removeGroupPGPEvent', function (event) {
+    var group_id = event.detail;
+    chrome.storage.local.remove(group_id, function(){
+        console.log('addon: destroy group_pgp');
+    });
+});

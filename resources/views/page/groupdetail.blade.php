@@ -26,6 +26,19 @@
                 </li>
             </ul>
         </div>
+        @if($admin)
+		<div class="">
+            <a onclick="editGroup('{{$group->id}}','{{$group->name}}')" href="#editGroupForm" data-toggle="modal" data-backdrop="static" data-keyboard="false">
+                <button class="btn btn-primary">Chỉnh sửa</button>
+            </a>
+        </div>
+        &nbsp;&nbsp;
+		<div class="">
+            <a class="deleteGroup" href="#deleteGroupForm" data-toggle="modal" data-backdrop="static" data-keyboard="false">
+                <button class="btn btn-danger">Xoá nhóm</button>
+            </a>
+        </div>              
+        @endif
     </div>
 </div>
 
@@ -75,7 +88,7 @@
                         <button class="btn btn-primary">Thêm ghi chú</button>
                     </a>
                 </div>
-                <form class="m-form m-form--fit m-form--label-align-right">
+                <form class="m-form m-form--label-align-right">
                     <div class="m-portlet__body">
                         <div class="m-section">
                             @include('content.content-notes')
@@ -85,11 +98,25 @@
             </div>
             <div class="tab-pane" id="group-user">
                 <div class="header">
-                    @if($admin)
-                    <a onclick="editGroup('{{$group->id}}','{{$group->name}}')" href="#editGroupForm" data-toggle="modal" data-backdrop="static" data-keyboard="false">
-                        <button class="btn btn-primary">Chỉnh sửa</button>
-                    </a>
-                    @endif
+                    <!--begin: Search Form -->
+                    <div class="row align-items-right">
+                        <div class="col-xl-12 order-2 order-xl-1">
+                            <div class="form-group m-form__group row align-items-center">
+                                <div class="col-md-12">
+                                    <div class="m-input-icon m-input-icon--left">
+                                        <input type="text" class="form-control m-input m-input--solid" placeholder="Tìm kiếm nhanh..." id="userSearch">
+                                        <span class="m-input-icon__icon m-input-icon__icon--left">
+                                            <span>
+                                                <i class="la la-search"></i>
+                                            </span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="m-separator m-separator--dashed d-xl-none"></div>
+                        </div>
+                    </div>
+                    <!--end: Search Form -->  
                 </div>
                 <div class="m-form m-form--label-align-right">
                     <div class="m-portlet__body">
@@ -110,7 +137,7 @@
 @endsection
 
 @section('pageSnippets')
-
+<!-- BEGIN: Account scripts -->
 <script>
 
     function generate() {
@@ -122,7 +149,7 @@
 
     $(document).ready(function(){
 
-        $('.portlet-account').on('click', function () {
+        $(document).on('click', '.portlet-account', function (e) {
             // Ignore this event if head-tools has been clicked.
             if($('.m-portlet__head-tools').data('clicked'))
                 return;
@@ -132,6 +159,7 @@
                 showEditForm[0].click();
             else
                 showEditForm.click();
+           
         });
 
         $('.toggle-password').click(function() {
@@ -153,7 +181,7 @@
             }
         });
 
-        $('.account-username').click(function (e) {
+        $(document).on('click', '.account-username', function (e) {
             copy($(this).text());
             swal({
                 position: 'center',
@@ -166,7 +194,7 @@
             
         });
             
-        $('.account-copy-username').click(function (e) {            
+        $(document).on('click', '.account-copy-username', function (e) {            
             copy($(this).closest('.m-portlet').find('.account-username').text());
             swal({
                 position: 'center',
@@ -177,7 +205,7 @@
             });
         });
         
-        $('.account-copy-content').click(function (e) {
+        $(document).on('click', '.account-copy-content', function (e) {
             var data = {
                 'id': $(this).closest('.m-portlet').find('input[name=id]').val(),
             };
@@ -209,7 +237,7 @@
             e.stopPropagation();
         });
 
-        $('.account-edit').click(function (){
+        $(document).on('click', '.account-edit', function (){
             var data = {
                 'id': $(this).closest(".m-portlet").find("input[name=id]").val(),
             };
@@ -232,12 +260,12 @@
             });
         });
 
-        $('.account-share').click(function (e) {
+        $(document).on('click', '.account-share', function (e) {
             var id = $(this).closest(".m-portlet").find("input[name=id]").val();
             $('#shareAccountForm input[name=id]').val(id);
         });
 
-        $(".account-delete").click(function(){
+        $(document).on('click', ".account-delete", function(){
             var id = $(this).closest(".m-portlet").find("input[name=id]").val();
             $('#deleteAccountForm input[name=id]').val(id);
         })
@@ -311,7 +339,7 @@
                             timer: 1500
                         }).then(function(result){$('#addAccountForm').modal('hide');});
 
-                        $('.m-content').html(response.view);                        
+                        $('.m-section').html(response.view);                        
                         form.clearForm();
                         form.validate().resetForm();
                     },
@@ -375,14 +403,14 @@
                             timer: 1500
                         }).then(function(result){$('#editAccountForm').modal('hide');});
 
-                        $('.m-content').html(response.view);
+                        $('.m-section').html(response.view);
                         form.clearForm();
                         form.validate().resetForm();
                     },
                     error: function(response, status, xhr, $form) {
                         btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false); // remove 
                         swal("", response.responseJSON.message, "error");
-                        console.log(response.responseJSON.message);
+                        console.log(response);
                     }
                 });
                 if($temp)
@@ -415,7 +443,7 @@
                         timer: 1500
                     }).then(function(result){$('#deleteAccountForm').modal('hide');});
 
-                    $('.m-content').html(response.view);
+                    $('.m-section').html(response.view);
                     form.clearForm();
 	                form.validate().resetForm();
                 },
@@ -504,12 +532,13 @@
         });
     });
 </script>
-
+<!-- END: Account scripts -->
+ <!-- BEGIN: Note scripts -->
 <script>
 
     $(document).ready(function(){
 
-        $('.portlet-note').on('click', function () {
+        $(document).on('click', '.portlet-note', function () {
             // Ignore this event if head-tools has been clicked.
             if($('.m-portlet__head-tools').data('clicked'))
                 return;
@@ -521,7 +550,7 @@
                 showEditForm.click();
         });
 
-        $('.note-copy-content').click(function (e) {
+        $(document).on('click', '.note-copy-content', function (e) {
             var data = {
                 'id': $(this).closest('.m-portlet').find('input[name=id]').val(),
             };
@@ -554,7 +583,7 @@
         });
 
         
-        $('.note-edit').click(function (){
+        $(document).on('click', '.note-edit', function (){
             var data = {
                 'id': $(this).closest(".m-portlet").find("input[name=id]").val(),
             };
@@ -574,12 +603,12 @@
             });
         });
 
-        $('.note-share').click(function (e) {
+        $(document).on('click', '.note-share', function (e) {
             var id = $(this).closest(".m-portlet").find("input[name=id]").val();
             $('#shareNoteForm input[name=id]').val(id);
         });
 
-        $(".note-delete").click(function(){
+        $(document).on('click', ".note-delete", function(){
             var id = $(this).closest(".m-portlet").find("input[name=id]").val();
             $('#deleteNoteForm input[name=id]').val(id);
         })
@@ -640,7 +669,7 @@
                             timer: 1500
                         }).then(function(result){$('#addNoteForm').modal('hide');});
 
-                        $('.m-content').html(response.view);                        
+                        $('.m-section').html(response.view);                        
                         form.clearForm();
                         form.validate().resetForm();
                     },
@@ -692,7 +721,7 @@
                             timer: 1500
                         }).then(function(result){$('#editNoteForm').modal('hide');});
 
-                        $('.m-content').html(response.view);
+                        $('.m-section').html(response.view);
                         form.clearForm();
                         form.validate().resetForm();
                     },
@@ -729,7 +758,7 @@
                         timer: 1500
                     }).then(function(result){$('#deleteNoteForm').modal('hide');});
 
-                    $('.m-content').html(response.view);
+                    $('.m-section').html(response.view);
                     form.clearForm();
 	                form.validate().resetForm();
                 },
@@ -815,9 +844,12 @@
         });
     });
 </script>
+<!-- END Note scripts -->
 
 <script>
     
+    document.dispatchEvent(new CustomEvent('letgetGroupPGPEvent', { detail: $("input[name=group_id").val() }));
+
     function editGroup(id, name)
     {
         $('#editGroupForm input[name=id]').val(id);
@@ -868,6 +900,17 @@
 
         users_datatable = $('.m-datatable').mDatatable(users_datatable_options);
 
+
+        var group_id = $("input[name=group_id]").val();
+        $("form").append('<input name="group_id" type="hidden" value="'+ group_id +'" />');        
+
+        $('#addGroupForm input[name=email]').keypress(function(e) {            
+            if(e.which == 13){
+                e.preventDefault();
+                $("#addUser").click();
+            }
+        });
+        
         $('#addUser').click(function(e){
             e.preventDefault();
 
@@ -930,7 +973,7 @@
                         timer: 1500
                     }).then(function(result){$('#editGroupForm').modal('hide');});
 
-                    $('.m-content').html(response.view);
+                    $('.m-section').html(response.view);
                     $("#users li").remove();
                     form.clearForm();
 	                form.validate().resetForm();
@@ -941,7 +984,8 @@
                 }
             })
         });
-        $('#deleteGroup').click(function (){
+        
+        $('.deleteGroup').click(function (){
             $("#deleteGroupForm input[name=id]").val($("input[name=group_id]").val());
         });
         
@@ -956,6 +1000,10 @@
                 url: '/group/delete',
                 type: 'POST',
                 success: function(response, status, xhr, $form) {
+                    // Xoá group PGP trong addon
+                    var group_id = $("#deleteGroupForm input[name=id]").val();
+                    document.dispatchEvent(new CustomEvent('removeGroupPGPEvent', {detail: group_id}));
+
                     btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false); // remove 
                     swal({
                         position: 'center',
@@ -1060,7 +1108,9 @@
                         timer: 1500
                     }).then(function(result){$('#roleForm').modal('hide');});
 
-                    $('.g-content').html(response.view);
+                    $('#group-user .m-section').html(response.view);
+                    users_datatable = $('.m-datatable').mDatatable(users_datatable_options);
+                    
                     form.clearForm();
 	                // form.validate().resetForm();
                 },

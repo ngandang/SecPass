@@ -116,7 +116,7 @@ var LogoutButton = function () {
 
 var ForContent = function () {
 
-    $('.m-portlet__head-tools').click(function(e) {
+    $(document).on('click', '.m-portlet__head-tools', function() {
         $(this).data('clicked', true);
         setTimeout(() => {
             $(this).data('clicked', false);
@@ -307,6 +307,15 @@ document.addEventListener('getUserPGPEvent', function (event) {
         // b = $.extend( true, {}, a );
 });
 // document.dispatchEvent(new CustomEvent('letgetUserPGPEvent', {detail: ""}));
+
+// Get PGP keys automatically 
+document.addEventListener('getGroupPGPEvent', function (event) {
+    console.log(event.detail)
+    var pgp_key = JSON.parse(event.detail); // bypass firefox permission error
+    privkey = pgp_key.privateKeyArmored;
+    pubkey =  pgp_key.publicKeyArmored;
+});
+// document.dispatchEvent(new CustomEvent('letgetUserPGPEvent', {detail: group_id}));
 
 function copy(data) {
     var copyText = data;

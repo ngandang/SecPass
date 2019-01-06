@@ -95,9 +95,18 @@ Route::group(['prefix' => 'group', 'as' => 'group'], function(){
         Route::post('add','GroupController@addAccount');
         Route::post('edit','GroupController@editAccount');
         Route::post('delete','GroupController@deleteAccount');
-        // Route::post('share','HomeController@shareAccount');
-        // Route::post('share/finalize','HomeController@shareFinalize');
-        Route::post('getContent','HomeController@getPassword');
+        // Route::post('share','GroupController@shareAccount');
+        // Route::post('share/finalize','GroupController@shareFinalize');
+        Route::post('getContent','GroupController@getPassword');
+    });
+    Route::group(['prefix'=>'securenote','as'=>'securenote'], function(){
+        Route::post('detail','GroupController@getNote');
+        Route::post('add','GroupController@addNote');
+        Route::post('edit','GroupController@editNote');
+        Route::post('delete','GroupController@delNote');
+        // Route::post('share','GroupController@shareNote');
+        // Route::post('share/finalize','GroupController@shareFinalize');
+        Route::post('getContent','GroupController@getNoteContent');
     });
 });
 

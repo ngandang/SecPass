@@ -79,15 +79,15 @@
         account_datatable = $('#group-account .m-datatable').mDatatable(account_datatable_options);
         note_datatable = $('#group-note .m-datatable').mDatatable(note_datatable_options);
 
-        $(".account-delete").click(function (){
+        $(document).on("click",".account-delete", function (){
             $("#deleteAccountForm input[name=id]").val( $(this).closest('tr').find('input[name=id]').val() );
         });
 
-        $(".note-delete").click(function (){
+        $(document).on("click",".note-delete", function (){
             $("#deleteNoteForm input[name=id]").val( $(this).closest('tr').find('input[name=id]').val() );
         });
 
-        $('.delete-submit').click(function(e){
+        $(document).on("click",'.delete-submit', function(e){
             e.preventDefault();
             var btn = $(this);
             var form = $(this).closest('form');
@@ -110,7 +110,7 @@
                         $('#deleteNoteForm').modal('hide');
                     });
 
-                    $('.m-content').html(response.view);
+                    $('.m-section').html(response.view);
                     account_datatable.destroy();
                     note_datatable.destroy();
                     account_datatable = $('#group-account .m-datatable').mDatatable(account_datatable_options);
@@ -126,7 +126,7 @@
             });
         });
 
-        $(".asset-move").click(function (){
+        $(document).on("click",".asset-move", function (){
             var data = {
                 'id': $(this).closest('tr').find('input[name=id]').val(),
             };
@@ -143,7 +143,7 @@
                         timer: 1500
                     });
 
-                    $('.m-content').html(response.view);
+                    $('.m-section').html(response.view);
                     account_datatable.destroy();
                     note_datatable.destroy();
                     account_datatable = $('#group-account .m-datatable').mDatatable(account_datatable_options);
@@ -156,7 +156,7 @@
             });
         });
 
-        $(".move-accounts").click(function (){
+        $(document).on("click",".move-accounts", function (){
             $.ajax({
                 url: 'sharewithme/moveAccounts',
                 type: 'POST',
@@ -169,7 +169,7 @@
                         timer: 1500
                     });
 
-                    $('.m-content').html(response.view);
+                    $('.m-section').html(response.view);
                     account_datatable.destroy();
                     note_datatable.destroy();
                     account_datatable = $('#group-account .m-datatable').mDatatable(account_datatable_options);
@@ -182,7 +182,7 @@
             });
         });
 
-        $(".move-notes").click(function (){
+        $(document).on("click",".move-notes", function (){
             $.ajax({
                 url: 'sharewithme/moveNotes',
                 type: 'POST',
@@ -195,7 +195,7 @@
                         timer: 1500
                     });
 
-                    $('.m-content').html(response.view);
+                    $('.m-section').html(response.view);
                     account_datatable.destroy();
                     note_datatable.destroy();
                     account_datatable = $('#group-account .m-datatable').mDatatable(account_datatable_options);

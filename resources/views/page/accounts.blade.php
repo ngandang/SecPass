@@ -40,7 +40,9 @@
 </div>
 <!-- BEGIN: Datatable -->
 <div class = "m-content">
+    <div class="m-section">
     @include('content.content-accounts')
+    </div>
 </div>
 <!-- END: Datatable -->
 
@@ -62,7 +64,7 @@
 
     $(document).ready(function(){
 
-        $('.portlet-account').on('click', function (e) {
+        $(document).on('click', '.portlet-account', function (e) {
             // Ignore this event if head-tools has been clicked.
             if($('.m-portlet__head-tools').data('clicked'))
                 return;
@@ -94,7 +96,7 @@
             }
         });
 
-        $('.account-username').click(function (e) {
+        $(document).on('click', '.account-username', function (e) {
             copy($(this).text());
             swal({
                 position: 'center',
@@ -107,7 +109,7 @@
             
         });
             
-        $('.account-copy-username').click(function (e) {            
+        $(document).on('click', '.account-copy-username', function (e) {            
             copy($(this).closest('.m-portlet').find('.account-username').text());
             swal({
                 position: 'center',
@@ -118,7 +120,7 @@
             });
         });
         
-        $('.account-copy-content').click(function (e) {
+        $(document).on('click', '.account-copy-content', function (e) {
             var data = {
                 'id': $(this).closest('.m-portlet').find('input[name=id]').val(),
             };
@@ -150,7 +152,7 @@
             e.stopPropagation();
         });
 
-        $('.account-edit').click(function (){
+        $(document).on('click', '.account-edit', function (){
             var data = {
                 'id': $(this).closest(".m-portlet").find("input[name=id]").val(),
             };
@@ -173,12 +175,12 @@
             });
         });
 
-        $('.account-share').click(function (e) {
+        $(document).on('click', '.account-share', function (e) {
             var id = $(this).closest(".m-portlet").find("input[name=id]").val();
             $('#shareAccountForm input[name=id]').val(id);
         });
 
-        $(".account-delete").click(function(){
+        $(document).on('click', ".account-delete", function(){
             var id = $(this).closest(".m-portlet").find("input[name=id]").val();
             $('#deleteAccountForm input[name=id]').val(id);
         })
@@ -252,7 +254,7 @@
                             timer: 1500
                         }).then(function(result){$('#addAccountForm').modal('hide');});
 
-                        $('.m-content').html(response.view);                        
+                        $('.m-section').html(response.view);                        
                         form.clearForm();
                         form.validate().resetForm();
                     },
@@ -316,7 +318,7 @@
                             timer: 1500
                         }).then(function(result){$('#editAccountForm').modal('hide');});
 
-                        $('.m-content').html(response.view);
+                        $('.m-section').html(response.view);
                         form.clearForm();
                         form.validate().resetForm();
                     },
@@ -356,7 +358,7 @@
                         timer: 1500
                     }).then(function(result){$('#deleteAccountForm').modal('hide');});
 
-                    $('.m-content').html(response.view);
+                    $('.m-section').html(response.view);
                     form.clearForm();
 	                form.validate().resetForm();
                 },

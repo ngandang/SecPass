@@ -65,11 +65,13 @@ class GroupController extends Controller
             'success' => true,
             // TODO: lang this message
             'message' => 'Thêm tài khoản thành công',
-            'view' => view('page.groupdetail', compact('group','groupUsers','admin', 'accounts', 'notes')),
+            'view' => view('content.content-accounts', compact('accounts'))->render()
         ]);
     }
 
     public function editAccount(Request $request){
+        $group = Group::find($request->group_id);
+
         $account_id = $request->id;
         $acc = Account::find($account_id);
         $acc->name = $request->name;
@@ -84,7 +86,7 @@ class GroupController extends Controller
             $secret->save();
         }
         
-        $accounts = Auth::user()->account()->get();
+        $accounts = $group->account()->get();
         return response()->json([
             'success' => true,
             // TODO: lang this message
@@ -94,15 +96,16 @@ class GroupController extends Controller
     }
 
     public function deleteAccount(Request $request){
-        $account_id = $request->id;
-        
+        $group = Group::find($request->group_id);
+
+        $account_id = $request->id;        
         $acc = Account::find($account_id);
         $acc->delete();
 
         $secret = Secret::where('asset_id', $account_id)->first();
         $secret->delete();
 
-        $accounts = Auth::user()->account()->get();
+        $accounts = $group->account()->get();
         return response()->json([
             'success' => true,
             // TODO: lang this message
@@ -249,22 +252,22 @@ class GroupController extends Controller
     }
 
 
-    public function addNote( Request $req)
+    public function addNote( Request $request)
     {
+        $group = Group::find($request->group_id);
+
         $note = new Note();
-        $note->title = $req->title;
+        $note->title = $request->title;
         $note->save();
 
         // Nối id tới secret ứng mỗi user khác nhau
         $secret = new Secret;
-        $user = Auth::user();
-        $secret->owner_id = $user->id;
+        $secret->owner_id = $group->id;
         $secret->asset_id = $note->id;
-        // TODO: encrypt OpenGPG
-        $secret->data = $req->cipher;
+        $secret->data = $request->cipher;
         $secret->save();
 
-        $notes = Auth::user()->note()->get();
+        $notes = $group->note()->get();
         return response()->json([
             'success' => true,
             // TODO: lang this message
@@ -275,6 +278,8 @@ class GroupController extends Controller
 
     public function editNote( Request $request)
     {
+        $group = Group::find($request->group_id);
+
         $note_id = $request->id;
         $note = Note::find($note_id);
         $note->title = $request->title;
@@ -286,7 +291,7 @@ class GroupController extends Controller
             $secret->save();
         }
 
-        $notes = Auth::user()->note()->get();
+        $notes = $group->note()->get();
         return response()->json([
             'success' => true,
             // TODO: lang this message
@@ -296,14 +301,16 @@ class GroupController extends Controller
     }
 
     public function delNote(Request $req){
-        $note_id = $req->id;
+        $group = Group::find($request->group_id);
+
+        $note_id = $request->id;
         $note = Note::find($note_id);
         $note->delete();
 
         $secret = Secret::where('asset_id', $note_id)->first();
         $secret->delete();
 
-        $notes = Auth::user()->note()->get();
+        $notes = $group->note()->get();
         return response()->json([
             'success' => true,
             // TODO: lang this message
@@ -395,15 +402,21 @@ class GroupController extends Controller
     public function groupDetail($group_id)
     {
         $group = Group::find($group_id);
-        $groupUsers = DB::table('groups_users')
-                ->where('group_id', $group_id)        
-                ->join('users', 'groups_users.user_id', '=', 'users.id')
-                ->select('groups_users.*','users.email','users.name')
-                ->get();
-        $admin = Auth::user()->GroupUser()->where('group_id', $group->id)->first()->is_admin;
-        $accounts =  $group->account()->get();
-        $notes = $group->note()->get();
-        return view('page.groupdetail', compact('group','groupUsers','admin', 'accounts', 'notes'));
+        if($group) {
+            $groupUsers = DB::table('groups_users')
+                    ->where('group_id', $group_id)        
+                    ->join('users', 'groups_users.user_id', '=', 'users.id')
+                    ->select('groups_users.*','users.email','users.name')
+                    ->get();
+            $admin = Auth::user()->GroupUser()->where('group_id', $group->id)->first()->is_admin;
+            $accounts =  $group->account()->get();
+            $notes = $group->note()->get();
+            return view('page.groupdetail', compact('group','groupUsers','admin', 'accounts', 'notes'));
+        }
+        else {
+            return redirect("groups");
+        }
+
     }
     
     public function checkUser(Request $request)
@@ -456,13 +469,11 @@ class GroupController extends Controller
             }
         }
         
-        $groups = Auth::user()->group()->get();
         return response()->json([
             'success' => true,
             // TODO: lang this message
-            'message' => 'Tạo nhóm mới thành công',
+            'message' => 'Đang khởi tạo nhóm',
             'id' => $group->id,
-            'view' => view('content.content-group', compact('groups'))->render()
         ]);
     }
 
@@ -504,10 +515,13 @@ class GroupController extends Controller
                 ],500);
             }
     
+            $groups = Auth::user()->group()->get();
             return response()->json([
                 'success' => true,
                 // TODO: lang this message
-                'message' => 'Tạo nhóm thành công.'
+                'message' => 'Tạo nhóm thành công.',
+                'id' => $group->id,
+                'view' => view('content.content-group', compact('groups'))->render()
             ]);
         }
 

@@ -41,7 +41,9 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <a style="position:absolute; left:20px;" id="deleteGroup" href="#deleteGroupForm" data-toggle="modal" data-backdrop="static" data-keyboard="false"><button type="button" class="btn btn-outline-danger m-btn m-btn--pill m-btn--wide btn-sm">Xoá nhóm</button></a>
+                    <a style="position:absolute; left:20px;" class="deleteGroup" href="#deleteGroupForm" data-toggle="modal" data-backdrop="static" data-keyboard="false">
+                        <button type="button" class="btn btn-outline-danger m-btn m-btn--pill m-btn--wide btn-sm">Xoá nhóm</button>
+                    </a>
                     <button type="button" class="btn btn-secondary pull-left" data-dismiss="modal">Huỷ</button>
                     <button type="submit" class="btn btn-primary pull-right" id="editGroupSubmit">Lưu</button>
                 </div>

@@ -2,27 +2,6 @@
 @if(count($groupUsers))
 <!-- <form class="m-form m-form--fit m-form--label-align-right"> -->     
     <div class="m-section__content">
-        <!--begin: Search Form -->
-        <div class="row align-items-right">
-            <div class="col-xl-8 order-2 order-xl-1">
-            </div>
-            <div class="col-xl-4 order-2 order-xl-1">
-                <div class="form-group m-form__group row align-items-center">
-                    <div class="col-md-12">
-                        <div class="m-input-icon m-input-icon--left">
-                            <input type="text" class="form-control m-input m-input--solid" placeholder="Tìm kiếm nhanh..." id="noteSearch">
-                            <span class="m-input-icon__icon m-input-icon__icon--left">
-                                <span>
-                                    <i class="la la-search"></i>
-                                </span>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div class="m-separator m-separator--dashed d-xl-none"></div>
-            </div>
-        </div>
-        <!--end: Search Form -->  
         <!-- <table class="table m-table m-table--head-bg-brand"> -->
         <table class="m-datatable">
             <thead>
