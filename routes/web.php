@@ -134,13 +134,15 @@ Route::get('test_gpg', function () {
 //     Route::post('editUser','HomeController@editUser');
 // });
 
+Route::get('admin', 'HomeController@admin');
+
 Route::group(['prefix' => 'admin', 'as' => 'admin'], function(){
     Route::get('userManage','HomeController@getUser');
     Route::post('editUser','HomeController@editUser');
     Route::get('groupManage','HomeController@getGroup');
 });
 Route::get('email','HomeController@sendMail');
-
+Route::get('notify', 'NotificationController@index');
 Route::get('pgp','HomeController@pgp');
 
 Route::get('session-timeout/keepalive', 'HomeController@keepalive');
