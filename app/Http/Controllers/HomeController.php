@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Query\Builder;
@@ -482,9 +483,7 @@ class HomeController extends Controller
         );
 
         $allFiles = Storage::disk('userstorage')->allFiles(Auth::user()->id);
-
         $files = array();
-
         foreach ($allFiles as $file) {
 
             $files[] = $this->fileInfo(pathinfo(storage_path('app/store/').$file));
@@ -497,6 +496,28 @@ class HomeController extends Controller
             'view' => view('content.content-drive', compact('files'))->render()
         ]);
     }
+
+    public function shareFile(Request $request)
+    {
+        $receiver = User::where('email', $request->email)->first();
+        if($receiver)
+        {
+            $filename  = $request->filename;
+            Storage::disk('userstorage')->copy(Auth::user()->id.'/'.$filename, $receiver->id.'/'.$filename);
+           
+            return response()->json([
+                'success' => true,
+                // TODO: lang this message
+                'message' => 'Chia sẻ tài liệu thành công'
+            ]);
+        }
+        return response()->json([
+            'success' => false,
+            // TODO: lang this message
+            'message' => 'Không tìm thấy người dùng'
+        ], 500);
+    }
+
     public function delFile(Request $request)
     {
         $filename  = $request->filename;

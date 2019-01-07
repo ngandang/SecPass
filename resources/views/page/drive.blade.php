@@ -41,6 +41,31 @@
 </div>
 <!-- BEGIN: Content -->
 <div class="m-content">
+    <div class="m-alert m-alert--icon m-alert--air m-alert--square alert alert-dismissible m--margin-bottom-30" role="alert">
+        <div class="m-alert__icon m-alert__icon--top">
+            <i class="flaticon-exclamation m--font-accent"></i>
+        </div>
+        <div class="m-alert__text">
+            <p>
+                <span class="m-badge m-badge--danger m-badge--wide m-badge--rounded">
+                    Thông báo:
+                </span>
+            </p>
+            <p>
+                Tính năng <b>lưu trữ tài liệu</b> vẫn đang được phát triển. 
+                <br>
+                Hiện mọi tài liệu bạn tải lên máy chủ sẽ không được mã hoá bởi khoá của bạn. Chúng tôi muốn bạn ý thức về điều này.                
+                <br>
+            </p>
+            <p>
+                Chân thành cảm ơn,<br>
+                <b>SecPASS</b>
+            </p>
+        </div>
+        <div class="m-alert__close">
+            <button style="margin-top:5px;" type="button" class="close" data-close="alert" aria-label="Hide"></button>
+        </div>
+    </div>
     @include('content.content-drive')
 </div>
 <!-- END: Content -->
@@ -48,7 +73,7 @@
 
 @section('pageSnippets')
 <!-- BEGIN: Add Form -->
-<form id="add-form" class="form-horizontal" action="" enctype="multipart/form-data" method="post">
+<form id="add-form" class="form-horizontal" action="" enctype="multipart/form-data" method="POST">
     <div class="modal fade" id="addForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
         {{ csrf_field() }}
         <div class="modal-dialog" role="document">
@@ -117,12 +142,12 @@
 <!-- END: Delete form -->
 
 <!--BEGIN: Share form -->
-<form id="share-form" class="form-horizontal" action="" enctype="multipart/form-data" method="get">
+<form id="share-form" class="form-horizontal" action="" enctype="multipart/form-data" method="POST">
     {{ csrf_field() }}
     <div class="modal fade" id="shareForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <input type="hidden" name="idShare" id="idShare">
+                <input type="hidden" name="filename">
                 <div class="modal-header">
                     <h5 class="text-center modal-title" id="addFormTitle">Chia sẻ tài liệu</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -131,8 +156,8 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="user" class="text-info">Chia sẻ với người dùng hoặc nhóm</label><br>
-                        <input type="text" name="email" placeholder="Nhập tên hoặc email" class="form-control">
+                        <label for="user" class="text-info">Chia sẻ với người dùng</label><br>
+                        <input type="text" name="email" placeholder="Nhập tên hoặc email" class="form-control" required>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -146,10 +171,10 @@
 <!-- END: Share form -->
 
 <!-- BEGIN: Download form -->
-    <form method="POST" action="drive/download" id="downloadForm">
-        {{ csrf_field() }}
-        <input type="hidden" name="filename">
-    </form>
+<form method="POST" action="drive/download" id="downloadForm">
+    {{ csrf_field() }}
+    <input type="hidden" name="filename">
+</form>
 <!-- END: Download form -->
 <script>
     // // Check for the various File API support.
@@ -159,6 +184,9 @@
     // alert('The File APIs are not fully supported in this browser.');
     // }
 
+    function share(filename){
+        $('#shareForm input[name=filename]').val(filename);
+    }
 
     function del(filename){
         $('#deleteForm input[name=filename]').val(filename);
@@ -184,6 +212,38 @@
         //     $('#list').html('<ul>' + output.join('') + '</ul>');
         // });
 
+        var files_datatable_options = {
+            data: {
+                saveState: {cookie: false},
+            },
+            search: {
+                input: $('#fileSearch'),
+            },
+            columns: [
+                {
+                field: 'Tên',
+                type: 'text',
+                textAlign: 'center',
+                sortable: 'asc',
+                },
+                {
+                field: 'Định dạng',
+                textAlign: 'center',
+                type: 'text',
+                },
+                {
+                field: 'Kích thước',
+                textAlign: 'center',
+                },
+                {
+                field: 'Cập nhật cuối',
+                textAlign: 'center',
+                },
+            ],
+            pagination: false,
+        };
+        files_datatable = $('.m-datatable').mDatatable(files_datatable_options);
+
         $('#addSubmit').click(function(e){
             e.preventDefault();
             var form = $(this).closest('form');
@@ -201,11 +261,40 @@
                     }).then(function(result){$('#addForm').modal('hide');});
 
                     $('.m-content').html(response.view);
+                    files_datatable = $('.m-datatable').mDatatable(files_datatable_options);
+
                     form.clearForm();
                     form.validate().resetForm();
                 },
                 error: function(response, status, xhr, $form) {
-                    swal("", response.serialize(), "error");
+                    swal("", response.responseJSON.message, "error");
+                }
+            });
+        });
+
+        $('#shareSubmit').click(function(e){
+            e.preventDefault();
+            // var btn = $(this);
+            var form = $(this).closest('form');
+            
+            form.ajaxSubmit({
+                url: 'drive/share',
+                type: 'POST',
+                success: function(response, status, xhr, $form) {
+                    swal({
+                        position: 'center',
+                        type: 'success',
+                        title: response.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(function(result){$('#shareForm').modal('hide');});
+
+                    $('.m-content').html(response.view);
+                    form.clearForm();
+                    form.validate().resetForm();
+                },
+                error: function(response, status, xhr, $form) {
+                    swal("", response.responseJSON.message, "error");
                 }
             });
         });
@@ -228,11 +317,13 @@
                     }).then(function(result){$('#deleteForm').modal('hide');});
 
                     $('.m-content').html(response.view);
+                    files_datatable = $('.m-datatable').mDatatable(files_datatable_options);
+
                     form.clearForm();
 	                form.validate().resetForm();
                 },
                 error: function(response, status, xhr, $form) {
-                    swal("", response.serialize(), "error");
+                    swal("", response.responseJSON.message, "error");
                 }
             });
         });

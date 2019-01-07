@@ -57,6 +57,7 @@ Route::get('drive','HomeController@drive');
 Route::group(['prefix'=>'drive','as'=>'drive'], function(){
     Route::post('add','HomeController@addFile');
     Route::post('delete','HomeController@delFile');
+    Route::post('share','HomeController@shareFile');
     Route::post('download','HomeController@downloadFile');
 });
 

@@ -4,10 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Notification;
 
 use App\Account;
 use App\User;
@@ -18,6 +19,11 @@ use App\Secret;
 use App\Group;
 use App\GroupUser;
 use App\Share;
+
+use App\Notifications\GroupPGP;
+use App\Notifications\DeleteGroup;
+use App\Notifications\RemoveGroupUser;
+
 
 // use Hash;
 
@@ -478,7 +484,7 @@ class GroupController extends Controller
 
         foreach($data as $email){
             $user = User::where('email',$email)->first();
-            if( $user != Auth::user() ) 
+            if( $user != $user_admin ) 
             {
                 $group_user = new GroupUser;
                 $group_user->group_id = $group->id;
@@ -523,16 +529,26 @@ class GroupController extends Controller
                 $pgp_key->key_created = date('Y-m-d h:i:s', strtotime($key_created));
                 
                 $pgp_key->save();
+
+                // Send notification to users who in this group
+                $user = Auth::user();
+                // Không viết liền được chỗ này
+                $group_users = $group->user()->get();
+                $users = $group_users->where('id', '!=', $user->id);
+                Notification::send( $users, new GroupPGP($group, $user) );
             }
             catch(\Exception $e) {
+                $group->GroupUser()->delete();
                 $group->delete();
 
+                throw $e;
+                
                 return response()->json([
                     'success' => false,
                     'message' => 'Tạo nhóm không thành công. Vui lòng thực hiện lại sau.',
                 ],500);
             }
-    
+
             $groups = Auth::user()->group()->get();
             return response()->json([
                 'success' => true,
@@ -574,6 +590,9 @@ class GroupController extends Controller
                     $group_user->group_id = $group->id;
                     $group_user->user_id = $user->id;
                     $group_user->save();
+                    
+                    // Send notification to users who in this group
+                    Notification::send( $user, new GroupPGP($group, Auth::user()) );
                 }
             }
 
@@ -606,17 +625,21 @@ class GroupController extends Controller
         $admin = Auth::user()->GroupUser()->where('group_id', $group->id)->first()->is_admin;
         if($admin)
         {
+            // Send notification to users who in this group
+            $user = Auth::user();
+            // Không viết liền được chỗ này
+            $group_users = $group->user()->get();
+            $users = $group_users->where('id', '!=', $user->id);
+            Notification::send( $users, new DeleteGroup($group, $user) );
+            
+            $group->GroupUser()->delete();
             $group->delete();
-
-            $group_user = GroupUser::where('group_id', $group_id)->first();
-            $group_user->delete();
 
             $groups = Auth::user()->group()->get();
             return response()->json([
                 'success' => true,
                 // TODO: lang this message
-                'message' => 'Xóa nhóm thành công',
-                'view' => view('content.content-group', compact('groups'))->render()
+                'message' => 'Xóa nhóm thành công'
             ]);
         }
 
@@ -647,6 +670,10 @@ class GroupController extends Controller
             }
 
             $group_user->delete();
+                                
+            // Send notification to users who in this group
+            $user = User::find($user_id);
+            Notification::send( $user, new RemoveGroupUser($group, Auth::user()) );
 
             // Refresh content
             $group = Group::find($group_id);

@@ -151,7 +151,7 @@
 
         $(document).on('click', '.portlet-account', function (e) {
             // Ignore this event if head-tools has been clicked.
-            if($('.m-portlet__head-tools').data('clicked'))
+            if($(this).find('.m-portlet__head-tools').data('clicked'))
                 return;
 
             var showEditForm = $(this).find(".account-edit");
@@ -535,12 +535,11 @@
 <!-- END: Account scripts -->
  <!-- BEGIN: Note scripts -->
 <script>
-
     $(document).ready(function(){
 
         $(document).on('click', '.portlet-note', function () {
             // Ignore this event if head-tools has been clicked.
-            if($('.m-portlet__head-tools').data('clicked'))
+            if($(this).find('.m-portlet__head-tools').data('clicked'))
                 return;
 
             var showEditForm = $(this).find(".note-edit");

@@ -263,12 +263,12 @@
                                     // similate 1s delay
                                     setTimeout(function() {
                                         console.log(response);
+                                        $("#addGroupForm .modal-footer .text-muted").remove();
                                         btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false);
                                         swal("", response.responseJSON.message, "error");
                                     }, 1000);
                                 }
                             });
-
                         });
                     },
                     error: function(response, status, xhr, $form) {

@@ -1,3 +1,6 @@
+// Tắt console.log
+console.log = function() {}
+
 // Kiểm tra và chuyển hướng https
 if (location.protocol != 'https:')
 {
