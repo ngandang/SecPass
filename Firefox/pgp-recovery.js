@@ -4,10 +4,6 @@ window.onload = function()
   {
     window.location = "main.html";
   }
-  
-  document.getElementById("btnFile").onclick = function() {
-    document.getElementById("inputFile").click();
-  }
 
   document.getElementById('inputFile').onchange = function() {
     var zip = new JSZip();
@@ -43,6 +39,7 @@ window.onload = function()
       browser.storage.local.set({'user_pgp': user_pgp }, function(){
           console.log('addon: saved');
           alert('SecPASS: Đã nhận được cặp khoá của bạn.');
+          window.location = "main.html";
       });
     });
   }

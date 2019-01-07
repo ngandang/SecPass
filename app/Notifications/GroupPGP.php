@@ -7,18 +7,24 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class GroupPGP extends Notification
+use App\User;
+use App\Group;
+
+class GroupPGP extends Notification implements ShouldQueue
 {
     use Queueable;
-    protected $post;
+
+    public $group;
+    public $creator;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($post)
+    public function __construct(Group $group, User $creator)
     {
-        $this->post = $post;
+        $this->group = $group;
+        $this->creator = $creator;
     }
 
     /**
@@ -29,7 +35,7 @@ class GroupPGP extends Notification
      */
     public function via($notifiable)
     {
-        return ['database'];
+        return ['mail'];
     }
 
     /**
@@ -40,10 +46,16 @@ class GroupPGP extends Notification
      */
     public function toMail($notifiable)
     {
+        $subject = sprintf('%s: Bạn vừa được thêm vào nhóm %s', config('app.name'), $this->group->name);
+        $greeting = sprintf('Xin chào %s!', $notifiable->name);
+ 
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+                    ->subject($subject)
+                    ->greeting($greeting)
+                    ->line('Bạn vừa được '.$this->creator->name.' thêm vào nhóm bảo mật '.$this->group->name.'.')
+                    ->line('Bạn hãy nhấn vào nút bên dưới để nhận khoá PGP và truy cập tài nguyên của nhóm.')
+                    ->action('Truy cập vào nhóm', url("/group/".$this->group->id) )
+                    ->line('Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi');
     }
 
     /**
@@ -52,16 +64,10 @@ class GroupPGP extends Notification
      * @param  mixed  $notifiable
      * @return array
      */
-    public function toDatabase($notifiable)
+    public function toArray($notifiable)
     {
         return [
             //
         ];
-    }
-    public function toArray($notifiable)
-    {
-       
-        return $this->post->toArray();
-        
     }
 }

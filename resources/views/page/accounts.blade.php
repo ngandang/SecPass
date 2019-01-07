@@ -66,7 +66,7 @@
 
         $(document).on('click', '.portlet-account', function (e) {
             // Ignore this event if head-tools has been clicked.
-            if($('.m-portlet__head-tools').data('clicked'))
+            if($(this).find('.m-portlet__head-tools').data('clicked'))
                 return;
 
             var showEditForm = $(this).find(".account-edit");

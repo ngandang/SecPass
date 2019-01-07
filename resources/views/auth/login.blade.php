@@ -4,7 +4,7 @@
 	<head>
 		<meta charset="utf-8" />
 		<title>
-			SecPASS | Đăng nhập
+			{{ config('app.name', 'SecPASS') }} | Đăng nhập
 		</title>
 		<meta name="description" content="SecPASS - The password management system for indiviuals and groups">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -175,12 +175,12 @@
 		<!-- end:: Page -->
     	<!--begin::Base Scripts -->
 		<script src="{{ asset('vendors/base/vendors.bundle.js') }}" type="text/javascript"></script>
-		<script src="{{ asset('default/base/scripts.bundle.js') }}" type="text/javascript"></script>
+		<script src="{{ asset('app/base/scripts.bundle.js') }}" type="text/javascript"></script>
 		<!--end::Base Scripts -->   
 		<!--begin::Page Snippets -->
-		<script src="{{ asset('js/openpgp.js') }}" type="text/javascript"></script>
+		<script src="{{ asset('vendors/base/openpgp.js') }}" type="text/javascript"></script>
 		<script src="{{ asset('vendors/base/pwstrength-bootstrap.min.js') }}" type="text/javascript"></script>
-		<script src="{{ asset('js/validation_vi.js') }}" type="text/javascript"></script>
+		<script src="{{ asset('app/js/validation_vi.js') }}" type="text/javascript"></script>
 		<script src="{{ asset('snippets/pages/user/login.js') }}" type="text/javascript"></script>
 		<!--end::Page Snippets -->
 	</body>

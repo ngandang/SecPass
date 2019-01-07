@@ -166,3 +166,6 @@ td{
     background-color: #d6d6d6;
     font-weight: bolder;
 }
+.table-title tr{
+    font-weight: bolder;
+}

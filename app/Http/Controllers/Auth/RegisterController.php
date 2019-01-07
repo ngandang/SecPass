@@ -15,7 +15,7 @@ use App\User;
 use App\Profile;
 use App\PGPkey;
 
-use App\Mail\VerifyUser;
+use App\Notifications\VerifyUser;
 
 class RegisterController extends Controller
 {
@@ -137,7 +137,7 @@ class RegisterController extends Controller
             $pgp_key->save();
 
             $user = User::find($pgp_key->owner_id);
-            Mail::to($user)->send(new VerifyUser($user));
+            $user->notify(new VerifyUser($user));
             
             Profile::create([
                 'user_id' => $user->id,
