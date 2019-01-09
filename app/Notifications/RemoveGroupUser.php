@@ -7,6 +7,9 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
+use App\User;
+use App\Group;
+
 class RemoveGroupUser extends Notification
 {
     use Queueable;
@@ -33,7 +36,7 @@ class RemoveGroupUser extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        return ['database','mail'];
     }
 
     /**
@@ -63,7 +66,8 @@ class RemoveGroupUser extends Notification
     public function toArray($notifiable)
     {
         return [
-            //
+            'data' => 'Bạn vừa được mời khỏi nhóm '.$this->group->name.'.',
+            'url' => '#',
         ];
     }
 }

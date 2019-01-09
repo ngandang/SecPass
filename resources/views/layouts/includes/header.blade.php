@@ -102,8 +102,10 @@
 					<div class="m-stack__item m-topbar__nav-wrapper">
 						<ul class="m-topbar__nav m-nav m-nav--inline">
 							<li class="m-nav__item m-topbar__notifications m-topbar__notifications--img m-dropdown m-dropdown--large m-dropdown--header-bg-fill m-dropdown--arrow m-dropdown--align-right m-dropdown--mobile-full-width" data-dropdown-toggle="click" data-dropdown-persistent="true">
-								<a href="#" class="m-nav__link m-dropdown__toggle" id="m_topbar_notification_icon">
+								<a href="javascript:;" class="m-nav__link m-dropdown__toggle" id="m_topbar_notification_icon">
+									@if(count(Auth::user()->unreadNotifications))
 									<span class="m-nav__link-badge m-badge m-badge--dot m-badge--dot-small m-badge--danger"></span>
+									@endif
 									<span class="m-nav__link-icon">
 										<i class="flaticon-music-2"></i>
 									</span>
@@ -114,101 +116,20 @@
 									<div class="m-dropdown__inner">
 										<div class="m-dropdown__header m--align-center" style="background: url({{ asset('app/media/images/misc/notification_bg.jpg') }}); background-size: cover;">
 											<span class="m-dropdown__header-title">
-												9 thông báo mới
+												{{ count(Auth::user()->unreadNotifications) }} thông báo mới
 											</span>
 											<span class="m-dropdown__header-subtitle">
-												Thông báo người dùng
 											</span>
+										</div>
+										<div class="col" style="margin:5px;">
+											<a class="m-link m-link--brand pull-right" id="maskAllAsRead" href="javascript:;">Đánh dấu đã xem</a>
 										</div>
 										<div class="m-dropdown__body">
 											<div class="m-dropdown__content">
 												<div class="m-scrollable" data-scrollable="true" data-max-height="250" data-mobile-max-height="200">
 													<div class="m-list-timeline m-list-timeline--skin-light">
-														<div class="m-list-timeline__items">
-															<div class="m-list-timeline__item">
-																<span class="m-list-timeline__badge -m-list-timeline__badge--state-success"></span>
-																<span class="m-list-timeline__text">
-																	12 tài khoản được thêm mới
-																</span>
-																<span class="m-list-timeline__time">
-																	Mới đây
-																</span>
-															</div>
-															<div class="m-list-timeline__item">
-																<span class="m-list-timeline__badge"></span>
-																<span class="m-list-timeline__text">
-																	Mật khẩu đã cũ
-																	<span class="m-badge m-badge--success m-badge--wide">
-																		đang chờ đổi
-																	</span>
-																</span>
-																<span class="m-list-timeline__time">
-																	14 phút trước
-																</span>
-															</div>
-															<div class="m-list-timeline__item">
-																<span class="m-list-timeline__badge"></span>
-																<span class="m-list-timeline__text">
-																	Bạn có tin nhắn mới
-																</span>
-																<span class="m-list-timeline__time">
-																	20 phút trước
-																</span>
-															</div>
-															<div class="m-list-timeline__item">
-																<span class="m-list-timeline__badge"></span>
-																<span class="m-list-timeline__text">
-																	Kho lưu trữ đã được sử dụng 20% 
-																	<!-- <span class="m-badge m-badge--info m-badge--wide">
-																		settle
-																	</span> -->
-																</span>
-																<span class="m-list-timeline__time">
-																	1 giờ trước
-																</span>
-															</div>
-															<div class="m-list-timeline__item">
-																<span class="m-list-timeline__badge"></span>
-																<span class="m-list-timeline__text">
-																	ABC đã chia sẻ mật khẩu với bạn
-																	<!-- <a href="#" class="m-link">
-																		Check
-																	</a> -->
-																</span>
-																<span class="m-list-timeline__time">
-																	2 giờ trước
-																</span>
-															</div>
-															<div class="m-list-timeline__item m-list-timeline__item--read">
-																<span class="m-list-timeline__badge"></span>
-																<span href="" class="m-list-timeline__text">
-																	Nhóm X - Một tài khoản đã được thêm mới
-																	<span class="m-badge m-badge--danger m-badge--wide">
-																		Quan trọng
-																	</span>
-																</span>
-																<span class="m-list-timeline__time">
-																	7 giờ trước
-																</span>
-															</div>
-															<div class="m-list-timeline__item m-list-timeline__item--read">
-																<span class="m-list-timeline__badge"></span>
-																<span class="m-list-timeline__text">
-																	ABC đã nhận được tài liệu chia sẻ
-																</span>
-																<span class="m-list-timeline__time">
-																	1 ngày trước
-																</span>
-															</div>
-															<div class="m-list-timeline__item">
-																<span class="m-list-timeline__badge"></span>
-																<span class="m-list-timeline__text">
-																	ABC đã nhận được tài liệu chia sẻ
-																</span>
-																<span class="m-list-timeline__time">
-																	5 ngày trước
-																</span>
-															</div>
+														<div id="notifications" class="m-list-timeline__items">
+
 														</div>
 													</div>
 												</div>

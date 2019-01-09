@@ -86,13 +86,14 @@ Route::group(['prefix' => 'group', 'as' => 'group'], function(){
     Route::post('checkUser','GroupController@checkUser');
     Route::post('addGroup','GroupController@addGroup');
     Route::post('addPGP','GroupController@addPGP');
+    Route::post('sendPGP','GroupController@sendPGP');
+    Route::post('getPGP','GroupController@getPGP');
     Route::post('editGroup','GroupController@editGroup');
     Route::post('delete','GroupController@deleteGroup');
     Route::post('deleteUser', 'GroupController@deleteUser');
     Route::post('changeRole','GroupController@changeRole');
 
     Route::get('{group_id}','GroupController@groupDetail');
-    Route::get('{group_id}/pgp','GroupController@groupPGP');
 
     Route::group(['prefix' => 'account', 'as' => 'account'], function(){
         Route::post('detail','GroupController@getAccount');
@@ -143,7 +144,13 @@ Route::group(['prefix' => 'admin', 'as' => 'admin'], function(){
 
 Route::get('email','HomeController@sendMail');
 
+Route::post('notification/get','HomeController@getUnreadNotifications');
+Route::post('notification/maskAsRead','HomeController@maskAsRead');
+Route::post('notification/maskAllAsRead','HomeController@maskAllAsRead');
+
+
 Route::get('pgp','HomeController@pgp');
+Route::post('pgp/get','HomeController@getPGP');
 
 Route::get('session-timeout/keepalive', 'HomeController@keepalive');
 

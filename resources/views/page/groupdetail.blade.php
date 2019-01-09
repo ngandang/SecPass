@@ -846,8 +846,6 @@
 <!-- END Note scripts -->
 
 <script>
-    
-    document.dispatchEvent(new CustomEvent('letgetGroupPGPEvent', { detail: $("input[name=group_id").val() }));
 
     function editGroup(id, name)
     {
@@ -862,6 +860,7 @@
     
 
     $(document).ready(function(){
+        document.dispatchEvent(new CustomEvent('letgetGroupPGPEvent', { detail: $("input[name=group_id").val() }));
 
         var users_datatable_options = {
             data: {

@@ -35,7 +35,7 @@ class DeleteGroup extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        return ['database','mail'];
     }
 
     /**
@@ -66,7 +66,8 @@ class DeleteGroup extends Notification
     public function toArray($notifiable)
     {
         return [
-            //
+            'data' => 'Nhóm '.$this->group->name.' mà bạn tham gia đã bị xoá.',
+            'url' => '#',
         ];
     }
 }

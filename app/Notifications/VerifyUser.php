@@ -49,7 +49,7 @@ class VerifyUser extends Notification
                     ->subject($subject)
                     ->greeting($greeting)
                     ->line('Cảm ơn bạn đã đăng ký sử dụng hệ thống quản lý thông tin cá nhân SecPASS. Vui lòng nhấn vào link bên dưới để xác thực tài khoản của bạn:')
-                    ->action('Xác thực', url("/register/verify/".$notifiable->verification_code) )
+                    ->action('Xác thực tài khoản', url("/register/verify/".$notifiable->verification_code) )
                     ->line('Lưu ý: Chúng tôi chỉ lưu trữ khoá công khai của bạn tại máy chủ. Khoá riêng tư được lưu trong Tiện ích SecPASS trên thiết bị của bạn. Bạn cần sao lưu và bảo đảm an toàn thông tin cho cặp khoá này.')
                     ->line('Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi');
     }

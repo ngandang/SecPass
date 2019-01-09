@@ -10,21 +10,19 @@ use Illuminate\Notifications\Messages\MailMessage;
 use App\User;
 use App\Group;
 
-class GroupPGP extends Notification implements ShouldQueue
+class CreateGroup extends Notification
 {
     use Queueable;
 
     public $group;
-    public $creator;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(Group $group, User $creator)
+    public function __construct(Group $group)
     {
         $this->group = $group;
-        $this->creator = $creator;
     }
 
     /**
@@ -35,7 +33,7 @@ class GroupPGP extends Notification implements ShouldQueue
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        return ['database','email'];
     }
 
     /**
@@ -52,9 +50,9 @@ class GroupPGP extends Notification implements ShouldQueue
         return (new MailMessage)
                     ->subject($subject)
                     ->greeting($greeting)
-                    ->line('Bạn vừa được '.$this->creator->name.' thêm vào nhóm bảo mật '.$this->group->name.'.')
+                    ->line('Bạn vừa được thêm vào nhóm bảo mật '.$this->group->name.'.')
                     ->line('Bạn hãy nhấn vào nút bên dưới để nhận khoá PGP và truy cập tài nguyên của nhóm.')
-                    ->action('Truy cập vào nhóm', url("/group/".$this->group->id) )
+                    ->action('Truy cập vào nhóm', url("group/".$this->group->id) )
                     ->line('Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi');
     }
 
@@ -67,7 +65,8 @@ class GroupPGP extends Notification implements ShouldQueue
     public function toArray($notifiable)
     {
         return [
-            //
+            'data' => 'Bạn vừa trở thành thành viên của nhóm '.$this->group->name.'.',
+            'url' => url('group/'.$this->group->id),
         ];
     }
 }

@@ -65,44 +65,6 @@
                                                             Tác vụ nhanh
                                                         </span>
                                                     </li>
-                                                    <li class="m-nav__item">
-                                                        <a href="" class="m-nav__link">
-                                                            <i class="m-nav__link-icon flaticon-user-ok"></i>
-                                                            <span class="m-nav__link-text">
-                                                                Sao chép tên đăng nhập
-                                                            </span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="m-nav__item">
-                                                        <a href="" class="m-nav__link">
-                                                            <i class="m-nav__link-icon flaticon-lock-1"></i>
-                                                            <span class="m-nav__link-text">
-                                                                Sao chép mật khẩu
-                                                            </span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="m-nav__item">
-                                                        <a href="" class="m-nav__link">
-                                                            <i class="m-nav__link-icon flaticon-edit"></i>
-                                                            <span class="m-nav__link-text">
-                                                                Chỉnh sửa
-                                                            </span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="m-nav__item">
-                                                        <a href="" class="m-nav__link">
-                                                            <i class="m-nav__link-icon flaticon-share"></i>
-                                                            <span class="m-nav__link-text">
-                                                                Chia sẻ
-                                                            </span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="m-nav__separator m-nav__separator--fit"></li>
-                                                    <li class="m-nav__item">
-                                                        <a href="#" class="btn btn-outline-danger m-btn m-btn--pill m-btn--wide btn-sm">
-                                                            Xoá tài khoản
-                                                        </a>
-                                                    </li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -137,7 +99,7 @@
                                             <i class="flaticon-graphic-2 m--font-warning"></i>
                                         </span>
                                         <span class="m-list-search__result-item-text">
-                                            Những tài khoản được dùng nhiều
+                                            Những tài khoản được dùng nhiều <span class="text-muted">Đang phát triển...</span>
                                         </span>
                                     </a>
                                     <span class="m-list-search__result-category">
@@ -156,7 +118,7 @@
                                             <i class="flaticon-graphic-2 m--font-warning"></i>
                                         </span>
                                         <span class="m-list-search__result-item-text">
-                                            Những ghi chú bảo mật được xem nhiều
+                                            Những ghi chú bảo mật được xem nhiều <span class="text-muted">Đang phát triển...</span>
                                         </span>
                                     </a>
                                     <span class="m-list-search__result-category">
@@ -167,7 +129,7 @@
                                             <i class="flaticon-folder-4 m--font-warning"></i>
                                         </span>
                                         <span class="m-list-search__result-item-text">
-                                            Không gian sử dụng của bạn hiện còn trống 10GB
+                                            Không gian sử dụng của bạn hiện còn trống 10GB <span class="text-muted">Đang phát triển...</span>
                                         </span>
                                     </a>
                                     <span class="m-list-search__result-category">
@@ -186,7 +148,8 @@
                                             <i class="flaticon-lifebuoy m--font-warning"></i>
                                         </span>
                                         <span class="m-list-search__result-item-text">
-                                            Những nhóm có tương tác nhiều
+                                            Những nhóm có tương tác nhiều <span class="text-muted">Đang phát triển...</span>
+
                                         </span>
                                     </a>
                                 </div>

@@ -1,5 +1,5 @@
 // Tắt console.log
-console.log = function() {}
+// console.log = function() {}
 
 // Kiểm tra và chuyển hướng https
 if (location.protocol != 'https:')
@@ -11,20 +11,23 @@ location.href = 'https:' + window.location.href.substring(window.location.protoc
 var SessionTimeout = function () {
 
     var initTimer = function () {
-        $.sessionTimeout({
-            title: 'Thông báo chuyển hướng',
-            message: "Hệ thống nhận thấy bạn không hoạt động trong 5 phút vừa qua. <br>Bạn sẽ được chuyển hướng về Trang chủ để bảo mật thông tin trên màn hình.",
-            keepAliveUrl: '/session-timeout/keepalive',
-            ajaxType: 'GET',
-            keepAliveButton: 'Giữ đăng nhập',
-            logoutButton: 'Đăng xuất',
-            redirUrl: '/',
-            logoutUrl: 'logout', //placeholder thôi
-            warnAfter: 300000, //cảnh báo sau 5 phút inactive
-            redirAfter: 330000, //redirect sau 15 giây
-            countdownMessage: 'Chuyển hướng sau {timer} giây.',
-            countdownBar: true
-        });
+        if(window.location != "https://secpass.terabox.vn")
+        {
+            $.sessionTimeout({
+                title: 'Thông báo chuyển hướng',
+                message: "Hệ thống nhận thấy bạn không hoạt động trong 5 phút vừa qua. <br>Bạn sẽ được chuyển hướng về Trang chủ để bảo mật thông tin trên màn hình.",
+                keepAliveUrl: '/session-timeout/keepalive',
+                ajaxType: 'GET',
+                keepAliveButton: 'Giữ đăng nhập',
+                logoutButton: 'Đăng xuất',
+                redirUrl: '/',
+                logoutUrl: 'logout', //placeholder thôi
+                warnAfter: 300000, //cảnh báo sau 5 phút inactive
+                redirAfter: 330000, //redirect sau 15 giây
+                countdownMessage: 'Chuyển hướng sau {timer} giây.',
+                countdownBar: true
+            });
+        }
     }
 
     return {
@@ -129,6 +132,53 @@ var ForContent = function () {
     // Lose modal focus to show swal
     $('.modal').on('shown.bs.modal', function() {
         $(document).off('focusin.modal');
+    });
+
+
+    $('#m_topbar_notification_icon').click(function (){
+        $.ajax({
+            url: "/notification/get",
+            method: "POST",
+            success: function(response, status, xhr, $form) {
+                $('#notifications').html(response.view);
+            },
+            error: function(response, status, xhr, $form) {
+                console.log(response);
+                swal("", response.responseJSON.message, "error");
+            }
+        });
+    });
+
+    $(document).on('click','#notifications a', function (){
+        data = {
+            'id': $(this).find('input[name=id]').val(),
+        };
+        $.ajax({
+            url: "/notification/maskAsRead",
+            method: "POST",
+            data: data,
+            success: function(response, status, xhr, $form) {
+                $('#notifications').html(response.view);
+            },
+            error: function(response, status, xhr, $form) {
+                console.log(response);
+                swal("", response.responseJSON.message, "error");
+            }
+        });
+    });
+
+    $('#maskAllAsRead').click(function (){
+        $.ajax({
+            url: "/notification/maskAllAsRead",
+            method: "POST",
+            success: function(response, status, xhr, $form) {
+                $('#notifications').html(response.view);
+            },
+            error: function(response, status, xhr, $form) {
+                console.log(response);
+                swal("", response.responseJSON.message, "error");
+            }
+        });
     });
 }
 
@@ -286,7 +336,24 @@ function askForPass(){
         });
     });
 }
-
+// Để đây cho nhớ là không được dựng thêm function như này nữa
+// async function getPassphrase() {
+//     if (passphrase) {
+//         console.log("have passphrase");
+//         return passphrase;
+//     }
+//     else {
+//         console.log("no passphrase");
+//         const privKeyObj = (await openpgp.key.readArmored(privkey)).keys[0];
+//         let result = await askForPass();
+//         await privKeyObj.decrypt(result).catch(function (error){
+//             swal("Sai mật khẩu, hãy thực hiện lại.","", "warning"); // error.message,
+//             if(handleError)
+//                 handleError(error);
+//         });
+//         return result;
+//     }
+// }
 
 // Get user passphrase 
 document.addEventListener('getUserPassphraseEvent', function (event) {
@@ -313,12 +380,101 @@ document.addEventListener('getUserPGPEvent', function (event) {
 
 // Get PGP keys automatically 
 document.addEventListener('getGroupPGPEvent', function (event) {
-    console.log(event.detail)
+    console.log(event.detail);
     var pgp_key = JSON.parse(event.detail); // bypass firefox permission error
-    privkey = pgp_key.privateKeyArmored;
-    pubkey =  pgp_key.publicKeyArmored;
+    if(pgp_key) {
+        privkey = pgp_key.privateKeyArmored;
+        pubkey =  pgp_key.publicKeyArmored;
+    }
+    else {
+        group_id = $('input[name=group_id]').val()
+        data = {
+            'group_id': group_id,
+        };
+        $.ajax({
+            url: "/group/getPGP",
+            method: "POST",
+            data: data,
+            success: function(response, status, xhr, $form) {
+
+                var decryptUserPrivKey = async function () {
+                    var a = async function (result){
+                        if (result.value) {
+                            console.log("no passphrase");
+                            thisPassphrase = await askForPass();
+                            await privKeyObj.decrypt(thisPassphrase).catch(function (error){
+                                swal("Sai mật khẩu, hãy thực hiện lại.","", "warning"); // error.message,
+                                throw error;
+                            });
+                        }
+                    };
+                    // Giải mã private-key của user
+                    if(passphrase){
+                        await privKeyObj.decrypt(passphrase);
+                        thisPassphrase = passphrase;
+                    }
+                    else {
+                        swal({
+                            title: 'Lưu dữ liệu nhóm vào tiện ích',
+                            text: "Bạn cần nhập mật khẩu để mã hoá khoá riêng tư của nhóm",
+                            type: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Đã hiểu'
+                        }).then(await a(result));
+                    }
+                };
+
+                var getPGP = async function () {
+                    cipherToDecrypt = response.data;
+
+                    // Giải mã group_pgp
+                    let thisPassphrase = null;
+                    let privKeyObj = (await openpgp.key.readArmored(privkey)).keys[0];
+
+                    await decryptUserPrivKey();
+
+                    const options = {
+                        message: await openpgp.message.readArmored(cipherToDecrypt),    // parse armored message
+                        // publicKeys: (await openpgp.key.readArmored(pubkey)).keys, // for verification (optional)
+                        privateKeys: [privKeyObj]                                 // for decryption
+                    }
+                    
+                    openpgp.decrypt(options).catch(function (error){                
+                        swal("Lỗi xảy ra, vui lòng refresh lại trang","","error");   
+                        throw error;
+                    })
+                    .then( plaintext => async function () {
+                        if(plaintext){
+                            group_pgp = JSON.parse(plaintext.data);
+                            // Mã hoá private-key của group
+                            const privKeyObj = (await openpgp.key.readArmored(group_pgp.privateKeyArmored)).keys[0];
+                            await privKeyObj.encrypt(thisPassphrase);
+                            
+                            group_pgp.privateKeyArmored = privKeyObj.armor();
+        
+                            let pgpData = {
+                                'group_id': group_id,
+                                'group_pgp': group_pgp
+                            };
+                            document.dispatchEvent(new CustomEvent('setGroupPGPEvent', {detail: pgpData}));
+        
+                            privkey = group_pgp.privateKeyArmored;
+                            pubkey =  group_pgp.publicKeyArmored;
+                        }
+                    });
+                };
+                getPGP();
+            },
+            error: function(response, status, xhr, $form) {
+                console.log(response);
+                swal("", response.responseJSON.message, "error");
+            }
+        });
+    }
 });
-// document.dispatchEvent(new CustomEvent('letgetUserPGPEvent', {detail: group_id}));
+// document.dispatchEvent(new CustomEvent('letgetGroupPGPEvent', {detail: group_id}));
 
 function copy(data) {
     var copyText = data;

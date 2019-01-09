@@ -15,8 +15,8 @@
 				</span>
 				<span class="m-list-search__result-item-text">
 					{{ $account->name }}
-					&nbsp;&nbsp;
-					<span class="text-muted">{{ $account->username }}</span>
+					<br>
+					<span class="text-muted"><i>{{ $account->username }}</i></span>
 				</span>
 			</a>
 			@endforeach

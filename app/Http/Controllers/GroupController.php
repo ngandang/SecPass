@@ -19,8 +19,9 @@ use App\Secret;
 use App\Group;
 use App\GroupUser;
 use App\Share;
+use App\Message;
 
-use App\Notifications\GroupPGP;
+use App\Notifications\CreateGroup;
 use App\Notifications\DeleteGroup;
 use App\Notifications\RemoveGroupUser;
 
@@ -529,13 +530,6 @@ class GroupController extends Controller
                 $pgp_key->key_created = date('Y-m-d h:i:s', strtotime($key_created));
                 
                 $pgp_key->save();
-
-                // Send notification to users who in this group
-                $user = Auth::user();
-                // Không viết liền được chỗ này
-                $group_users = $group->user()->get();
-                $users = $group_users->where('id', '!=', $user->id);
-                Notification::send( $users, new GroupPGP($group, $user) );
             }
             catch(\Exception $e) {
                 $group->GroupUser()->delete();
@@ -592,7 +586,7 @@ class GroupController extends Controller
                     $group_user->save();
                     
                     // Send notification to users who in this group
-                    Notification::send( $user, new GroupPGP($group, Auth::user()) );
+                    Notification::send( $user, new CreateGroup($group, Auth::user()) );
                 }
             }
 
@@ -618,6 +612,47 @@ class GroupController extends Controller
         ]); 
     }
 
+    public function sendPGP(Request $request)
+    {
+        $message = new Message;
+        $message->sender_id = $request->sender_id;
+        $message->receiver_id = $request->receiver_id;
+        $message->data = $request->data;
+        $message->save();
+
+        // Thông báo tới member của nhóm
+        $group = Group::find($request->sender_id);
+        $user = User::find($request->receiver_id);
+        $user->notify(new CreateGroup($group));
+
+        return response()->json([
+            'success' => true,
+            // TODO: lang this message
+            'message' => 'Gửi dữ liệu nhóm cho '.$user->email.' thành công'
+        ]);
+    }
+
+    public function getPGP(Request $request)
+    {
+        $group_id = $request->group_id; //sender
+        $user = Auth::user();
+        $message = Message::where('sender_id', $request->group_id)
+                            ->where('receiver_id', $user->id)->first();
+        if ($message)
+            return response()->json([
+                'success' => true,
+                // TODO: lang this message
+                'message' => 'Lấy dữ liệu nhóm cho '.$user->email.' thành công',
+                'data' => $message->data,
+            ]);
+        
+        return response()->json([
+            'success' => false,
+            // TODO: lang this message
+            'message' => 'Không tìm thấy dữ liệu nhóm cho '.$user->email,
+        ], 500); 
+    }
+
     public function deleteGroup(Request $request)
     {
         $group_id = $request->id;
@@ -633,6 +668,7 @@ class GroupController extends Controller
             Notification::send( $users, new DeleteGroup($group, $user) );
             
             $group->GroupUser()->delete();
+            $group->PGPkey()->delete();
             $group->delete();
 
             $groups = Auth::user()->group()->get();
@@ -673,7 +709,7 @@ class GroupController extends Controller
                                 
             // Send notification to users who in this group
             $user = User::find($user_id);
-            Notification::send( $user, new RemoveGroupUser($group, Auth::user()) );
+            $user->notify(new RemoveGroupUser($group, Auth::user()) );
 
             // Refresh content
             $group = Group::find($group_id);

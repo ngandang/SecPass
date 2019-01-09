@@ -28,6 +28,7 @@ use Image;
 
 use App\Mail\PotentialUser;
 
+\Carbon\Carbon::setLocale('vi');
 
 class HomeController extends Controller
 {
@@ -40,6 +41,8 @@ class HomeController extends Controller
     {
         $this->middleware('auth');
     }
+
+
 
     /**
      * Show the application dashboard.
@@ -386,7 +389,7 @@ class HomeController extends Controller
         // Asset tracking
         $log = new AssetTracking;
         $log->user_id = Auth::user()->id;
-        $log->asset_id = $note_id;
+        $log->asset_id = $note->id;
         $log->type = "add";
         $log->save();
 
@@ -701,6 +704,15 @@ class HomeController extends Controller
         ]);
     }
 
+    public function getPGP(Request $request)
+    {
+        if ($request->email)
+            $user = User::where('email', $request->email)->first();
+        $pgp = PGPkey::where('owner_id', $user->id)->first();
+
+        return $pgp;
+    }
+
     public function addPrivKey(Request $request)
     { 
         try {            
@@ -785,11 +797,37 @@ class HomeController extends Controller
             'view' => view('content.history', compact('accounts'))->render()
         ]);
     }
-    
-    public function pgp()
+
+    public function getUnreadNotifications()
     {
-        return view('page.pgp');
+        return response()->json([
+            'success' => true,
+            'view' => view('content.notifications')->render()
+        ]);
     }
+    
+    public function maskAsRead(Request $request){
+        Auth::user()->notifications->find($request->id)->markAsRead();
+        return response()->json([
+            'success' => true,
+            'message' => 'Đánh dấu đã đọc thành công',
+            'view' => view('content.notifications')->render()
+        ]);
+    }
+
+    public function maskAllAsRead(){
+        Auth::user()->unreadNotifications->markAsRead();
+        return response()->json([
+            'success' => true,
+            'message' => 'Đánh dấu tất cả đã đọc thành công',
+            'view' => view('content.notifications')->render()
+        ]);
+    }
+
+    // public function pgp()
+    // {
+    //     return view('page.pgp');
+    // }
 
     public function keepalive()
     {

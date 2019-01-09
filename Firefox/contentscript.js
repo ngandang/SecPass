@@ -21,7 +21,7 @@ document.addEventListener('letgetUserPassphraseEvent', function (event) {
 
 document.addEventListener('letgetUserEmailEvent', function (event) {
     console.log('addon: read email');
-    chrome.storage.local.get('user_email', function(result){
+    browser.storage.local.get('user_email', function(result){
         document.dispatchEvent(new CustomEvent('getUserEmailEvent', {detail: result.user_email}));
     });
 });
@@ -60,16 +60,16 @@ document.addEventListener('removeUserPassphraseEvent', function (event) {
 document.addEventListener('setGroupPGPEvent', function (event) {
     var group_id = event.detail.group_id;
     var group_pgp = event.detail.group_pgp;
-    chrome.storage.local.get(group_id, function(result){
+    browser.storage.local.get(group_id, function(result){
         console.log('addon: read group_pgp');
         if (result[0])
             if(!confirm('SecPASS: Tiện ích hiện đang chứa khoá của nhóm này. Dữ liệu này sẽ bị ghi đè nếu tiếp tục. Bạn có chắc chắn ?'))
                 return 1;
 
         // Thêm ngoặc [] để biến thành chuỗi
-        chrome.storage.local.set({[group_id]: group_pgp}, function(){
+        browser.storage.local.set({[group_id]: group_pgp}, function(){
             console.log('addon: saved group_pgp');
-            chrome.storage.local.get(group_id, function(result){
+            browser.storage.local.get(group_id, function(result){
                 console.log('addon: read group_pgp');
                 console.log(result);
             });
@@ -81,7 +81,7 @@ document.addEventListener('setGroupPGPEvent', function (event) {
 
 document.addEventListener('letgetGroupPGPEvent', function (event) {
     var group_id = event.detail;
-    chrome.storage.local.get(group_id, function(result){
+    browser.storage.local.get(group_id, function(result){
         console.log('addon: read group_pgp');
         console.log(result);
         document.dispatchEvent(new CustomEvent('getGroupPGPEvent', {detail: JSON.stringify(result[0])})); // bypass firefox permission error
@@ -90,7 +90,7 @@ document.addEventListener('letgetGroupPGPEvent', function (event) {
 
 document.addEventListener('removeGroupPGPEvent', function (event) {
     var group_id = event.detail;
-    chrome.storage.local.remove(group_id, function(){
+    browser.storage.local.remove(group_id, function(){
         console.log('addon: destroy group_pgp');
     });
 });

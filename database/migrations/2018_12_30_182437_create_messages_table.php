@@ -18,7 +18,7 @@ class CreateMessagesTable extends Migration
             $table->primary('id');
             $table->uuid('sender_id');
             $table->uuid('receiver_id');
-            $table->longtext('comment');
+            $table->longtext('data');
             $table->timestamps(); 
         });
     }
