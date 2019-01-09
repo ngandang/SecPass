@@ -2,8 +2,8 @@
     <div class="m-portlet__body content-body">
         <div class="group-section">
             <div class="m-section__content">
-                <table class="table m-table m-table--head-bg-brand">
-                    <thead>
+                <table class="table table-striped m-table" >
+                    <thead class="table-title thead-default">
                         <tr style="text-align:center">
                             <th> Tên người dùng </th>
                             <th> Địa chỉ email </th>
@@ -44,6 +44,9 @@
                     </tbody>
                 </table>
             </div>
+        
         </div>
     </div>
 </div>
+
+

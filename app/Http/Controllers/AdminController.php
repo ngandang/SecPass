@@ -17,7 +17,7 @@ class AdminController extends Controller
 
     public function admin()
     {
-        return redirect("admin/users");
+        return redirect("admin");
         // return "Yes, you are an administrator.";
         // return view('admin');
     }

@@ -2,8 +2,8 @@
     <div class="m-portlet__body content-body">
         <div class="group-section">
             <div class="m-section__content">
-                <table class="table m-table m-table--head-bg-brand">
-                    <thead>
+                <table class="table table-striped m-table">
+                    <thead class="table-title">
                         <tr style="text-align:center">
                             <th> Tên nhóm </th>
                             <th> Số thành viên </th>
