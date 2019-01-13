@@ -41,7 +41,7 @@ class VerifyUser extends Notification
      */
     public function toMail($notifiable)
     {
-        $subject = sprintf('%s: Chứng thực tài khoản', config('app.name'));
+        $subject = sprintf('%s: Xác thực tài khoản', config('app.name'));
         $greeting = sprintf('Xin chào %s!', $notifiable->name);
         // $a = sprintf('Bạn vừa được %s thêm vào nhóm bảo mật %s.', $this->creator->name, $this->group->name);
  

@@ -33,7 +33,7 @@ class CreateGroup extends Notification
      */
     public function via($notifiable)
     {
-        return ['database','email'];
+        return ['database','mail'];
     }
 
     /**

@@ -57,7 +57,7 @@
 								<div class="row m-login__form-sub">
 									<div id="m_login_remember_me" class="col m--align-left m-login__form-left" data-container="body" data-toggle="m-popover" data-placement="left" data-content="Tuỳ chọn này giúp bạn không cần nhập mật khẩu thường xuyên trong quá trình sử dụng." data-original-title="" title="">
 										<label class="m-checkbox  m-checkbox--light">
-											<input type="checkbox" name="remember">
+											<input type="checkbox" name="remember" checked>
 												Xử lý mật khẩu tự động
 											<span></span>
 										</label>

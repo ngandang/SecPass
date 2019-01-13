@@ -51,7 +51,7 @@
                 </div>
                 <!--end: Search Form -->        
             </div>
-            <form class="m-form m-form--fit m-form--label-align-right">
+            <form class="m-form m-form--label-align-right">
                 <div class="m-portlet__body">
                     <div class="m-section">
                         <table class="m-datatable">

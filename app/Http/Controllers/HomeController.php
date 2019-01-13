@@ -28,7 +28,9 @@ use Image;
 
 use App\Mail\PotentialUser;
 
-\Carbon\Carbon::setLocale('vi');
+use \Carbon\Carbon;
+
+Carbon::setLocale('vi');
 
 class HomeController extends Controller
 {
@@ -54,7 +56,8 @@ class HomeController extends Controller
         $accounts = Auth::user()->account()->get();
         $notes = Auth::user()->note()->get();
         $groups = Auth::user()->group()->get();
-        return view('page.dashboard', compact('accounts', 'notes', 'groups'));
+        $expires = Auth::user()->account()->where('expiry_date', '<', Carbon::now() )->get();
+        return view('page.dashboard', compact('accounts', 'notes', 'groups', 'expires'));
     }
     // Tham khảo lại sau này
     // public function getUserAccounts()
@@ -855,9 +858,9 @@ class HomeController extends Controller
     //     return view('page.pgp');
     // }
 
-    public function keepalive()
+    public function keepalive(Request $request)
     {
-        return response('',204);
+        return response($request,204);
     }
 
 }

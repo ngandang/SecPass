@@ -86,13 +86,13 @@
                                 </div>
                                 <div class="col-md-5">
                                 <label for="password" class="text-info">Mật khẩu</label>
-                                    <input id="password-edit" type="password" name="password" placeholder="Nhấn lấy mật khẩu" class="form-control">
-                                    <span toggle="#password-edit" class="fa fa-fw fa-eye field-icon toggle-edit"></span>
+                                    <input id="password-edit" type="password" name="password" placeholder="Đã được bảo mật" class="form-control">
+                                    <span toggle="#password-edit" class="fa fa-fw fa-eye field-icon toggle-password"></span>
                                 </div>
                                 <div class="col-md-2" style="padding-left:8px;">
                                     <label class="text-info">&nbsp</label>
-                                    <button onclick="generateEdit();" type="button" class="btn btn-metal">
-                                        <i class="fa fa-magic fa-fw fa-lg"></i>
+                                    <button id="getPassword" type="button" class="btn btn-metal" data-toggle="m-tooltip" title="Lấy và giải mã nội dung">
+                                        <i class="fa fa-lock fa-fw fa-lg"></i>
                                     </button>
                                 </div>
                             </div>

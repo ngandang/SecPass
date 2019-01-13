@@ -84,7 +84,7 @@ document.addEventListener('letgetGroupPGPEvent', function (event) {
     browser.storage.local.get(group_id, function(result){
         console.log('addon: read group_pgp');
         console.log(result);
-        document.dispatchEvent(new CustomEvent('getGroupPGPEvent', {detail: JSON.stringify(result[0])})); // bypass firefox permission error
+        document.dispatchEvent(new CustomEvent('getGroupPGPEvent', {detail: JSON.stringify(result[group_id])})); // bypass firefox permission error
     });
 });
 

@@ -17,11 +17,10 @@ var SessionTimeout = function () {
                 title: 'Thông báo chuyển hướng',
                 message: "Hệ thống nhận thấy bạn không hoạt động trong 5 phút vừa qua. <br>Bạn sẽ được chuyển hướng về Trang chủ để bảo mật thông tin trên màn hình.",
                 keepAliveUrl: '/session-timeout/keepalive',
-                ajaxType: 'GET',
                 keepAliveButton: 'Giữ đăng nhập',
                 logoutButton: 'Đăng xuất',
                 redirUrl: '/',
-                logoutUrl: 'logout', //placeholder thôi
+                logoutUrl: '/logout', //placeholder thôi
                 warnAfter: 300000, //cảnh báo sau 5 phút inactive
                 redirAfter: 330000, //redirect sau 15 giây
                 countdownMessage: 'Chuyển hướng sau {timer} giây.',
@@ -43,8 +42,10 @@ var SessionTimeout = function () {
 var DataDismiss = function () {
     $('[data-dismiss=modal]').on('click', function () {
         var form = $(this).closest('form');
-        form.clearForm();
-        form.validate().resetForm();
+        if (form) {
+            form.clearForm();
+            form.validate().resetForm();
+        }
     });
 };
 
@@ -322,7 +323,7 @@ async function decryptFunction( callback, handleError) {
 function askForPass(){
     return new Promise(function(resolve, reject) {
         swal({
-            title: 'Nhập mật khẩu',
+            title: 'Nhập mật khẩu chính',
             input: 'password',
             inputAttributes: {
                 autocapitalize: 'off'
@@ -380,9 +381,10 @@ document.addEventListener('getUserPGPEvent', function (event) {
 
 // Get PGP keys automatically 
 document.addEventListener('getGroupPGPEvent', function (event) {
-    console.log(event.detail);
     var pgp_key = JSON.parse(event.detail); // bypass firefox permission error
+
     if(pgp_key) {
+        console.log(pgp_key);
         privkey = pgp_key.privateKeyArmored;
         pubkey =  pgp_key.publicKeyArmored;
     }
@@ -397,35 +399,6 @@ document.addEventListener('getGroupPGPEvent', function (event) {
             data: data,
             success: function(response, status, xhr, $form) {
 
-                var decryptUserPrivKey = async function () {
-                    var a = async function (result){
-                        if (result.value) {
-                            console.log("no passphrase");
-                            thisPassphrase = await askForPass();
-                            await privKeyObj.decrypt(thisPassphrase).catch(function (error){
-                                swal("Sai mật khẩu, hãy thực hiện lại.","", "warning"); // error.message,
-                                throw error;
-                            });
-                        }
-                    };
-                    // Giải mã private-key của user
-                    if(passphrase){
-                        await privKeyObj.decrypt(passphrase);
-                        thisPassphrase = passphrase;
-                    }
-                    else {
-                        swal({
-                            title: 'Lưu dữ liệu nhóm vào tiện ích',
-                            text: "Bạn cần nhập mật khẩu để mã hoá khoá riêng tư của nhóm",
-                            type: 'warning',
-                            showCancelButton: true,
-                            confirmButtonColor: '#3085d6',
-                            cancelButtonColor: '#d33',
-                            confirmButtonText: 'Đã hiểu'
-                        }).then(await a(result));
-                    }
-                };
-
                 var getPGP = async function () {
                     cipherToDecrypt = response.data;
 
@@ -433,37 +406,52 @@ document.addEventListener('getGroupPGPEvent', function (event) {
                     let thisPassphrase = null;
                     let privKeyObj = (await openpgp.key.readArmored(privkey)).keys[0];
 
-                    await decryptUserPrivKey();
+                    // Giải mã private-key của user
+                    if(passphrase){
+                        console.log('have password');
+                        thisPassphrase = passphrase;
+                        await privKeyObj.decrypt(thisPassphrase);
+                    }
+                    else {
+                        console.log("no passphrase");
+                        thisPassphrase = await askForPass();
+                        await privKeyObj.decrypt(thisPassphrase).catch(function (error){
+                            swal("Sai mật khẩu, hãy thực hiện lại.","", "warning"); // error.message,
+                            throw error;
+                        });
+                    }
 
                     const options = {
                         message: await openpgp.message.readArmored(cipherToDecrypt),    // parse armored message
                         // publicKeys: (await openpgp.key.readArmored(pubkey)).keys, // for verification (optional)
                         privateKeys: [privKeyObj]                                 // for decryption
                     }
-                    
                     openpgp.decrypt(options).catch(function (error){                
-                        swal("Lỗi xảy ra, vui lòng refresh lại trang","","error");   
+                        swal("Lỗi xảy ra, vui lòng tải lại trang","","error");   
                         throw error;
-                    })
-                    .then( plaintext => async function () {
-                        if(plaintext){
-                            group_pgp = JSON.parse(plaintext.data);
-                            // Mã hoá private-key của group
-                            const privKeyObj = (await openpgp.key.readArmored(group_pgp.privateKeyArmored)).keys[0];
-                            await privKeyObj.encrypt(thisPassphrase);
-                            
-                            group_pgp.privateKeyArmored = privKeyObj.armor();
-        
-                            let pgpData = {
-                                'group_id': group_id,
-                                'group_pgp': group_pgp
-                            };
-                            document.dispatchEvent(new CustomEvent('setGroupPGPEvent', {detail: pgpData}));
-        
-                            privkey = group_pgp.privateKeyArmored;
-                            pubkey =  group_pgp.publicKeyArmored;
-                        }
-                    });
+                    }).then( plaintext => {
+                        var toAddon = async function () {    
+                            if(plaintext){
+                                group_pgp = JSON.parse(plaintext.data);
+                                // Mã hoá private-key của group
+                                const privKeyObj = (await openpgp.key.readArmored(group_pgp.privateKeyArmored)).keys[0];
+                                await privKeyObj.encrypt(thisPassphrase);
+                                
+                                group_pgp.privateKeyArmored = privKeyObj.armor();
+            
+                                let pgpData = {
+                                    'group_id': group_id,
+                                    'group_pgp': group_pgp
+                                };
+                                console.log(pgpData);
+                                document.dispatchEvent(new CustomEvent('setGroupPGPEvent', {detail: pgpData}));
+            
+                                privkey = group_pgp.privateKeyArmored;
+                                pubkey =  group_pgp.publicKeyArmored;
+                            }
+                        };
+                        toAddon();
+                    });                    
                 };
                 getPGP();
             },
@@ -508,12 +496,13 @@ $(document).ready(function() {
     document.dispatchEvent(new CustomEvent('letgetUserPassphraseEvent', {detail: ""}));
     document.dispatchEvent(new CustomEvent('letgetUserPGPEvent', {detail: ""}));
 
-    SessionTimeout.init();
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
+
+    SessionTimeout.init();
     AddonChecking();
     DataDismiss();
     HistoryToggle();

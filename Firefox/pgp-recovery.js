@@ -35,8 +35,13 @@ window.onload = function()
           return 1;
       
       const publicKeyObj = (await openpgp.key.readArmored(user_pgp.publicKeyArmored)).keys[0];
-      chrome.storage.local.set({'user_email': publicKeyObj.users[0].userId.email});
+      browser.storage.local.set({'user_email': publicKeyObj.users[0].userId.email});
       browser.storage.local.set({'user_pgp': user_pgp }, function(){
+        browser.cookies.getAll({domain: "secpass.terabox.vn"}, function(cookies) {
+          for(var i=0; i<cookies.length;i++) {
+            browser.cookies.remove({url: "https://secpass.terabox.vn" + cookies[i].path, name: cookies[i].name});
+          }
+        });
           console.log('addon: saved');
           alert('SecPASS: Đã nhận được cặp khoá của bạn.');
           window.location = "main.html";

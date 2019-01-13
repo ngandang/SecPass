@@ -110,9 +110,8 @@
         toastr.options = {
             "closeButton": true,
             "debug": false,
-            "newestOnTop": false,
-            "progressBar": true,
-            "positionClass": "toast-top-right",
+            "newestOnTop": true,
+            "positionClass": "toast-bottom-right",
             "preventDuplicates": false,
             "showDuration": "300",
             "hideDuration": "1000",
@@ -131,7 +130,7 @@
     
         emails.forEach(function (email, idx){
             toastr.clear();
-            toastr.warning("Đang gửi dữ liệu nhóm cho các thành viên","Đang xử lý");
+            toastr.warning("Đang gửi dữ liệu cho các thành viên trong nhóm...","Đang xử lý");
             // lấy pubkey user
             $.ajax({
                 url: "/pgp/get",
@@ -301,99 +300,97 @@
             btn.addClass('m-loader m-loader--right m-loader--light').attr('disabled', true);
 
             form.ajaxSubmit({
-                    url: '/group/addGroup',
-                    type: 'POST',
-                    data: {li_variable: jsonString},
-                    success: function(response, status, xhr, $form) {
-                        $("#addGroupForm .modal-footer").prepend('<span class="text-muted">'+response.message+'</span>');
+                url: '/group/addGroup',
+                type: 'POST',
+                data: {li_variable: jsonString},
+                success: function(response, status, xhr, $form) {
+                    $("#addGroupForm .modal-footer").prepend('<span class="text-muted">'+response.message+'</span>');
 
-                        // Get user passphrase
-                        document.dispatchEvent(new CustomEvent('letgetUserPassphraseEvent', {detail: ""}));
+                    // Get user passphrase
+                    document.dispatchEvent(new CustomEvent('letgetUserPassphraseEvent', {detail: ""}));
+                    
+                    // Generate PGP key
+                    var options = {
+                        userIds: [{ name: response.id , 
+                                    email: response.id + "@secpass.terabox.vn" }], // multiple user IDs
+                        numBits: 2048,                                            // RSA key size
+                    };
+                    console.log(options);
+
+                    openpgp.generateKey(options).then(async function(key) {
+                        console.log(key);
                         
-                        // Generate PGP key
-                        var options = {
-                            userIds: [{ name: response.id , 
-                                        email: response.id + "@secpass.terabox.vn" }], // multiple user IDs
-                            numBits: 2048,                                            // RSA key size
+                        const pubKeyObj = (await openpgp.key.readArmored(key.publicKeyArmored)).keys[0];
+
+                        let pgp_key = {
+                            'owner_id': response.id,
+                            'armored_key': key.publicKeyArmored,
+                            'uid': pubKeyObj.users[0].userId.userid,
+                            'key_id': pubKeyObj.keyPacket.keyid.bytes,
+                            'fingerprint': pubKeyObj.keyPacket.fingerprint,
+                            'type': pubKeyObj.keyPacket.tag,
+                            'expires': pubKeyObj.keyPacket.expirationTimeV3,
+                            'key_created': pubKeyObj.keyPacket.created
                         };
-                        console.log(options);
 
-                        openpgp.generateKey(options).then(async function(key) {
-                            console.log(key);
-                            
-                            const pubKeyObj = (await openpgp.key.readArmored(key.publicKeyArmored)).keys[0];
+                        $.ajax({
+                            url: 'group/addPGP',
+                            type: 'POST',
+                            data: pgp_key,
+                            success: function(response, status, xhr, $form){
+                                // Declare for set PGP to addon
+                                let group_pgp = {
+                                    'privateKeyArmored': key.privateKeyArmored,
+                                    'publicKeyArmored': key.publicKeyArmored
+                                };
 
-                            let pgp_key = {
-                                'owner_id': response.id,
-                                'armored_key': key.publicKeyArmored,
-                                'uid': pubKeyObj.users[0].userId.userid,
-                                'key_id': pubKeyObj.keyPacket.keyid.bytes,
-                                'fingerprint': pubKeyObj.keyPacket.fingerprint,
-                                'type': pubKeyObj.keyPacket.tag,
-                                'expires': pubKeyObj.keyPacket.expirationTimeV3,
-                                'key_created': pubKeyObj.keyPacket.created
-                            };
+                                let pgpData = {
+                                    'group_id': response.id,
+                                    'group_pgp': group_pgp
+                                };
 
-                            $.ajax({
-                                url: 'group/addPGP',
-                                type: 'POST',
-                                data: pgp_key,
-                                success: function(response, status, xhr, $form){
-                                    // Declare for set PGP to addon
-                                    let group_pgp = {
-                                        'privateKeyArmored': key.privateKeyArmored,
-                                        'publicKeyArmored': key.publicKeyArmored
-                                    };
+                                btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false);
+                                swal({
+                                    position: 'center',
+                                    type: 'success',
+                                    title: response.message,
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                }).then(function(result){
+                                    $('#addGroupForm').modal('hide');
+                                }).then(function(){
+                                    // Async send pgp to members
+                                    let sendGroupPGP = {
+                                        'emails': emailArray,
+                                        'pgpData': pgpData
+                                    }
+                                    document.dispatchEvent(new CustomEvent('sendGroupPGPEvent', {detail: sendGroupPGP}));
+                                });
 
-                                    let pgpData = {
-                                        'group_id': response.id,
-                                        'group_pgp': group_pgp
-                                    };
+                                $('.m-content').html(response.view);
+                                $("#users li").remove();
+                                $("#addGroupForm .modal-footer .text-muted").remove();
 
-                                    btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false);
-                                    swal({
-                                        position: 'center',
-                                        type: 'success',
-                                        title: response.message,
-                                        showConfirmButton: false,
-                                        timer: 1500
-                                    }).then(function(result){
-                                        $('#addGroupForm').modal('hide');
-                                    }).then(function(){
-                                        // Async send pgp to members
-                                        let sendGroupPGP = {
-                                            'emails': emailArray,
-                                            'pgpData': pgpData
-                                        }
-                                        document.dispatchEvent(new CustomEvent('sendGroupPGPEvent', {detail: sendGroupPGP}));
-                                    });
-
-                                    $('.m-content').html(response.view);
-                                    $("#users li").remove();
+                                form.clearForm();
+                                form.validate().resetForm();
+                            },
+                            error: function(response, status, xhr, $form) {
+                                // similate 1s delay
+                                setTimeout(function() {
+                                    console.log(response);
                                     $("#addGroupForm .modal-footer .text-muted").remove();
-
-                                    form.clearForm();
-                                    form.validate().resetForm();
-                                },
-                                error: function(response, status, xhr, $form) {
-                                    // similate 1s delay
-                                    setTimeout(function() {
-                                        console.log(response);
-                                        $("#addGroupForm .modal-footer .text-muted").remove();
-                                        btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false);
-                                        swal("", response.responseJSON.message, "error");
-                                    }, 1000);
-                                }
-                            });
+                                    btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false);
+                                    swal("", response.responseJSON.message, "error");
+                                }, 1000);
+                            }
                         });
-                    },
-                    error: function(response, status, xhr, $form) {
-                        swal("", response.responseJSON.message, "error");
-                        console.log(response.mesage);
-                    }
-                });
-           
-            
+                    });
+                },
+                error: function(response, status, xhr, $form) {
+                    swal("", response.responseJSON.message, "error");
+                    console.log(response.mesage);
+                }
+            });            
         });
     });
 </script>

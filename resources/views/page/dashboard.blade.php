@@ -33,7 +33,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-7">
+        <div class="col-lg-4">
             <!--begin::Portlet-->
             <div class="m-portlet m-portlet--head-sm">
                 <div class="m-portlet__head">
@@ -50,26 +50,10 @@
                     </div>
                     <div class="m-portlet__head-tools">
                         <ul class="m-portlet__nav">
-                            <li class="m-portlet__nav-item m-dropdown m-dropdown--inline m-dropdown--arrow m-dropdown--align-right m-dropdown--align-push" data-dropdown-toggle="hover" aria-expanded="true">
-                                <a href="#" class="m-portlet__nav-link m-portlet__nav-link--icon m-dropdown__toggle">
-                                    <i class="la la-ellipsis-h"></i>
+                            <li class="m-portlet__nav-item" data-container="body" data-toggle="m-popover" data-placement="top" data-content="Cập nhật mới" data-original-title="" title="">
+                                <a href="" class="m-portlet__nav-link m-portlet__nav-link--icon">
+                                    <i class="flaticon-refresh"></i>
                                 </a>
-                                <div class="m-dropdown__wrapper">
-                                    <span class="m-dropdown__arrow m-dropdown__arrow--right m-dropdown__arrow--adjust" style="left: auto; right: 16.8px;"></span>
-                                    <div class="m-dropdown__inner">
-                                        <div class="m-dropdown__body">
-                                            <div class="m-dropdown__content">
-                                                <ul class="m-nav">
-                                                    <li class="m-nav__section m-nav__section--first">
-                                                        <span class="m-nav__section-text">
-                                                            Tác vụ nhanh
-                                                        </span>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                             </li>
                         </ul>
                     </div>
@@ -99,7 +83,7 @@
                                             <i class="flaticon-graphic-2 m--font-warning"></i>
                                         </span>
                                         <span class="m-list-search__result-item-text">
-                                            Những tài khoản được dùng nhiều <span class="text-muted">Đang phát triển...</span>
+                                            Những tài khoản được dùng nhiều <span class="text-muted"><br>Đang phát triển...</span>
                                         </span>
                                     </a>
                                     <span class="m-list-search__result-category">
@@ -118,7 +102,7 @@
                                             <i class="flaticon-graphic-2 m--font-warning"></i>
                                         </span>
                                         <span class="m-list-search__result-item-text">
-                                            Những ghi chú bảo mật được xem nhiều <span class="text-muted">Đang phát triển...</span>
+                                            Những ghi chú bảo mật được xem nhiều <span class="text-muted"><br>Đang phát triển...</span>
                                         </span>
                                     </a>
                                     <span class="m-list-search__result-category">
@@ -129,7 +113,7 @@
                                             <i class="flaticon-folder-4 m--font-warning"></i>
                                         </span>
                                         <span class="m-list-search__result-item-text">
-                                            Không gian sử dụng của bạn hiện còn trống 10GB <span class="text-muted">Đang phát triển...</span>
+                                            Không gian sử dụng của bạn hiện còn trống 10GB <span class="text-muted"><br>Đang phát triển...</span>
                                         </span>
                                     </a>
                                     <span class="m-list-search__result-category">
@@ -148,7 +132,7 @@
                                             <i class="flaticon-lifebuoy m--font-warning"></i>
                                         </span>
                                         <span class="m-list-search__result-item-text">
-                                            Những nhóm có tương tác nhiều <span class="text-muted">Đang phát triển...</span>
+                                            Những nhóm có tương tác nhiều <span class="text-muted"><br>Đang phát triển...</span>
 
                                         </span>
                                     </a>
@@ -163,88 +147,85 @@
             </div>
             <!--end::Portlet-->
         </div>
-        <div class="col-lg-5">
+        <div class="col-lg-4">
             <!--begin::Portlet-->
             <div class="m-portlet m-portlet--head-sm">
                 <div class="m-portlet__head">
                     <div class="m-portlet__head-caption">
                         <div class="m-portlet__head-title">
-                            <span class="m-portlet__head-icon" data-container="body" data-toggle="m-popover" data-placement="top" data-content="Mật khẩu đã được giải mã" data-original-title="" title="">
-                                <!-- <i class="la la-unlock"></i> -->
-                                <!-- <i class="la la-unlock-alt"></i> -->
-                            </span>
                             <h3 class="m-portlet__head-text">
                                 Mật khẩu quá hạn khuyên dùng
+                                @if(count($expires))
+                                <span class="m-badge m-badge--danger">{{ count($expires) }}</span>
+                                @endif
                             </h3>
                         </div>
                     </div>
                     <div class="m-portlet__head-tools">
                         <ul class="m-portlet__nav">
-                            <li class="m-portlet__nav-item m-dropdown m-dropdown--inline m-dropdown--arrow m-dropdown--align-right m-dropdown--align-push" data-dropdown-toggle="hover" aria-expanded="true">
-                                <a href="#" class="m-portlet__nav-link m-portlet__nav-link--icon m-dropdown__toggle">
-                                    <i class="la la-ellipsis-h"></i>
+                            <li class="m-portlet__nav-item" data-container="body" data-toggle="m-popover" data-placement="top" data-content="Cập nhật mới" data-original-title="" title="">
+                                <a href="" class="m-portlet__nav-link m-portlet__nav-link--icon">
+                                    <i class="flaticon-refresh"></i>
                                 </a>
-                                <div class="m-dropdown__wrapper">
-                                    <span class="m-dropdown__arrow m-dropdown__arrow--right m-dropdown__arrow--adjust" style="left: auto; right: 16.8px;"></span>
-                                    <div class="m-dropdown__inner">
-                                        <div class="m-dropdown__body">
-                                            <div class="m-dropdown__content">
-                                                <ul class="m-nav">
-                                                    <li class="m-nav__section m-nav__section--first">
-                                                        <span class="m-nav__section-text">
-                                                            Tác vụ nhanh
-                                                        </span>
-                                                    </li>
-                                                    <li class="m-nav__item">
-                                                        <a href="" class="m-nav__link">
-                                                            <i class="m-nav__link-icon flaticon-user-ok"></i>
-                                                            <span class="m-nav__link-text">
-                                                                Sao chép tên đăng nhập
-                                                            </span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="m-nav__item">
-                                                        <a href="" class="m-nav__link">
-                                                            <i class="m-nav__link-icon flaticon-lock-1"></i>
-                                                            <span class="m-nav__link-text">
-                                                                Sao chép mật khẩu
-                                                            </span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="m-nav__item">
-                                                        <a href="" class="m-nav__link">
-                                                            <i class="m-nav__link-icon flaticon-edit"></i>
-                                                            <span class="m-nav__link-text">
-                                                                Chỉnh sửa
-                                                            </span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="m-nav__item">
-                                                        <a href="" class="m-nav__link">
-                                                            <i class="m-nav__link-icon flaticon-share"></i>
-                                                            <span class="m-nav__link-text">
-                                                                Chia sẻ
-                                                            </span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="m-nav__separator m-nav__separator--fit"></li>
-                                                    <li class="m-nav__item">
-                                                        <a href="#" class="btn btn-outline-danger m-btn m-btn--pill m-btn--wide btn-sm">
-                                                            Xoá tài khoản
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="m-portlet__body">
+                    @if(count($expires))
+                    <table class="m-datatable">
+                        <thead>
+                            <tr style="text-align:center">
+                                <th> Tài khoản </th>
+                                <th> URL </th>
+                                <th> Quá hạn </th>
+                                <th> </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($expires->sortBy('name') as $account)                                    
+                            <tr style="text-align:center">
+                                <td> {{ $account->name }} <br><i class="text-muted m--regular-font-size-">{{ $account->username }}</i></td>
+                                <td> <a href="{{ $account->uri }}" class="m-link">{{ $account->uri }}</a> </td>
+                                <td> {{ (new \Carbon\Carbon($account->expiry_date))->diffForHumans(\Carbon\Carbon::now()) }}</td>
+                                <td>
+                                    <input name="id" type="hidden" value="{{ $account->id }}">
+                                </td>
+                            </tr>                                    
+                        @endforeach
+                        </tbody>
+                    </table>
+                    @else
+                    <p class="text-muted">Chưa có dữ liệu</p>
+                    @endif
+                </div>
+            </div>
+            <!--end::Portlet-->
+        </div>
+        <div class="col-lg-4">
+            <!--begin::Portlet-->
+            <div class="m-portlet m-portlet--head-sm">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <h3 class="m-portlet__head-text">
+                                Tài khoản bị xâm nhập
+                                <!-- <span class="m-badge m-badge--danger"></span> -->
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="m-portlet__head-tools">
+                        <ul class="m-portlet__nav">
+                            <li class="m-portlet__nav-item" data-container="body" data-toggle="m-popover" data-placement="top" data-content="Cập nhật mới" data-original-title="" title="">
+                                <a href="" class="m-portlet__nav-link m-portlet__nav-link--icon">
+                                    <i class="flaticon-refresh"></i>
+                                </a>
                             </li>
                         </ul>
                     </div>
                 </div>
                 <div class="m-portlet__body">
                     <p class="text-muted">Đang phát triển...</p>
-                    
                 </div>
             </div>
             <!--end::Portlet-->
@@ -256,5 +237,41 @@
 @endsection
 
 @section('pageSnippets')
-<script src="{{ asset('app/js/dashboard.js') }}" type="text/javascript"></script>
+<script>
+    $(document).ready(function() {
+        var expires_datatable_options = {
+            data: {
+                saveState: {cookie: false},
+            },
+            columns: [
+                {
+                field: 'Tài khoản',
+                type: 'text',
+                textAlign: 'center',
+                sortable: 'asc',
+                // width: 150,
+                },
+                {
+                field: 'URL',
+                type: 'text',
+                textAlign: 'center',
+                // width: 200,
+                },
+                {
+                field: 'Quá hạn',
+                type: 'text',
+                textAlign: 'center',
+                // width: 150,
+                },
+                {
+                field: '',
+                width: 0,
+                }
+            ],
+            pagination: false,
+        };
+
+        expires_datatable = $('.m-datatable').mDatatable(expires_datatable_options);
+    });
+</script>
 @endsection

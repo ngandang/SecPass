@@ -148,7 +148,7 @@ Route::post('notification/maskAllAsRead','HomeController@maskAllAsRead');
 Route::get('pgp','HomeController@pgp');
 Route::post('pgp/get','HomeController@getPGP');
 
-Route::get('session-timeout/keepalive', 'HomeController@keepalive');
+Route::post('session-timeout/keepalive', 'HomeController@keepalive');
 
 Route::get('setup', function () {
     App\Role::insert(
