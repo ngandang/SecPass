@@ -101,6 +101,18 @@ var QuickbarToggle = function () {
         $('#m_quick_sidebar_toggle').click();
         $('#m_quick_sidebar_tabs li a')[2].click();
     });
+
+    // var messenger_options = {
+    //     data: {
+    //         saveState: {cookie: false},
+    //     },
+    //     search: {
+    //         input: $('#userSearch'),
+    //     },
+    //     pagination: false,
+    // };
+
+    // messenger =  $('.m-messenger').mMessenger(messenger_options);
 }
 
 var LogoutButton = function () {

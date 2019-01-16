@@ -149,6 +149,9 @@ Route::get('pgp','HomeController@pgp');
 Route::post('pgp/get','HomeController@getPGP');
 
 Route::post('session-timeout/keepalive', 'HomeController@keepalive');
+Route::get('addon/token', function (){
+    return csrf_token();
+});
 
 Route::get('setup', function () {
     App\Role::insert(

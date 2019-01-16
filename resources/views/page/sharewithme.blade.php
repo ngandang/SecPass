@@ -76,8 +76,17 @@
             ],
             pagination: false,
         };
-        account_datatable = $('#group-account .m-datatable').mDatatable(account_datatable_options);
-        note_datatable = $('#group-note .m-datatable').mDatatable(note_datatable_options);
+        try {
+            account_datatable = $('#group-account .m-datatable').mDatatable(account_datatable_options);
+        } catch (error) {
+            
+        }
+        try {
+            note_datatable = $('#group-note .m-datatable').mDatatable(note_datatable_options);
+
+        } catch (error) {
+            
+        }
 
         $(document).on("click",".account-delete", function (){
             $("#deleteAccountForm input[name=id]").val( $(this).closest('tr').find('input[name=id]').val() );
@@ -113,8 +122,17 @@
                     $('.m-section').html(response.view);
                     account_datatable.destroy();
                     note_datatable.destroy();
-                    account_datatable = $('#group-account .m-datatable').mDatatable(account_datatable_options);
-                    note_datatable = $('#group-note .m-datatable').mDatatable(note_datatable_options);
+                    try {
+                        account_datatable = $('#group-account .m-datatable').mDatatable(account_datatable_options);
+                    } catch (error) {
+                        
+                    }
+                    try {
+                        note_datatable = $('#group-note .m-datatable').mDatatable(note_datatable_options);
+
+                    } catch (error) {
+                        
+                    }
 
                     form.clearForm();
                 },
@@ -146,8 +164,17 @@
                     $('.m-section').html(response.view);
                     account_datatable.destroy();
                     note_datatable.destroy();
-                    account_datatable = $('#group-account .m-datatable').mDatatable(account_datatable_options);
-                    note_datatable = $('#group-note .m-datatable').mDatatable(note_datatable_options);
+                    try {
+                        account_datatable = $('#group-account .m-datatable').mDatatable(account_datatable_options);
+                    } catch (error) {
+                        
+                    }
+                    try {
+                        note_datatable = $('#group-note .m-datatable').mDatatable(note_datatable_options);
+
+                    } catch (error) {
+                        
+                    }
                 },
                 error: function(response, status, xhr, $form) {
                     console.log(response);
@@ -172,8 +199,17 @@
                     $('.m-section').html(response.view);
                     account_datatable.destroy();
                     note_datatable.destroy();
-                    account_datatable = $('#group-account .m-datatable').mDatatable(account_datatable_options);
-                    note_datatable = $('#group-note .m-datatable').mDatatable(note_datatable_options);
+                    try {
+                        account_datatable = $('#group-account .m-datatable').mDatatable(account_datatable_options);
+                    } catch (error) {
+                        
+                    }
+                    try {
+                        note_datatable = $('#group-note .m-datatable').mDatatable(note_datatable_options);
+
+                    } catch (error) {
+                        
+                    }
                 },
                 error: function(response, status, xhr, $form) {
                     console.log(response);
@@ -198,8 +234,17 @@
                     $('.m-section').html(response.view);
                     account_datatable.destroy();
                     note_datatable.destroy();
-                    account_datatable = $('#group-account .m-datatable').mDatatable(account_datatable_options);
-                    note_datatable = $('#group-note .m-datatable').mDatatable(note_datatable_options);
+                    try {
+                        account_datatable = $('#group-account .m-datatable').mDatatable(account_datatable_options);
+                    } catch (error) {
+                        
+                    }
+                    try {
+                        note_datatable = $('#group-note .m-datatable').mDatatable(note_datatable_options);
+
+                    } catch (error) {
+                        
+                    }
                 },
                 error: function(response, status, xhr, $form) {
                     console.log(response);

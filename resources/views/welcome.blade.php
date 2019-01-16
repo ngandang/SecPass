@@ -79,32 +79,32 @@
         <div class="absolute anlge-bg"></div>
         <div class="container">
             <div class="row v-center">
-                <div class="col-xs-12 col-md-7 header-text">
+                <div class="col-xs-12 col-md-5 header-text">
                     <h1>Chào mừng {{ __('bạn')}} đến với SecPASS</h1>
                     @guest
                     <p>Nhấn vào bên dưới để đăng nhập.</p>
                     <a href="/login" class="button white">Đăng nhập</a>
                     @else
                     <p>Nhấn vào bên dưới để vào ứng dụng.</p>
-                    <a href="dashboard" class="button white">Dashboard</a>
+                    <a href="/dashboard" class="button white">Dashboard</a>
                     @endguest
                 </div>
-                <div class="hidden-xs hidden-sm col-md-5 text-right">
+                <div class="hidden-xs hidden-sm col-md-7 text-right">
                     <div class="screen-box screen-slider">
                         <div class="item">
-                            <img src="{{ asset('welcome/images/screen-1.jpg') }}" alt="">
+                            <img src="{{ asset('welcome/images/screen-1.png') }}" alt="">
                         </div>
                         <div class="item">
-                            <img src="{{ asset('welcome/images/screen-2.jpg') }}" alt="">
+                            <img src="{{ asset('welcome/images/screen-2.png') }}" alt="">
                         </div>
                         <div class="item">
-                            <img src="{{ asset('welcome/images/screen-3.jpg') }}" alt="">
+                            <img src="{{ asset('welcome/images/screen-3.png') }}" alt="">
                         </div>
                         <div class="item">
-                            <img src="{{ asset('welcome/images/screen-4.jpg') }}" alt="">
+                            <img src="{{ asset('welcome/images/screen-4.png') }}" alt="">
                         </div>
                         <div class="item">
-                            <img src="{{ asset('welcome/images/screen-5.jpg') }}" alt="">
+                            <img src="{{ asset('welcome/images/screen-5.png') }}" alt="">
                         </div>
                     </div>
                 </div>

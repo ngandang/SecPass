@@ -73,7 +73,7 @@
 
 @section('pageSnippets')
 <!-- BEGIN: Add Form -->
-<form id="add-form" class="form-horizontal" action="" enctype="multipart/form-data" method="POST">
+<form id="add-form" class="form-horizontal" action="" enctype="multipart/form-data" method="get">
     <div class="modal fade" id="addForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
         {{ csrf_field() }}
         <div class="modal-dialog" role="document">
@@ -87,7 +87,6 @@
                 <div class="modal-body">
                     <div id="addform-row" class="row justify-content-center align-items-center">
                         <div id="addform-box" class="col-md-12">
-                            <form id="add-form" class="form" action="" method="post">                                        
                                 <div class="form-group">
                                     <!-- <label for="name" class="text-info">Tên:</label><br> -->
                                     <input type="hidden" name="name" class="form-control" >
@@ -101,7 +100,6 @@
                                     <span class="custom-file-control" toggle="#files"></span>
                                     <output id="list"></output> -->
                                 </div> 
-                            </form>
                         </div>  
                     </div>
                 </div>
@@ -242,14 +240,16 @@
             ],
             pagination: false,
         };
-        files_datatable = $('.m-datatable').mDatatable(files_datatable_options);
+        try {
+            files_datatable = $('.m-datatable').mDatatable(files_datatable_options);
+        } catch {}
 
         $('#addSubmit').click(function(e){
             e.preventDefault();
             var form = $(this).closest('form');
             
             form.ajaxSubmit({
-                url: 'drive/add',
+                url: '/drive/add',
                 type: 'POST',
                 success: function(response, status, xhr, $form) {
                     swal({
@@ -261,8 +261,9 @@
                     }).then(function(result){$('#addForm').modal('hide');});
 
                     $('.m-content').html(response.view);
-                    files_datatable = $('.m-datatable').mDatatable(files_datatable_options);
-
+                    try {
+                        files_datatable = $('.m-datatable').mDatatable(files_datatable_options);
+                    } catch {}
                     form.clearForm();
                     form.validate().resetForm();
                 },
@@ -278,7 +279,7 @@
             var form = $(this).closest('form');
             
             form.ajaxSubmit({
-                url: 'drive/share',
+                url: '/drive/share',
                 type: 'POST',
                 success: function(response, status, xhr, $form) {
                     swal({
@@ -305,7 +306,7 @@
             var form = $(this).closest('form');
             
             form.ajaxSubmit({ 
-                url: 'drive/delete',
+                url: '/drive/delete',
                 type: 'POST',
                 success: function(response, status, xhr, $form) {
                     swal({
@@ -317,8 +318,9 @@
                     }).then(function(result){$('#deleteForm').modal('hide');});
 
                     $('.m-content').html(response.view);
-                    files_datatable = $('.m-datatable').mDatatable(files_datatable_options);
-
+                    try {
+                        files_datatable = $('.m-datatable').mDatatable(files_datatable_options);
+                    } catch {}
                     form.clearForm();
 	                form.validate().resetForm();
                 },
