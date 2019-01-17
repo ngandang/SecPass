@@ -377,7 +377,7 @@
                                     <div class="col-1"></div>
                                     <div class="col-10">
                                         <div class="alert m-alert m-alert--outline alert-brand" role="alert">
-                                            Trong trường hợp bạn mong muốn sao lưu an toàn khoá riêng tư này ngay trên máy chủ SecPASS, vui lòng nhấn nút <b>Sao lưu - Đồng bộ</b> bên dưới.
+                                            Trong trường hợp bạn mong muốn sao lưu an toàn khoá riêng tư này ngay trên máy chủ SecPASS, vui lòng nhấn nút <b>Sao lưu lên máy chủ</b> bên dưới.
                                         </div>
                                         <button id="syncBtn" class="btn btn-brand m-btn m-btn--air">Sao lưu lên máy chủ</button>
                                         &nbsp;&nbsp;
@@ -450,6 +450,53 @@
                                 <div class="form-group m-form__group m--margin-top-10">
                                     <div class="alert m-alert m-alert--default" role="alert">
                                         <p class="m-form text-muted">Đang phát triển...</p>
+                                    </div>
+                                </div>
+                                <div class="form-group m-form__group row">
+                                    <div class="col-10 ml-auto">
+                                        <h3 class="m-form__section">
+                                            Thay đổi mật khẩu chính
+                                        </h3>
+                                    </div>
+                                </div>
+                                <div class="form-group m-form__group row">
+                                    <label for="address" class="col-2 col-form-label">
+                                        Mật khẩu cũ
+                                    </label>
+                                    <div class="col-7">
+                                        <input name="old_password" class="form-control m-input" type="password">
+                                    </div>
+                                </div>
+                                <div class="form-group m-form__group row">
+                                    <label for="address" class="col-2 col-form-label">
+                                        Mật khẩu mới
+                                    </label>
+                                    <div class="col-7">
+                                        <input id="new_password" name="new_password" class="form-control m-input" type="password">
+                                    </div>
+                                </div>
+                                <div class="form-group m-form__group row">
+                                    <label for="address" class="col-2 col-form-label">
+                                        Nhập lại mật khẩu mới
+                                    </label>
+                                    <div class="col-7">
+                                        <input name="password_confirmation" class="form-control m-input" type="password">
+                                    </div>
+                                </div>
+                                <div class="m-portlet__foot m-portlet__foot--fit">
+                                    <div class="m-form__actions">
+                                        <div class="row">
+                                            <div class="col-2"></div>
+                                            <div class="col-7">
+                                                <button id="savePasswordSubmit" type="submit" class="btn btn-primary m-btn m-btn--air m-btn--custom">
+                                                    Lưu thay đổi
+                                                </button>
+                                                &nbsp;&nbsp;
+                                                <button type="reset" class="btn btn-secondary m-btn m-btn--air m-btn--custom">
+                                                    Huỷ
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <!--
@@ -745,6 +792,89 @@
                 }
             });
         });
+
+        $('#savePasswordSubmit').click(async function (e){
+            e.preventDefault();
+            var btn = $(this);
+            var form = $(this).closest('form');
+
+            form.validate({
+                rules: {
+                    password: {
+                        required: true,
+                        strong: true
+                    },
+                    password_confirmation: {
+                        required: true,
+                        equalTo: "#new_password"
+                    }
+                },
+                messages: {
+                    password_confirmation: {
+                        equalTo: "Mật khẩu nhập lại không khớp."
+                    }
+                }
+            });
+
+            if (!form.valid()) {
+                return;
+            }
+            
+            btn.addClass('m-loader m-loader--right m-loader--light').attr('disabled', true);
+
+            old_password = form.find('input[name=old_password]').val();
+            new_pasword = form.find('input[name=new_password]').val();
+
+            const privKeyObj = (await openpgp.key.readArmored(privkey)).keys[0];
+
+            await privKeyObj.decrypt(old_password).catch(function (error){
+                btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false);
+                swal("Sai mật khẩu, hãy thực hiện lại.","", "error"); // error.message,
+                throw error;
+            });
+
+            await privKeyObj.encrypt(new_password).catch(function (error){
+                btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false);
+                swal("Lỗi xảy ra, hãy thực hiện lại.","", "error"); // error.message,
+                throw error;
+            });
+            privkey = privKeyObj.armor();
+
+            let user_pgp = {
+                'privateKeyArmored': privkey,
+                'publicKeyArmored': pubkey,
+            };
+            console.log(user_pgp);
+            
+            // Send user_pgp to extension
+            document.dispatchEvent(new CustomEvent('setUserPGPEvent', {detail: user_pgp}));
+            
+            console.log('changed it !');
+            
+            form.ajaxSubmit({
+                url: 'settings/changePassword',
+                type: 'POST',
+                success: function(response, status, xhr, $form) {
+                    swal({
+                        position: 'center',
+                        type: 'success',
+                        title: response.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false);
+                    form.clearForm();
+                    form.validate().resetForm();
+                },
+                error: function(response, status, xhr, $form) {
+                    console.log(response);
+                    btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false);
+                    swal("", response.message.serialize(), "error");
+                }
+            });
+
+        });
+
 
     });
 </script>

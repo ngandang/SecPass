@@ -12,7 +12,7 @@ window.onload = function()
         // process ZIP file content here
         Promise.all([
           zip.file("private.asc").async("text"),
-          zip.file("public.txt").async("text")
+          zip.file("public.asc").async("text")
         ]).then(function(result) {
           document.getElementById("priv-key").value = result[0];
           document.getElementById("pub-key").value = result[1];

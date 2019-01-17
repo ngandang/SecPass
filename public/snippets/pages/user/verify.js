@@ -81,6 +81,113 @@ var SnippetVerify = function() {
                 }
             });
         });
+
+        $('#m_pgp_verify_resend_submit').click(function(e) {
+            e.preventDefault();
+
+            var btn = $(this);
+            var form = $(this).closest('form');
+
+            form.validate({
+                rules: {
+                    email: {
+                        required: true,
+                        email: true
+                    }
+                }
+            });
+
+            if (!form.valid()) {
+                return;
+            }
+
+            btn.addClass('m-loader m-loader--right m-loader--light').attr('disabled', true);
+
+            form.ajaxSubmit({
+                url: '/pgp/verify',                
+                type: 'POST',
+                success: function(response, status, xhr, $form) {
+                	// similate 1s delay
+                	setTimeout(function() {
+	                    btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false);
+	                    form.clearForm();
+                        form.validate().resetForm();
+
+	                    showMsg(form, response.status, response.message);
+                    }, 1000);
+                },
+                error: function(response, status, xhr, $form) {
+                    // similate 1s delay
+                    setTimeout(function() {
+                        console.log(response);
+	                    btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false);
+                        $.each(response.responseJSON.errors, function(any, errors){
+                            $.each(errors, function(idx) {
+                                showMsg(form, 'danger', errors[idx]);
+                            });
+                        });
+                    }, 1000);
+                }
+            });
+        });
+    }
+
+    var handlePGPRecoveryButton = function () {
+        $('#m_pgp_recovery_submit').click(function(e) {
+            e.preventDefault();
+            // lấy 2 pgp về 2 textarea
+            e.preventDefault();
+
+            var btn = $(this);
+            var form = $(this).closest('form');
+
+            form.validate({
+                rules: {
+                    email: {
+                        required: true,
+                        email: true
+                    }
+                }
+            });
+
+            if (!form.valid()) {
+                return;
+            }
+
+            btn.addClass('m-loader m-loader--right m-loader--light').attr('disabled', true);
+
+            form.ajaxSubmit({
+                url: '/pgp/recovery',                
+                type: 'POST',
+                success: function(response, status, xhr, $form) {
+                	// similate 1s delay
+                	setTimeout(function() {
+	                    btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false);
+	                    form.clearForm();
+                        form.validate().resetForm();
+
+	                    showMsg(form, response.status, response.message);
+                    }, 1000);
+                },
+                error: function(response, status, xhr, $form) {
+                    // similate 1s delay
+                    setTimeout(function() {
+                        console.log(response);
+	                    btn.removeClass('m-loader m-loader--right m-loader--light').attr('disabled', false);
+                        $.each(response.responseJSON.errors, function(any, errors){
+                            $.each(errors, function(idx) {
+                                showMsg(form, 'danger', errors[idx]);
+                            });
+                        });
+                    }, 1000);
+                }
+            });
+        });
+            // hỏi mật khẩu chính
+            // mã hoá privkey
+            // gắn 2 pgp vào addon
+            // thông báo cho người dùng
+        
     }
 
     //== Public Functions
@@ -90,11 +197,18 @@ var SnippetVerify = function() {
             handleVerifyResendFormSubmit();
             handleSignInButton();
             handleSignInRedirect();
+
+            handlePGPRecoveryButton();
         }
     };
 }();
 
 //== Class Initialization
 jQuery(document).ready(function() {
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
     SnippetVerify.init();
 });

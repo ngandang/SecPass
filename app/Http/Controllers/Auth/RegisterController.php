@@ -169,12 +169,12 @@ class RegisterController extends Controller
             $user->update([
                 'verification_code' => time().uniqid(true)
             ]);
-            Mail::to($user)->send(new VerifyUser($user));
+            $user->notify(new VerifyUser($user));
 
             return response()->json(['status' => 'success', 'message' => 'Gửi mã xác nhận thành công. Vui lòng kiểm tra hộp thư email của bạn.']);
         }
 
-        return response()->json(['status' => 'danger', 'message' => 'Email được nhập không tồn tại. Vui lòng kiểm tra lại.']);
+        return response()->json(['status' => 'danger', 'message' => 'Email được nhập không tồn tại. Vui lòng kiểm tra lại.'], 500);
     }
 
     public function verify($code)
@@ -191,6 +191,47 @@ class RegisterController extends Controller
         }
         
         return view('auth.verify')->with(['status' => false]);
+    }
+
+    public function PGPsendmail(Request $request)
+    {
+        $user = User::where('email', $request->email)->first();
+        if ($user->count() > 0) {
+            $user->update([
+                'verification_code' => time().uniqid(true)
+            ]);
+            $user->notify(new PGPRecovery($user));
+
+
+            return response()->json(['status' => 'success', 'message' => 'Gửi mã xác nhận thành công. Vui lòng kiểm tra hộp thư email của bạn.']);
+        }
+
+        return response()->json(['status' => 'danger', 'message' => 'Email được nhập không tồn tại. Vui lòng kiểm tra lại.'], 500);
+    }
+
+    public function PGPverify($code)
+    {
+        // $user = User::where('verification_code', $code);
+        $user = User::where('email',$code)->first();
+        if ($user->count() > 0) {
+            // $user->update([
+            //     'verification_code' => null
+            // ]);
+            
+            return view('auth.pgpverify')->with(['status' => true, 'user' => $user]);
+        }
+        
+        return view('auth.pgpverify')->with(['status' => false]);
+    }
+
+    public function PGPrecovery(Request $request)
+    {
+        $pubkey = User::where('user_id',$request->user_id)->where('type',6)->get();
+        $privkey = User::where('user_id',$request->user_id)->where('type',5)->get();
+        return response()->json([
+            'pubkey' => $pubkey,
+            'privkey' => $privkey
+        ]);
     }
 
 }

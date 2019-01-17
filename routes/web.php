@@ -78,8 +78,10 @@ Route::post('profile/avatar','HomeController@updateAvatar');
 Route::get('credential','HomeController@profile');
 Route::post('credential/sync','HomeController@addPrivKey');
 Route::post('credential/unsync','HomeController@delPrivKey');
+
 Route::get('settings','HomeController@profile');
-// Route::get('recovery','Recovery@profile');
+Route::post('settings/changePassword', 'HomeController@changePassword');
+
 
 Route::get('groups','GroupController@groups');
 Route::group(['prefix' => 'group', 'as' => 'group'], function(){
@@ -147,6 +149,13 @@ Route::post('notification/maskAllAsRead','HomeController@maskAllAsRead');
 
 Route::get('pgp','HomeController@pgp');
 Route::post('pgp/get','HomeController@getPGP');
+Route::post('pgp/verify','Auth\RegisterController@PGPsendmail');
+Route::get('pgp/verify/{code}', 'Auth\RegisterController@PGPverify');
+Route::post('pgp/recovery','Auth\RegisterController@PGPrecovery');
+
+
+
+
 
 Route::post('session-timeout/keepalive', 'HomeController@keepalive');
 Route::get('addon/token', function (){

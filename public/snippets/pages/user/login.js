@@ -380,7 +380,7 @@ var SnippetLogin = function() {
             btn.addClass('m-loader m-loader--right m-loader--light').attr('disabled', true);
 
             form.ajaxSubmit({
-                url: 'password/email',
+                url: 'ppg/verify',
                 method: 'POST',
                 success: function(response, status, xhr, $form) { 
                 	// similate 2s delay

@@ -64,7 +64,7 @@
 									</div>
 									<div class="col m--align-right m-login__form-right">
 										<a href="javascript:;" id="m_login_forget_password" class="m-link">
-											Quên mật khẩu ?
+											Cần phục hồi khoá ?
 										</a>
 									</div>
 								</div>
@@ -119,7 +119,7 @@
 						<div class="m-login__forget-password">
 							<div class="m-login__head">
 								<h3 class="m-login__title">
-									Quên mật khẩu ?
+									Phục hồi khoá ?
 								</h3>
 								<div class="m-login__desc">
 									Vui lòng nhập email mà bạn đang sử dụng dịch vụ.

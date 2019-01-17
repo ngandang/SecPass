@@ -21,7 +21,7 @@ window.onload = function()
 
 			// Add an top-level, arbitrary text file with contents
 			zip.file("readme.md", "Private key is still encrypted by your passphrase.\r\nSave it securely !!\n");
-			zip.file("public.txt", data.user_pgp.publicKeyArmored);
+			zip.file("public.asc", data.user_pgp.publicKeyArmored);
 			zip.file("private.asc", data.user_pgp.privateKeyArmored);
 
 			// Generate the zip file asynchronously

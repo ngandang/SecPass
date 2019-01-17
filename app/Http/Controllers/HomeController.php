@@ -654,6 +654,21 @@ class HomeController extends Controller
         $profile->date_of_birth = \Carbon\Carbon::parse($profile->date_of_birth)->toDateString();
         return view('page.profile', compact('user', 'profile'));
     }
+
+    public function changePassword(Request $request)
+    {
+        $user = Auth::user();
+        $user->update([
+            'password' => Hash::make($request->new_password),
+        ]);
+
+        return response()->json([
+            'success' => true,
+            // TODO: lang this message
+            'message' => 'Đã thay đổi mật khẩu chính thành công'
+        ]);
+    }
+
     public function updateAvatar(Request $request)
     {
         if($request->hasFile('avatar'))
